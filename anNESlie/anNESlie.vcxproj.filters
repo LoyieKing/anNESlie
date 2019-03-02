@@ -27,12 +27,21 @@
     <ClInclude Include="anNESlie.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CPU\CPU.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ROM\RomData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="anNESlie.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ROM\RomData.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
