@@ -1,29 +1,29 @@
 #include "../stdafx.h"
-#include "RomData.h"
+#include "Cartridge.h"
 
 using namespace ROM;
 
-RomData::RomData(CString file_name)
+Cartridge::Cartridge(CString file_name)
 {
 	CFile file;
 	if (!file.Open(file_name, CFile::modeRead))
-		throw RomData::FILE_OPEN_FAIL;
+		throw Cartridge::FILE_OPEN_FAIL;
 
 	/*读取文件开头四字节，判断是否为NES ROM，不是则结束，减少无意义的磁盘性能和内存浪费*/
 	int ident;
 	if (file.Read(&ident, 4) != 4)
-		throw RomData::ROM_FORMAT_WRONG;
+		throw Cartridge::ROM_FORMAT_WRONG;
 	if (ident != 0x1A53454E)// 0x1A53454E = (BYTE)"N E S 0x1A"
-		throw RomData::ROM_FORMAT_WRONG;
+		throw Cartridge::ROM_FORMAT_WRONG;
 
 	/*读入完整文件*/
 	ULONGLONG fileLength = file.GetLength();
-	
+
 	data = new Data;
 	char* praw = new char[fileLength];
 	data->Raw = praw;
 	if (praw == nullptr)
-		throw RomData::OUT_OF_MEMORY;
+		throw Cartridge::OUT_OF_MEMORY;
 	praw[0] = 'N';
 	praw[1] = 'E';
 	praw[2] = 'S';
@@ -34,7 +34,7 @@ RomData::RomData(CString file_name)
 	/*开始解析*/
 	data->PRGROMSize = praw[4] * 0x4000; // 16kb units
 	data->CHRROMSize = praw[5] * 0x2000; // 8kb units
-	data->PRGRAMSize = praw[8] * 0x2000;
+	//data->PRGRAMSize = praw[8] * 0x2000;
 
 	bool hasTrainer = (praw[6] & 0b100) > 0;
 	data->hasTrainer = hasTrainer;
@@ -68,14 +68,14 @@ RomData::RomData(CString file_name)
 	*ref_count = 1;
 }
 
-RomData::RomData(const RomData &rom_data)
+Cartridge::Cartridge(const Cartridge &rom_data)
 {
 	data = rom_data.data;
 	ref_count = rom_data.ref_count;
 	*ref_count++;
 }
 
-RomData::~RomData()
+Cartridge::~Cartridge()
 {
 	*ref_count--;
 	if (*ref_count == 0)
@@ -87,4 +87,49 @@ RomData::~RomData()
 
 		delete ref_count;
 	}
+}
+
+void const * ROM::Cartridge::getRaw()
+{
+	return data->Raw;
+}
+
+int ROM::Cartridge::getPRGROMSize()
+{
+	return data->PRGROMSize;
+}
+
+int ROM::Cartridge::getCHRROMSize()
+{
+	return data->CHRROMSize;
+}
+
+int ROM::Cartridge::getPRGROMOffset()
+{
+	return data->PRGROMOffset;
+}
+
+int ROM::Cartridge::getMapperNumber()
+{
+	return data->MapperNumber;
+}
+
+void const * ROM::Cartridge::getPRGROM()
+{
+	return data->PRGROM;
+}
+
+void const * ROM::Cartridge::getCHRROM()
+{
+	return data->CHRROM;
+}
+
+VRAMMirroringMode ROM::Cartridge::getMirroringMode()
+{
+	return data->MirroringMode;
+}
+
+void * ROM::Cartridge::getTrainer()
+{
+	return data->hasTrainer ? data->Trainer : nullptr;
 }

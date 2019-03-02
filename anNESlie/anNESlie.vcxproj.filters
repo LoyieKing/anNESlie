@@ -30,7 +30,7 @@
     <ClInclude Include="CPU\CPU.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ROM\RomData.h">
+    <ClInclude Include="ROM\Cartridge.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClCompile Include="anNESlie.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ROM\RomData.cpp">
+    <ClCompile Include="ROM\Cartridge.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
