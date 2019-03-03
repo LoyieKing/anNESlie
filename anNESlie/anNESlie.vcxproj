@@ -31,6 +31,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -84,12 +85,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,6 +151,9 @@
   <ItemGroup>
     <ClInclude Include="anNESlie.h" />
     <ClInclude Include="CPU\CPU.h" />
+    <ClInclude Include="CPU\Instructions.h" />
+    <ClInclude Include="CPU\Memory.h" />
+    <ClInclude Include="CPU\Registers.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ROM\Cartridge.h" />
     <ClInclude Include="stdafx.h" />
@@ -156,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="anNESlie.cpp" />
+    <ClCompile Include="CPU\Registers.cpp" />
     <ClCompile Include="ROM\Cartridge.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

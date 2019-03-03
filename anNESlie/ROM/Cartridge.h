@@ -17,6 +17,7 @@
 */
 
 /*
+	《NES模拟器笔记（1）入门简介》
 	https://www.tuicool.com/articles/vYVraq
 */
 
@@ -72,15 +73,15 @@ namespace ROM
 		~Cartridge();
 
 
-		void const* getRaw();	//获取完整ROM文件指针
-		int getPRGROMSize();	//Program Memory，游戏程序数据
-		int getCHRROMSize();	//Character Memory，用于显示（贴图等）数据的存储。
-		int getPRGROMOffset();
-		int getMapperNumber();	//Mapper数量
-		void const* getPRGROM();
-		void const* getCHRROM();
-		VRAMMirroringMode getMirroringMode();
-		void* getTrainer();	//不存在Tranier则返回nullptr
+		inline void const* getRaw();	//获取完整ROM文件指针
+		inline int getPRGROMSize();	//Program Memory，游戏程序数据
+		inline int getCHRROMSize();	//Character Memory，用于显示（贴图等）数据的存储。
+		inline int getPRGROMOffset();
+		inline int getMapperNumber();	//Mapper数量
+		inline void const* getPRGROM();
+		inline void const* getCHRROM();
+		inline VRAMMirroringMode getMirroringMode();
+		inline void* getTrainer();	//不存在Tranier则返回nullptr
 	};
 
 

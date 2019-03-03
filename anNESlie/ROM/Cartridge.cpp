@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+//#include "../stdafx.h"
 #include "Cartridge.h"
 
 using namespace ROM;
@@ -89,47 +89,47 @@ Cartridge::~Cartridge()
 	}
 }
 
-void const * ROM::Cartridge::getRaw()
+inline void const * ROM::Cartridge::getRaw()
 {
 	return data->Raw;
 }
 
-int ROM::Cartridge::getPRGROMSize()
+inline int ROM::Cartridge::getPRGROMSize()
 {
 	return data->PRGROMSize;
 }
 
-int ROM::Cartridge::getCHRROMSize()
+inline int ROM::Cartridge::getCHRROMSize()
 {
 	return data->CHRROMSize;
 }
 
-int ROM::Cartridge::getPRGROMOffset()
+inline int ROM::Cartridge::getPRGROMOffset()
 {
 	return data->PRGROMOffset;
 }
 
-int ROM::Cartridge::getMapperNumber()
+inline int ROM::Cartridge::getMapperNumber()
 {
 	return data->MapperNumber;
 }
 
-void const * ROM::Cartridge::getPRGROM()
+inline void const * ROM::Cartridge::getPRGROM()
 {
 	return data->PRGROM;
 }
 
-void const * ROM::Cartridge::getCHRROM()
+inline void const * ROM::Cartridge::getCHRROM()
 {
 	return data->CHRROM;
 }
 
-VRAMMirroringMode ROM::Cartridge::getMirroringMode()
+inline VRAMMirroringMode ROM::Cartridge::getMirroringMode()
 {
 	return data->MirroringMode;
 }
 
-void * ROM::Cartridge::getTrainer()
+inline void * ROM::Cartridge::getTrainer()
 {
 	return data->hasTrainer ? data->Trainer : nullptr;
 }
