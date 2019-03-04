@@ -152,7 +152,7 @@
     <ClInclude Include="anNESlie.h" />
     <ClInclude Include="CPU\CPU.h" />
     <ClInclude Include="CPU\Instructions.h" />
-    <ClInclude Include="CPU\Memory.h" />
+    <ClInclude Include="ROM\Memory.h" />
     <ClInclude Include="CPU\Registers.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ROM\Cartridge.h" />
@@ -163,6 +163,7 @@
     <ClCompile Include="anNESlie.cpp" />
     <ClCompile Include="CPU\Registers.cpp" />
     <ClCompile Include="ROM\Cartridge.cpp" />
+    <ClCompile Include="ROM\Memory.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -58,6 +58,7 @@ namespace CPU
 		 N V   B D I Z C
 		*********************************/
 		
+	public:
 		/*状态寄存器标志位们的访问器*/
 		inline void setFlag_N_V(char val);		//设置零标志_负数标志
 
