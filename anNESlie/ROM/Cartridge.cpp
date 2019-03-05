@@ -1,4 +1,3 @@
-//#include "../stdafx.h"
 #include "Cartridge.h"
 
 using namespace ROM;

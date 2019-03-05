@@ -33,9 +33,6 @@
     <ClInclude Include="CPU\Instructions.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CPU\CPU.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="CPU\Registers.h">
       <Filter>头文件</Filter>
     </ClInclude>

@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "anNESlie.h"
-
 #define MAX_LOADSTRING 100
 
 // 全局变量:

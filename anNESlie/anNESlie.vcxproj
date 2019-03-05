@@ -150,7 +150,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="anNESlie.h" />
-    <ClInclude Include="CPU\CPU.h" />
     <ClInclude Include="CPU\Instructions.h" />
     <ClInclude Include="ROM\MemoryHandler.h" />
     <ClInclude Include="CPU\Registers.h" />
