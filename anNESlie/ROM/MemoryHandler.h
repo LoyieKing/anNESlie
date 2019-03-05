@@ -27,6 +27,9 @@ namespace ROM
 		MemoryHandler(char* memory_adress,int memory_size);
 		~MemoryHandler();
 
+		inline char* GetMemoryAdress();
+		inline void SetMemoryAdress(char* memory_adress);
+
 		inline void SetReadHandler(int adress, ReadHandler handler);
 		inline void SetReadHandler(int adress_start, int adress_end, ReadHandler handler);
 		inline void SetWriteHandler(int adress, WriteHandler handler);

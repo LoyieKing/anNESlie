@@ -24,6 +24,16 @@ MemoryHandler::~MemoryHandler()
 	readHandlers = nullptr;
 }
 
+inline char * ROM::MemoryHandler::GetMemoryAdress()
+{
+	return memory;
+}
+
+inline void ROM::MemoryHandler::SetMemoryAdress(char * memory_adress)
+{
+	memory = memory_adress;
+}
+
 inline void ROM::MemoryHandler::SetReadHandler(int adress, ReadHandler handler)
 {
 	readHandlers[adress] = handler;
