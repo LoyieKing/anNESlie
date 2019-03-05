@@ -39,7 +39,7 @@
     <ClInclude Include="CPU\Registers.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ROM\Memory.h">
+    <ClInclude Include="ROM\MemoryHandler.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,7 +56,7 @@
     <ClCompile Include="CPU\Registers.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ROM\Memory.cpp">
+    <ClCompile Include="ROM\MemoryHandler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
