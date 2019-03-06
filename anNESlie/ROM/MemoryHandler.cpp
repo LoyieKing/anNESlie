@@ -5,13 +5,16 @@ using namespace ROM;
 MemoryHandler::MemoryHandler(char* memory_adress, int memory_size)
 {
 	memory = memory_adress;
-	readHandlers = new ReadHandler[memory_size];
-	writeHandlers = new WriteHandler[memory_size];
+	readHandlers = new std::function<char(int)>[memory_size];
+	writeHandlers = new std::function<void(int, char)>[memory_size];
+
+	auto read_func = [this](int adress) {return memory[adress]; };
+	auto write_func = [this](int adress, char value) {memory[adress] = value; };
 	for (int i = 0; i < memory_size; i++)
 	{
-		memory = 0;
-		readHandlers = nullptr;
-		writeHandlers = nullptr;
+		memory[i] = 0;
+		readHandlers[i] = read_func;
+		writeHandlers[i] = write_func;
 	}
 }
 
@@ -34,23 +37,37 @@ inline void ROM::MemoryHandler::SetMemoryAdress(char * memory_adress)
 	memory = memory_adress;
 }
 
-inline void ROM::MemoryHandler::SetReadHandler(int adress, ReadHandler handler)
+inline void ROM::MemoryHandler::SetReadHandler(int adress, char(*handler)(int))
+{
+	if (handler == nullptr)
+		readHandlers[adress] = [this](int adress) {return memory[adress]; };
+	readHandlers[adress] = handler;
+}
+
+inline void ROM::MemoryHandler::SetReadHandler(int adress, std::function<char(int)> handler)
 {
 	readHandlers[adress] = handler;
 }
 
-inline void ROM::MemoryHandler::SetReadHandler(int adress_start, int adress_end, ReadHandler handler)
+inline void ROM::MemoryHandler::SetReadHandler(int adress_start, int adress_end, std::function<char(int)> handler)
 {
 	for (int i = adress_start; i < adress_end; i++)
 		SetReadHandler(i, handler);
 }
 
-inline void ROM::MemoryHandler::SetWriteHandler(int adress, WriteHandler handler)
+inline void ROM::MemoryHandler::SetWriteHandler(int adress, void(*handler)(int, char))
+{
+	if (handler == nullptr)
+		writeHandlers[adress] = [this](int adress, char value) {memory[adress] = value; };
+	writeHandlers[adress] = handler;
+}
+
+inline void ROM::MemoryHandler::SetWriteHandler(int adress, std::function<void(int, char)>  handler)
 {
 	writeHandlers[adress] = handler;
 }
 
-inline void ROM::MemoryHandler::SetWriteHandler(int adress_start, int adress_end, WriteHandler handler)
+inline void ROM::MemoryHandler::SetWriteHandler(int adress_start, int adress_end, std::function<void(int, char)>  handler)
 {
 	for (int i = adress_start; i < adress_end; i++)
 		SetWriteHandler(i, handler);

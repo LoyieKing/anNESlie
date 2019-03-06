@@ -151,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="anNESlie.h" />
     <ClInclude Include="CPU\Instructions.h" />
+    <ClInclude Include="CPU\Memory.h" />
     <ClInclude Include="ROM\MemoryHandler.h" />
     <ClInclude Include="CPU\Registers.h" />
     <ClInclude Include="Resource.h" />
@@ -160,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="anNESlie.cpp" />
+    <ClCompile Include="CPU\Memory.cpp" />
     <ClCompile Include="CPU\Registers.cpp" />
     <ClCompile Include="ROM\Cartridge.cpp" />
     <ClCompile Include="ROM\MemoryHandler.cpp" />

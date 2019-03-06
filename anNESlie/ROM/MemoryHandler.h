@@ -1,5 +1,6 @@
 #pragma once
-
+#include <functional>
+//using namespace std;
 
 namespace ROM
 {
@@ -12,16 +13,13 @@ namespace ROM
 	/*
 	NES为典型的八位机，不仅寄存器、内存每一位的长度同样为8bit，所以应该采用char
 	*/
-	typedef char(*ReadHandler)(int adress);
-	typedef void(*WriteHandler)(int adress, char value);
-
 
 	class MemoryHandler
 	{
 	private:
 		char* memory;
-		ReadHandler *readHandlers;
-		WriteHandler *writeHandlers;
+		std::function<char(int)> *readHandlers;
+		std::function<void(int, char)>  *writeHandlers;
 
 	public:
 		MemoryHandler(char* memory_adress,int memory_size);
@@ -30,10 +28,12 @@ namespace ROM
 		inline char* GetMemoryAdress();
 		inline void SetMemoryAdress(char* memory_adress);
 
-		inline void SetReadHandler(int adress, ReadHandler handler);
-		inline void SetReadHandler(int adress_start, int adress_end, ReadHandler handler);
-		inline void SetWriteHandler(int adress, WriteHandler handler);
-		inline void SetWriteHandler(int adress_start, int adress_end, WriteHandler handler);
+		inline void SetReadHandler(int adress, char(*handler)(int));
+		inline void SetReadHandler(int adress, std::function<char(int)> handler);
+		inline void SetReadHandler(int adress_start, int adress_end, std::function<char(int)> handler);
+		inline void SetWriteHandler(int adress, void (*handler)(int, char));
+		inline void SetWriteHandler(int adress, std::function<void(int, char)>  handler);
+		inline void SetWriteHandler(int adress_start, int adress_end, std::function<void(int, char)>  handler);
 
 		inline char ReadByte(int adress);
 		inline void WriteByte(int adress, char value);
