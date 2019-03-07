@@ -5,6 +5,8 @@
 #include "anNESlie.h"
 #define MAX_LOADSTRING 100
 
+#include "CPU\Memory.h"
+
 // 全局变量:
 HINSTANCE hInst;                                // 当前实例
 WCHAR szTitle[MAX_LOADSTRING];                  // 标题栏文本
