@@ -27,10 +27,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: 在此处放置代码。
-	char ch;
-	ch = 0xABCD;
-	bool res = ch > 0b100;
-
+	
     // 初始化全局字符串
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_ANNESLIE, szWindowClass, MAX_LOADSTRING);

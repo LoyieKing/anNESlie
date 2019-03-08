@@ -42,7 +42,7 @@ namespace ROM
 		/*ROMÊý¾ÝÇøÓò*/
 		typedef struct
 		{
-			char* Raw;
+			Byte* Raw;
 			int PRGROMSize;
 			int CHRROMSize;
 			int PRGROMOffset;

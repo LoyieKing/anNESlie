@@ -40,18 +40,19 @@
 
 #pragma once
 
+#include"..\Types.h"
 
 namespace CPU
 {
 	class Registers
 	{
 	private:
-		char registerA;		//Accumulator		算数寄存器
-		char registerX;		//Index Register	地址寄存器
-		char registerY;		//Index Register	地址寄存器
-		char registerSP;	//Stack Pointer		栈指针寄存器
-		char registerPC;	//Program Counter	程序计数器
-		char registerP;		//Status Register	状态寄存器
+		Byte registerA;		//Accumulator		算数寄存器
+		Byte registerX;		//Index Register	地址寄存器
+		Byte registerY;		//Index Register	地址寄存器
+		Byte registerSP;	//Stack Pointer		栈指针寄存器
+		Byte registerPC;	//Program Counter	程序计数器
+		Byte registerP;		//Status Register	状态寄存器
 		/*********************************
 		 Status Register
 		 7 6 5 4 3 2 1 0
@@ -60,7 +61,7 @@ namespace CPU
 		
 	public:
 		/*状态寄存器标志位们的访问器*/
-		inline void setFlag_N_V(char val);		//设置零标志_负数标志
+		inline void setFlag_N_V(Byte val);		//设置零标志_负数标志
 
 		inline bool getFlag_N();				//负数标志访问器
 		inline void setFlag_N(bool val);
@@ -88,23 +89,23 @@ namespace CPU
 
 
 		/*寄存器们的访问器*/
-		inline char getA();
-		inline void setA(char val);
+		inline Byte getA();
+		inline void setA(Byte val);
 
-		inline char getX();
-		inline void setX(char val);
+		inline Byte getX();
+		inline void setX(Byte val);
 
-		inline char getY();
-		inline void setY(char val);
+		inline Byte getY();
+		inline void setY(Byte val);
 		
-		inline char getSP();
-		inline void setSP(char val);
+		inline Byte getSP();
+		inline void setSP(Byte val);
 		
-		inline char getPC();
-		inline void setPC(char val);
+		inline Byte getPC();
+		inline void setPC(Byte val);
 
-		inline char getP();
-		inline void setP(char val);
+		inline Byte getP();
+		inline void setP(Byte val);
 
 
 	};

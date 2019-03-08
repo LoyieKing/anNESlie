@@ -1,14 +1,14 @@
 #include "MemoryHandler.h"
 
 
-ROM::MemoryHandler::MemoryHandler(char* memory_adress, int memory_size)
+ROM::MemoryHandler::MemoryHandler(Byte* memory_adress, int memory_size)
 {
 	memory = memory_adress;
-	readHandlers = new std::function<char(int)>[memory_size];
-	writeHandlers = new std::function<void(int, char)>[memory_size];
+	readHandlers = new std::function<Byte(int)>[memory_size];
+	writeHandlers = new std::function<void(int, Byte)>[memory_size];
 
 	auto read_func = [this](int adress) {return memory[adress]; };
-	auto write_func = [this](int adress, char value) {memory[adress] = value; };
+	auto write_func = [this](int adress, Byte value) {memory[adress] = value; };
 	for (int i = 0; i < memory_size; i++)
 	{
 		memory[i] = 0;

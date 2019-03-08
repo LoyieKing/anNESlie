@@ -19,7 +19,7 @@ Cartridge::Cartridge(CString file_name)
 	ULONGLONG fileLength = file.GetLength();
 
 	data = new Data;
-	char* praw = new char[fileLength];
+	Byte* praw = new Byte[fileLength];
 	data->Raw = praw;
 	if (praw == nullptr)
 		throw Cartridge::OUT_OF_MEMORY;
@@ -57,7 +57,7 @@ Cartridge::Cartridge(CString file_name)
 	data->PRGROM = praw + data->PRGROMOffset;
 
 	if (data->CHRROMSize == 0)
-		data->CHRROM = new char[0x2000];
+		data->CHRROM = new Byte[0x2000];
 	else
 		data->CHRROM = praw + data->PRGROMOffset + data->PRGROMSize;
 
