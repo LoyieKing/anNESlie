@@ -1,5 +1,5 @@
 #pragma once
-
+#include <functional>
 
 namespace CPU
 {
@@ -20,11 +20,13 @@ namespace CPU
 
 	struct OpcodeDefine
 	{
-		//int Opcode;
+		int Opcode;
 		int Cycles = 1;
 		bool PageBoundary;
 		bool RMW;
 		AddressingMode Mode = None;
+		std::function<void(void)> action;
 	};
+
 
 }

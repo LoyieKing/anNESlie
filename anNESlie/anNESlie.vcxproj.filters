@@ -59,9 +59,6 @@
     <ClCompile Include="ROM\Cartridge.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CPU\Registers.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="ROM\MemoryHandler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

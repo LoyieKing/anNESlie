@@ -165,7 +165,6 @@
     <ClCompile Include="anNESlie.cpp" />
     <ClCompile Include="CPU\Core.cpp" />
     <ClCompile Include="CPU\Memory.cpp" />
-    <ClCompile Include="CPU\Registers.cpp" />
     <ClCompile Include="ROM\Cartridge.cpp" />
     <ClCompile Include="ROM\MemoryHandler.cpp" />
     <ClCompile Include="stdafx.cpp">

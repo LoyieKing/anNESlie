@@ -1,11 +1,14 @@
 #pragma once
 
+//#include "Core.h"
 #include "..\ROM\MemoryHandler.h"
 #include "..\Types.h"
-#include "Core.h"
 
+
+//TODO: 内联交叉引用修复
 namespace CPU
 {
+	class CPUCore;
 	const int CPU_MEMORY_SIZE = 0xFFFF;
 
 	class Memory
@@ -13,10 +16,11 @@ namespace CPU
 	private:
 		Byte* memory;
 		ROM::MemoryHandler memoryHandler;
-		Core *cpu;
+
+		CPUCore* cpu;
 
 	public:
-		Memory(Core* _cpu);
+		Memory(CPUCore* _cpu);
 		~Memory();
 
 		inline Byte NextByte();

@@ -58,10 +58,19 @@ namespace CPU
 		 7 6 5 4 3 2 1 0
 		 N V   B D I Z C
 		*********************************/
-		
+
 	public:
+		const Byte CarryBit = 0b00000001;
+		const Byte ZeroBit = 0b00000010;
+		const Byte InterruptDisabledBit	= 0b00000100;
+		const Byte DecimalModeBit = 0b00001000;
+		const Byte BreakSourceBit = 0b00010000;
+		const Byte UnusedBit = 0b00100000;
+		const Byte OverflowBit = 0b01000000;
+		const Byte NegativeBit = 0b10000000;
+
 		/*状态寄存器标志位们的访问器*/
-		inline void setFlag_N_V(Byte val);		//设置零标志_负数标志
+		inline void setFlag_N_Z(Byte val);		//设置负数标志_零标志
 
 		inline bool getFlag_N();				//负数标志访问器
 		inline void setFlag_N(bool val);
@@ -97,10 +106,10 @@ namespace CPU
 
 		inline Byte getY();
 		inline void setY(Byte val);
-		
+
 		inline Byte getSP();
 		inline void setSP(Byte val);
-		
+
 		inline Byte getPC();
 		inline void setPC(Byte val);
 
@@ -111,4 +120,177 @@ namespace CPU
 	};
 
 
+}
+
+inline void CPU::Registers::setFlag_N_Z(Byte val)
+{
+	if (val == 0)
+		registerP |= ZeroBit;
+	if (val < 0)
+		registerP |= NegativeBit;
+}
+
+inline bool CPU::Registers::getFlag_N()
+{
+	return registerP & NegativeBit;
+}
+
+inline void CPU::Registers::setFlag_N(bool val)
+{
+	if (val)
+		registerP |= NegativeBit;
+	else
+		registerP &= NegativeBit;
+}
+
+inline bool CPU::Registers::getFlag_V()
+{
+	return registerP & OverflowBit;
+}
+
+inline void CPU::Registers::setFlag_V(bool val)
+{
+	if (val)
+		registerP |= OverflowBit;
+	else
+		registerP &= ~OverflowBit;
+}
+
+inline bool CPU::Registers::getFlag_Unused()
+{
+	return registerP & UnusedBit;
+}
+
+inline void CPU::Registers::setFlag_Unused(bool val)
+{
+	if (val)
+		registerP |= UnusedBit;
+	else
+		registerP &= ~UnusedBit;
+}
+
+inline bool CPU::Registers::getFlag_B()
+{
+	return registerP & BreakSourceBit;
+}
+
+inline void CPU::Registers::setFlag_B(bool val)
+{
+	if (val)
+		registerP |= BreakSourceBit;
+	else
+		registerP &= ~BreakSourceBit;
+}
+
+inline bool CPU::Registers::getFlag_D()
+{
+	return registerP & DecimalModeBit;
+}
+
+inline void CPU::Registers::setFlag_D(bool val)
+{
+	if (val)
+		registerP |= DecimalModeBit;
+	else
+		registerP &= ~DecimalModeBit;
+}
+
+inline bool CPU::Registers::getFlag_I()
+{
+	return registerP & InterruptDisabledBit;
+}
+
+inline void CPU::Registers::setFlag_I(bool val)
+{
+	if (val)
+		registerP |= InterruptDisabledBit;
+	else
+		registerP &= ~InterruptDisabledBit;
+}
+
+inline bool CPU::Registers::getFlag_Z()
+{
+	return registerP & ZeroBit;
+}
+
+inline void CPU::Registers::setFlag_Z(bool val)
+{
+	if (val)
+		registerP |= ZeroBit;
+	else
+		registerP &= ~ZeroBit;
+}
+
+inline bool CPU::Registers::getFlag_C()
+{
+	return registerP & CarryBit;
+}
+
+inline void CPU::Registers::setFlag_C(bool val)
+{
+	if (val)
+		registerP |= CarryBit;
+	else
+		registerP &= ~CarryBit;
+}
+
+
+inline Byte CPU::Registers::getA()
+{
+	return registerA;
+}
+
+inline void CPU::Registers::setA(Byte val)
+{
+	registerA = val;
+}
+
+inline Byte CPU::Registers::getX()
+{
+	return registerX;
+}
+
+inline void CPU::Registers::setX(Byte val)
+{
+	registerX = val;
+}
+
+inline Byte CPU::Registers::getY()
+{
+	return registerY;
+}
+
+inline void CPU::Registers::setY(Byte val)
+{
+	registerY = val;
+}
+
+inline Byte CPU::Registers::getSP()
+{
+	return registerSP;
+}
+
+inline void CPU::Registers::setSP(Byte val)
+{
+	registerSP = val;
+}
+
+inline Byte CPU::Registers::getPC()
+{
+	return registerPC;
+}
+
+inline void CPU::Registers::setPC(Byte val)
+{
+	registerPC = val;
+}
+
+inline Byte CPU::Registers::getP()
+{
+	return registerP;
+}
+
+inline void CPU::Registers::setP(Byte val)
+{
+	registerP = val;
 }

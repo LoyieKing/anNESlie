@@ -2,7 +2,7 @@
 
 
 
-CPU::Memory::Memory(CPU* _cpu):memory(new Byte[CPU_MEMORY_SIZE]),memoryHandler(memory,CPU_MEMORY_SIZE)
+CPU::Memory::Memory(CPU::CPUCore* _cpu):memory(new Byte[CPU_MEMORY_SIZE]),memoryHandler(memory,CPU_MEMORY_SIZE)
 {
 	cpu = _cpu;
 

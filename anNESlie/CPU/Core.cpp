@@ -1,6 +1,7 @@
 #include "Core.h"
 
-CPU::Core::Core():memory(this)
+CPU::CPUCore::CPUCore():memory(this)
 {
 	
 }
+
