@@ -29,27 +29,27 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -152,9 +152,7 @@
     <ClInclude Include="anNESlie.h" />
     <ClInclude Include="CPU\Core.h" />
     <ClInclude Include="CPU\Instructions.h" />
-    <ClInclude Include="CPU\Memory.h" />
     <ClInclude Include="ROM\MemoryHandler.h" />
-    <ClInclude Include="CPU\Registers.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ROM\Cartridge.h" />
     <ClInclude Include="Types.h" />
@@ -164,6 +162,8 @@
   <ItemGroup>
     <ClCompile Include="anNESlie.cpp" />
     <ClCompile Include="CPU\Core.cpp" />
+    <ClCompile Include="CPU\Registers.cpp" />
+    <ClCompile Include="CPU\Instruction.cpp" />
     <ClCompile Include="CPU\Memory.cpp" />
     <ClCompile Include="ROM\Cartridge.cpp" />
     <ClCompile Include="ROM\MemoryHandler.cpp" />

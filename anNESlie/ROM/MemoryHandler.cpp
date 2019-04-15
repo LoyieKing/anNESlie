@@ -26,12 +26,76 @@ ROM::MemoryHandler::~MemoryHandler()
 	readHandlers = nullptr;
 }
 
-short ROM::MemoryHandler::ReadWord(int adress)
+
+Byte* ROM::MemoryHandler::GetMemoryAdress()
+{
+	return memory;
+}
+
+void ROM::MemoryHandler::SetMemoryAdress(Byte* memory_adress)
+{
+	memory = memory_adress;
+}
+
+void ROM::MemoryHandler::SetReadHandler(Word adress, Byte(*handler)(int))
+{
+	if (handler == nullptr)
+		readHandlers[adress] = [this](int adress) {return memory[adress]; };
+	readHandlers[adress] = handler;
+}
+
+void ROM::MemoryHandler::SetReadHandler(Word adress, std::function<Byte(int)> handler)
+{
+	readHandlers[adress] = handler;
+}
+
+void ROM::MemoryHandler::SetReadHandler(Word adress_start, int adress_end, std::function<Byte(int)> handler)
+{
+	for (int i = adress_start; i < adress_end; i++)
+		SetReadHandler(i, handler);
+}
+
+void ROM::MemoryHandler::SetWriteHandler(Word adress, void(*handler)(int, Byte))
+{
+	if (handler == nullptr)
+		writeHandlers[adress] = [this](int adress, Byte value) {memory[adress] = value; };
+	writeHandlers[adress] = handler;
+}
+
+void ROM::MemoryHandler::SetWriteHandler(Word adress, std::function<void(int, Byte)>  handler)
+{
+	writeHandlers[adress] = handler;
+}
+
+void ROM::MemoryHandler::SetWriteHandler(Word adress_start, int adress_end, std::function<void(int, Byte)>  handler)
+{
+	for (int i = adress_start; i < adress_end; i++)
+		SetWriteHandler(i, handler);
+}
+
+Byte ROM::MemoryHandler::ReadByte(Word adress)
+{
+	if (readHandlers[adress] == nullptr)
+		return memory[adress];
+	else
+		return readHandlers[adress](adress);
+}
+
+void ROM::MemoryHandler::WriteByte(Word adress, Byte value)
+{
+	if (writeHandlers[adress] == nullptr)
+		memory[adress] = value;
+	else
+		writeHandlers[adress](adress, value);
+}
+
+
+Byte ROM::MemoryHandler::ReadWord(Word adress)
 {
 	return ((short)ReadByte(adress)) | (((short)ReadByte(adress + 1)) << 8);
 }
 
-void ROM::MemoryHandler::WriteWord(int adress, short value)
+void ROM::MemoryHandler::WriteWord(Word adress, Word value)
 {
 	WriteByte(adress, value);
 	WriteByte(adress + 1, value >> 8);

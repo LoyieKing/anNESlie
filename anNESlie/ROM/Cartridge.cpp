@@ -4,6 +4,7 @@ using namespace ROM;
 
 Cartridge::Cartridge(CString file_name)
 {
+
 	CFile file;
 	if (!file.Open(file_name, CFile::modeRead))
 		throw Cartridge::FILE_OPEN_FAIL;

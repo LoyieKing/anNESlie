@@ -18,7 +18,7 @@ namespace CPU
 		IndirectY
 	};
 
-	struct OpcodeDefine
+	struct OpcodeDefinition
 	{
 		int Opcode;
 		int Cycles = 1;

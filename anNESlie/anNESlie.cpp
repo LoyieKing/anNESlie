@@ -5,7 +5,7 @@
 #include "anNESlie.h"
 #define MAX_LOADSTRING 100
 
-#include "CPU\Memory.h"
+#include "CPU/Core.h"
 
 // 全局变量:
 HINSTANCE hInst;                                // 当前实例
