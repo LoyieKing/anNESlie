@@ -55,7 +55,7 @@ namespace CPU
 		Byte registerX;		//Index Register	µØÖ·¼Ä´æÆ÷
 		Byte registerY;		//Index Register	µØÖ·¼Ä´æÆ÷
 		Byte registerSP;	//Stack Pointer		Õ»Ö¸Õë¼Ä´æÆ÷
-		Byte registerPC;	//Program Counter	³ÌĞò¼ÆÊıÆ÷
+		Word registerPC;	//Program Counter	³ÌĞò¼ÆÊıÆ÷
 		Byte registerP;		//Status Register	×´Ì¬¼Ä´æÆ÷
 		/*********************************
 		 Status Register
@@ -114,8 +114,8 @@ namespace CPU
 		Byte getSP();
 		void setSP(Byte val);
 
-		Byte getPC();
-		void setPC(Byte val);
+		Word getPC();
+		void setPC(Word val);
 
 		Byte getP();
 		void setP(Byte val);

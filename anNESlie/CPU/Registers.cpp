@@ -154,12 +154,12 @@ void CPU::CPUCore::setSP(Byte val)
 	registerSP = val;
 }
 
-Byte CPU::CPUCore::getPC()
+Word CPU::CPUCore::getPC()
 {
 	return registerPC;
 }
 
-void CPU::CPUCore::setPC(Byte val)
+void CPU::CPUCore::setPC(Word val)
 {
 	registerPC = val;
 }
