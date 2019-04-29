@@ -152,6 +152,7 @@
     <ClInclude Include="anNESlie.h" />
     <ClInclude Include="CPU\Core.h" />
     <ClInclude Include="CPU\Instructions.h" />
+    <ClInclude Include="PPU\Core.h" />
     <ClInclude Include="ROM\MemoryHandler.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ROM\Cartridge.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="CPU\Registers.cpp" />
     <ClCompile Include="CPU\Instruction.cpp" />
     <ClCompile Include="CPU\Memory.cpp" />
+    <ClCompile Include="PPU\Core.cpp" />
     <ClCompile Include="ROM\Cartridge.cpp" />
     <ClCompile Include="ROM\MemoryHandler.cpp" />
     <ClCompile Include="stdafx.cpp">
