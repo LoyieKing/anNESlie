@@ -12,3 +12,10 @@ typedef long DWord;
 
 /*64bits    8bytes    0xFFFFFFFFFFFFFFFF*/
 typedef long long QWord;
+
+
+/*CPU Interrupt Type*/
+enum InterruptType
+{
+	NMI, IRQ, RESET
+};

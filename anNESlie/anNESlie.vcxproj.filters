@@ -74,6 +74,12 @@
     <ClCompile Include="PPU\Core.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="PPU\Memory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PPU\Registers.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="anNESlie.rc">

@@ -7,13 +7,12 @@ ROM::MemoryHandler::MemoryHandler(Byte* memory_adress, int memory_size)
 	readHandlers = new std::function<Byte(int)>[memory_size];
 	writeHandlers = new std::function<void(int, Byte)>[memory_size];
 
-	auto read_func = [this](int adress) {return memory[adress]; };
-	auto write_func = [this](int adress, Byte value) {memory[adress] = value; };
+
 	for (int i = 0; i < memory_size; i++)
 	{
 		memory[i] = 0;
-		readHandlers[i] = read_func;
-		writeHandlers[i] = write_func;
+		readHandlers[i] = nullptr;
+		writeHandlers[i] = nullptr;
 	}
 }
 
@@ -39,8 +38,6 @@ void ROM::MemoryHandler::SetMemoryAdress(Byte* memory_adress)
 
 void ROM::MemoryHandler::SetReadHandler(Word adress, Byte(*handler)(int))
 {
-	if (handler == nullptr)
-		readHandlers[adress] = [this](int adress) {return memory[adress]; };
 	readHandlers[adress] = handler;
 }
 
@@ -57,8 +54,6 @@ void ROM::MemoryHandler::SetReadHandler(Word adress_start, int adress_end, std::
 
 void ROM::MemoryHandler::SetWriteHandler(Word adress, void(*handler)(int, Byte))
 {
-	if (handler == nullptr)
-		writeHandlers[adress] = [this](int adress, Byte value) {memory[adress] = value; };
 	writeHandlers[adress] = handler;
 }
 
@@ -76,17 +71,15 @@ void ROM::MemoryHandler::SetWriteHandler(Word adress_start, int adress_end, std:
 Byte ROM::MemoryHandler::ReadByte(Word adress)
 {
 	if (readHandlers[adress] == nullptr)
-		return memory[adress];
-	else
-		return readHandlers[adress](adress);
+		return 0;
+	return readHandlers[adress](adress);
 }
 
 void ROM::MemoryHandler::WriteByte(Word adress, Byte value)
 {
 	if (writeHandlers[adress] == nullptr)
-		memory[adress] = value;
-	else
-		writeHandlers[adress](adress, value);
+		return;
+	writeHandlers[adress](adress, value);
 }
 
 

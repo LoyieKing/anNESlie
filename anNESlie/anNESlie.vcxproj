@@ -167,6 +167,8 @@
     <ClCompile Include="CPU\Instruction.cpp" />
     <ClCompile Include="CPU\Memory.cpp" />
     <ClCompile Include="PPU\Core.cpp" />
+    <ClCompile Include="PPU\Memory.cpp" />
+    <ClCompile Include="PPU\Registers.cpp" />
     <ClCompile Include="ROM\Cartridge.cpp" />
     <ClCompile Include="ROM\MemoryHandler.cpp" />
     <ClCompile Include="stdafx.cpp">

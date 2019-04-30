@@ -45,7 +45,6 @@ namespace CPU
 {
 	const int CPU_MEMORY_SIZE = 0xFFFF;
 
-
 	class CPUCore
 	{
 #pragma region Registers

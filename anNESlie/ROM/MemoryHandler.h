@@ -15,6 +15,11 @@ namespace ROM
 	NES为典型的八位机，不仅寄存器、内存每一位的长度同样为8bit，所以应该采用Byte
 	*/
 
+	/*
+	默认的读映射应当为0
+	默认的写映射应当直接return，因为一些游戏会通过向未映射地址写值的方法来继续工作
+	*/
+
 	class MemoryHandler
 	{
 	private:
