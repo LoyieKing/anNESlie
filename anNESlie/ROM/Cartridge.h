@@ -48,12 +48,12 @@ namespace ROM
 			int CHRROMSize;
 			int PRGROMOffset;
 			int MapperNumber;
-			void* PRGROM;
-			void* CHRROM;
+			Byte* PRGROM;
+			Byte* CHRROM;
 			VRAMMirroringMode MirroringMode;
 
 			bool hasTrainer;
-			void* Trainer;
+			Byte* Trainer;
 		}Data;
 
 		Data* data;
@@ -74,15 +74,15 @@ namespace ROM
 		~Cartridge();
 
 
-		inline void const* getRaw();	//获取完整ROM文件指针
+		inline Byte* getRaw();	//获取完整ROM文件指针
 		inline int getPRGROMSize();	//Program Memory，游戏程序数据
 		inline int getCHRROMSize();	//Character Memory，用于显示（贴图等）数据的存储。
 		inline int getPRGROMOffset();
 		inline int getMapperNumber();	//Mapper数量
-		inline void const* getPRGROM();
-		inline void const* getCHRROM();
+		inline Byte* getPRGROM();
+		inline Byte* getCHRROM();
 		inline VRAMMirroringMode getMirroringMode();
-		inline void* getTrainer();	//不存在Tranier则返回nullptr
+		inline Byte* getTrainer();	//不存在Tranier则返回nullptr
 	};
 
 

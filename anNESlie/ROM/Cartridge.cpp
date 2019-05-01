@@ -18,7 +18,7 @@ Cartridge::Cartridge(CString file_name)
 
 	/*读入完整文件*/
 	ULONGLONG fileLength = file.GetLength();
-
+	
 	data = new Data;
 	Byte* praw = new Byte[fileLength];
 	data->Raw = praw;
@@ -89,7 +89,7 @@ Cartridge::~Cartridge()
 	}
 }
 
-inline void const * ROM::Cartridge::getRaw()
+inline Byte* ROM::Cartridge::getRaw()
 {
 	return data->Raw;
 }
@@ -114,12 +114,12 @@ inline int ROM::Cartridge::getMapperNumber()
 	return data->MapperNumber;
 }
 
-inline void const * ROM::Cartridge::getPRGROM()
+inline Byte* ROM::Cartridge::getPRGROM()
 {
 	return data->PRGROM;
 }
 
-inline void const * ROM::Cartridge::getCHRROM()
+inline Byte* ROM::Cartridge::getCHRROM()
 {
 	return data->CHRROM;
 }
@@ -129,7 +129,7 @@ inline VRAMMirroringMode ROM::Cartridge::getMirroringMode()
 	return data->MirroringMode;
 }
 
-inline void * ROM::Cartridge::getTrainer()
+inline Byte* ROM::Cartridge::getTrainer()
 {
 	return data->hasTrainer ? data->Trainer : nullptr;
 }

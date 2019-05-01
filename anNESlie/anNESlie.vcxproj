@@ -150,8 +150,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="anNESlie.h" />
+    <ClInclude Include="Controllers\Controller.h" />
     <ClInclude Include="CPU\Core.h" />
     <ClInclude Include="CPU\Instructions.h" />
+    <ClInclude Include="Emulator\Emulator.h" />
+    <ClInclude Include="Mappers\BaseMapper.h" />
     <ClInclude Include="PPU\Core.h" />
     <ClInclude Include="ROM\MemoryHandler.h" />
     <ClInclude Include="Resource.h" />
@@ -163,9 +166,12 @@
   <ItemGroup>
     <ClCompile Include="anNESlie.cpp" />
     <ClCompile Include="CPU\Core.cpp" />
+    <ClCompile Include="CPU\IORegisters.cpp" />
     <ClCompile Include="CPU\Registers.cpp" />
     <ClCompile Include="CPU\Instruction.cpp" />
     <ClCompile Include="CPU\Memory.cpp" />
+    <ClCompile Include="Emulator\Emulator.cpp" />
+    <ClCompile Include="Mappers\BaseMapper.cpp" />
     <ClCompile Include="PPU\Core.cpp" />
     <ClCompile Include="PPU\Memory.cpp" />
     <ClCompile Include="PPU\Registers.cpp" />

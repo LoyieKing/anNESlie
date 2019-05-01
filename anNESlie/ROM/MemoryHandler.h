@@ -28,24 +28,24 @@ namespace ROM
 		std::function<void(int, Byte)>* writeHandlers;
 
 	public:
-		MemoryHandler(Byte* memory_adress, int memory_size);
+		MemoryHandler(Byte* memory_address, int memory_size);
 		~MemoryHandler();
 
-		Byte* GetMemoryAdress();
-		void SetMemoryAdress(Byte* memory_adress);
+		Byte* GetMemoryAddress();
+		void SetMemoryAddress(Byte* memory_address);
 
-		void SetReadHandler(Word adress, Byte(*handler)(int));
-		void SetReadHandler(Word adress, std::function<Byte(int)> handler);
-		void SetReadHandler(Word adress_start, int adress_end, std::function<Byte(int)> handler);
-		void SetWriteHandler(Word adress, void (*handler)(int, Byte));
-		void SetWriteHandler(Word adress, std::function<void(int, Byte)>  handler);
-		void SetWriteHandler(Word adress_start, int adress_end, std::function<void(int, Byte)>  handler);
+		void SetReadHandler(Word address, Byte(*handler)(int));
+		void SetReadHandler(Word address, std::function<Byte(int)> handler);
+		void SetReadHandler(Word address_start, int address_end, std::function<Byte(int)> handler);
+		void SetWriteHandler(Word address, void (*handler)(int, Byte));
+		void SetWriteHandler(Word address, std::function<void(int, Byte)>  handler);
+		void SetWriteHandler(Word address_start, int address_end, std::function<void(int, Byte)>  handler);
 
-		Byte ReadByte(Word adress);
-		void WriteByte(Word adress, Byte value);
+		Byte ReadByte(Word address);
+		void WriteByte(Word address, Byte value);
 
-		Byte ReadWord(Word adress);
-		void WriteWord(Word adress, Word value);
+		Byte ReadWord(Word address);
+		void WriteWord(Word address, Word value);
 
 	};
 }

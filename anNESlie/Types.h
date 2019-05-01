@@ -19,3 +19,7 @@ enum InterruptType
 {
 	NMI, IRQ, RESET
 };
+
+Word InterruptHandlerOffsets[] = {
+	0xFFFA, 0xFFFE, 0xFFFC
+};

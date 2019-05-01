@@ -1,41 +1,41 @@
 #include"Core.h"
 
-Word PPU::PPUCore::getV()
+Word PPUCore::getV()
 {
 	return v;
 }
 
-void PPU::PPUCore::setV(Word val)
+void PPUCore::setV(Word val)
 {
 	v = val & 0x7FFF;
 }
 
-Byte PPU::PPUCore::getCoarseX()
+Byte PPUCore::getCoarseX()
 {
 	return v & 0x1F;
 }
 
-Byte PPU::PPUCore::getCoarseY()
+Byte PPUCore::getCoarseY()
 {
 	return (v >> 5) & 0x1F;
 }
 
-Byte PPU::PPUCore::getFineY()
+Byte PPUCore::getFineY()
 {
 	return (v >> 12) & 0x7;
 }
 
-void PPU::PPUCore::ReloadScrollX()
+void PPUCore::ReloadScrollX()
 {
 	v = (v & 0xFBE0) | (T & 0x041F);
 }
 
-void PPU::PPUCore::ReloadScrollY()
+void PPUCore::ReloadScrollY()
 {
 	v = (v & 0x841F) | (T & 0x7BE0);
 }
 
-void PPU::PPUCore::IncrementScrollX()
+void PPUCore::IncrementScrollX()
 {
 	if ((v & 0x001F) == 31) // if coarse X == 31
 	{
@@ -46,7 +46,7 @@ void PPU::PPUCore::IncrementScrollX()
 		v += 1; // increment coarse X
 }
 
-void PPU::PPUCore::IncrementScrollY()
+void PPUCore::IncrementScrollY()
 {
 
 	if ((v & 0x7000) != 0x7000) // if fine Y < 7
@@ -70,7 +70,7 @@ void PPU::PPUCore::IncrementScrollY()
 	}
 }
 
-void PPU::PPUCore::setPPUCTRL(Byte val)
+void PPUCore::setPPUCTRL(Byte val)
 {
 	Flag.NMIEnabled = (val & 0x80) > 0;
 	Flag.IsMaster = (val & 0x40) > 0;
@@ -86,7 +86,7 @@ void PPU::PPUCore::setPPUCTRL(Byte val)
 	T = (T & 0xF3FF) | ((val & 0x3) << 10); // Bits 10-11 hold the base address of the nametable minus $2000
 }
 
-void PPU::PPUCore::setPPUMASK(Byte val)
+void PPUCore::setPPUMASK(Byte val)
 {
 	Flag.GrayscaleEnabled = (val & 0x1) > 0;
 	Flag.DrawLeftBackground = (val & 0x2) > 0;
@@ -98,7 +98,7 @@ void PPU::PPUCore::setPPUMASK(Byte val)
 	Flag.EmphasizeBlue = (val & 0x80) > 0;
 }
 
-Byte PPU::PPUCore::getPPUSTATUS()
+Byte PPUCore::getPPUSTATUS()
 {
 	Flag.AddressLatch = false;
 	Byte ret =
@@ -110,7 +110,7 @@ Byte PPU::PPUCore::getPPUSTATUS()
 	return ret;
 }
 
-void PPU::PPUCore::setPPUADDR(Word val)
+void PPUCore::setPPUADDR(Word val)
 {
 	if (Flag.AddressLatch)
 	{
@@ -123,7 +123,7 @@ void PPU::PPUCore::setPPUADDR(Word val)
 	Flag.AddressLatch ^= true;
 }
 
-void PPU::PPUCore::setPPUSCROLL(Word value)
+void PPUCore::setPPUSCROLL(Word value)
 {
 	if (Flag.AddressLatch)
 	{
@@ -140,7 +140,7 @@ void PPU::PPUCore::setPPUSCROLL(Word value)
 	Flag.AddressLatch ^= true;
 }
 
-Byte PPU::PPUCore::getPPUDATA()
+Byte PPUCore::getPPUDATA()
 {
 	Word busAdress = Flag.getBusAddress();
 	Byte ret = ReadByte(busAdress);
@@ -159,7 +159,7 @@ Byte PPU::PPUCore::getPPUDATA()
 	return ret;
 }
 
-void PPU::PPUCore::setPPUDATA(Byte value)
+void PPUCore::setPPUDATA(Byte value)
 {
 	Word busAdress = Flag.getBusAddress();
 	Flag.BusData = value;
@@ -167,22 +167,22 @@ void PPU::PPUCore::setPPUDATA(Byte value)
 	Flag.setBusAddress(busAdress + Flag.VRAMIncrement);
 }
 
-Byte PPU::PPUCore::getOAMADDR()
+Byte PPUCore::getOAMADDR()
 {
 	return Flag.getOAMAddress();
 }
 
-void PPU::PPUCore::setOAMADDR(Byte value)
+void PPUCore::setOAMADDR(Byte value)
 {
 	Flag.setOAMAddress(value);
 }
 
-Byte PPU::PPUCore::getOAMDATA()
+Byte PPUCore::getOAMDATA()
 {
 	return oam[Flag.getOAMAddress()];
 }
 
-void PPU::PPUCore::setOAMDATA(Byte value)
+void PPUCore::setOAMDATA(Byte value)
 {
 	Byte oamAdress = Flag.getOAMAddress();
 	oam[oamAdress] = value;

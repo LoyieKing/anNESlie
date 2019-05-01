@@ -1,26 +1,26 @@
 #include "Core.h"
 
-Byte PPU::PPUCore::ReadByte(Word adress)
+Byte PPUCore::ReadByte(Word address)
 {
-	return memoryHandler.ReadByte(adress);
+	return memoryHandler.ReadByte(address);
 }
 
-void PPU::PPUCore::WriteByte(Word adress, Byte value)
+void PPUCore::WriteByte(Word address, Byte value)
 {
-	memoryHandler.WriteByte(adress, value);
+	memoryHandler.WriteByte(address, value);
 }
 
-Byte PPU::PPUCore::ReadWord(Word adress)
+Byte PPUCore::ReadWord(Word address)
 {
-	return memoryHandler.ReadWord(adress);
+	return memoryHandler.ReadWord(address);
 }
 
-void PPU::PPUCore::WriteWord(Word adress, Byte value)
+void PPUCore::WriteWord(Word address, Byte value)
 {
-	memoryHandler.WriteWord(adress, value);
+	memoryHandler.WriteWord(address, value);
 }
 
-void PPU::PPUCore::WriteRegister(Byte reg, Byte val)
+void PPUCore::WriteRegister(Byte reg, Byte val)
 {
 	reg &= 0xF;
 	lastWrittenRegister = val & 0xFF;
@@ -52,7 +52,7 @@ void PPU::PPUCore::WriteRegister(Byte reg, Byte val)
 	throw "NotImplementedException!";
 }
 
-Byte PPU::PPUCore::ReadRegister(Byte reg)
+Byte PPUCore::ReadRegister(Byte reg)
 {
 	reg &= 0xF;
 	switch (reg)
@@ -73,7 +73,7 @@ Byte PPU::PPUCore::ReadRegister(Byte reg)
 	throw "NotImplementedException!";
 }
 
-Word PPU::PPUCore::GetVRAMMirror(Word addr)
+Word PPUCore::GetVRAMMirror(Word addr)
 {
 	// HACK: C# version is QWORD here,maybe a bug?
 	Word entry = (addr - 0x2000) % 0x400;
@@ -81,7 +81,7 @@ Word PPU::PPUCore::GetVRAMMirror(Word addr)
 	return VRAMMirrorLookUp[emulator.Cartridge.MirroringMode][table] * 0x400 + entry;
 }
 
-void PPU::PPUCore::PerformDMA(Word from)
+void PPUCore::PerformDMA(Word from)
 {
 	from <<= 8;
 	for(int i=0;i<0xFF;i++)

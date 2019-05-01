@@ -1,7 +1,6 @@
 #include "Core.h"
 
-// TODO:complete PPU::Core.cpp
-const DWord PPU::PPUCore::palette[64] = {
+const DWord PPUCore::palette[64] = {
 		0x7C7C7C, 0x0000FC, 0x0000BC, 0x4428BC, 0x940084, 0xA80020, 0xA81000, 0x881400,
 		0x503000, 0x007800, 0x006800, 0x005800, 0x004058, 0x000000, 0x000000, 0x000000,
 		0xBCBCBC, 0x0078F8, 0x0058F8, 0x6844FC, 0xD800CC, 0xE40058, 0xF83800, 0xE45C10,
@@ -12,39 +11,41 @@ const DWord PPU::PPUCore::palette[64] = {
 		0xF8D878, 0xD8F878, 0xB8F8B8, 0xB8F8D8, 0x00FCFC, 0xF8D8F8, 0x000000, 0x000000
 };
 
-PPU::PPUCore::PPUCore() :
-	memoryHandler((Byte*)& memory, 0x3FFF)
+PPUCore::PPUCore(Emulator*const _emulator) :
+	memoryHandler(memory, 0x3FFF)
 {
+	emulator = _emulator;
+
 	/*InitializeMemoryMap*/
-	memoryHandler.SetReadHandler(0x2000, 0x2FFF, [this](int adress) {
-		return vram[GetVRAMMirror(adress)];
+	memoryHandler.SetReadHandler(0x2000, 0x2FFF, [this](int address) {
+		return vram[GetVRAMMirror(address)];
 		});
-	memoryHandler.SetReadHandler(0x3000, 0x3EFF, [this](int adress) {
-		return vram[GetVRAMMirror(adress - 0x1000)];
+	memoryHandler.SetReadHandler(0x3000, 0x3EFF, [this](int address) {
+		return vram[GetVRAMMirror(address - 0x1000)];
 		});
-	memoryHandler.SetReadHandler(0x3F00, 0x3FFF, [this](int adress) {
-		if (adress == 0x3F10 || adress == 0x3F14 || adress == 0x3F18 || adress == 0x3F0C)
-			adress -= 0x10;
-		return paletteRAM[(adress - 0x3F00) & 0x1F];
-		});
-
-	memoryHandler.SetWriteHandler(0x2000, 0x2FFF, [this](int adress, Byte val) {
-		vram[GetVRAMMirror(adress)] = val;
-		});
-	memoryHandler.SetWriteHandler(0x3000, 0x3EFF, [this](int adress, Byte val) {
-		vram[GetVRAMMirror(adress - 0x1000)] = val;
-		});
-	memoryHandler.SetWriteHandler(0x3F00, 0x3FFF, [this](int adress, Byte val) {
-		if (adress == 0x3F10 || adress == 0x3F14 || adress == 0x3F18 || adress == 0x3F0C)
-			adress -= 0x10;
-		paletteRAM[(adress - 0x3F00) & 0x1F] = val;
+	memoryHandler.SetReadHandler(0x3F00, 0x3FFF, [this](int address) {
+		if (address == 0x3F10 || address == 0x3F14 || address == 0x3F18 || address == 0x3F0C)
+			address -= 0x10;
+		return paletteRAM[(address - 0x3F00) & 0x1F];
 		});
 
-	// TODO: mapper memory map initialize
+	memoryHandler.SetWriteHandler(0x2000, 0x2FFF, [this](int address, Byte val) {
+		vram[GetVRAMMirror(address)] = val;
+		});
+	memoryHandler.SetWriteHandler(0x3000, 0x3EFF, [this](int address, Byte val) {
+		vram[GetVRAMMirror(address - 0x1000)] = val;
+		});
+	memoryHandler.SetWriteHandler(0x3F00, 0x3FFF, [this](int address, Byte val) {
+		if (address == 0x3F10 || address == 0x3F14 || address == 0x3F18 || address == 0x3F0C)
+			address -= 0x10;
+		paletteRAM[(address - 0x3F00) & 0x1F] = val;
+		});
 
+
+	emulator->Mapper->InitializeMemoryMap(this);
 }
 
-void PPU::PPUCore::countSpritesOnLine(int scanline)
+void PPUCore::countSpritesOnLine(int scanline)
 {
 	spriteCount = 0;
 	int height = Flag.TallSpritesEnabled ? 16 : 8;
@@ -68,30 +69,30 @@ void PPU::PPUCore::countSpritesOnLine(int scanline)
 	}
 }
 
-void PPU::PPUCore::nextNametableByte()
+void PPUCore::nextNametableByte()
 {
 	currentNametableByte = ReadByte(0x2000 | (getV() & 0x0FFF));
 }
 
-void PPU::PPUCore::nextTileByte(bool hi)
+void PPUCore::nextTileByte(bool hi)
 {
 	Word titileIdx = ((Word)currentNametableByte) * 16;
-	Word adress = Flag.PatternTableAddress + titileIdx + getFineY();
+	Word address = Flag.PatternTableAddress + titileIdx + getFineY();
 
 	if (hi)
-		currentHighTile = ReadByte(adress + 8);
+		currentHighTile = ReadByte(address + 8);
 	else
-		currentLowTile = ReadByte(adress);
+		currentLowTile = ReadByte(address);
 }
 
-void PPU::PPUCore::nextAttributeByte()
+void PPUCore::nextAttributeByte()
 {
 	Word V = getV();
 	Word address = 0x23C0 | (V & 0x0C00) | ((V >> 4) & 0x38) | ((V >> 2) & 0x07);
 	currentColor = (ReadByte(address) >> (DWord)((getCoarseX() & 2) | ((getCoarseY() & 2) << 1))) & 0x3;
 }
 
-void PPU::PPUCore::shiftTileRegister()
+void PPUCore::shiftTileRegister()
 {
 	for (int x = 0; x < 8; x++)
 	{
@@ -102,7 +103,7 @@ void PPU::PPUCore::shiftTileRegister()
 	}
 }
 
-void PPU::PPUCore::processBackgroundForPixel(int cycle, int scanline)
+void PPUCore::processBackgroundForPixel(int cycle, int scanline)
 {
 	if (cycle < 8 && !Flag.DrawLeftBackground || !Flag.DrawBackground && scanline != -1)
 	{
@@ -125,7 +126,7 @@ void PPU::PPUCore::processBackgroundForPixel(int cycle, int scanline)
 	}
 }
 
-void PPU::PPUCore::processSpritesForPixel(int x, int scanline)
+void PPUCore::processSpritesForPixel(int x, int scanline)
 {
 
 	for (int idx = spriteCount * 4 - 4; idx >= 0; idx -= 4)
@@ -217,7 +218,7 @@ void PPU::PPUCore::processSpritesForPixel(int x, int scanline)
 	}
 }
 
-void PPU::PPUCore::ProcessFrame()
+void PPUCore::ProcessFrame()
 {
 	for (int i = 0; i < GAME_WIDTH * GAME_HEIGHT; i++)
 	{
@@ -229,13 +230,13 @@ void PPU::PPUCore::ProcessFrame()
 		ProcessScanline(i);
 }
 
-void PPU::PPUCore::ProcessScanline(int line)
+void PPUCore::ProcessScanline(int line)
 {
 	for (int i = 0; i < CYCLES_PER_LINE; i++)
 		ProcessCycle(line, i);
 }
 
-void PPU::PPUCore::ProcessCycle(int scanline, int cycle)
+void PPUCore::ProcessCycle(int scanline, int cycle)
 {
 	bool visibleCycle = 1 <= cycle && cycle <= 256;
 	bool prefetchCycle = 321 <= cycle && cycle <= 336;
@@ -288,12 +289,12 @@ void PPU::PPUCore::ProcessCycle(int scanline, int cycle)
 			ReloadScrollX();
 			// 257 - 320
 			// The tile data for the sprites on the next scanline are fetched here.
-			// TODO: stagger this over all the cycles as opposed to only on 257
+			// HACK: stagger this over all the cycles as opposed to only on 257
 			countSpritesOnLine(scanline + 1);
 		}
 	}
 
-	// TODO: this is a hack; VBlank should be cleared on dot 1 of the pre-render line,
+	// HACK: this is a hack; VBlank should be cleared on dot 1 of the pre-render line,
 	// but for some reason we're at 2272-2273 CPU clocks at that time
 	// (i.e., our PPU timing is off somewhere by 6-9 PPU cycles per frame)
 	if (Flag.VBlankStarted && cpuClocksSinceVBL == 2270)
@@ -302,14 +303,13 @@ void PPU::PPUCore::ProcessCycle(int scanline, int cycle)
 		cpuClocksSinceVBL = 0;
 	}
 
-	// TODO: complete emulator
 	if (cycle == 1)
 	{
 		if (scanline == 241)
 		{
 			Flag.VBlankStarted = true;
 			if (Flag.NMIEnabled)
-				emulator.CPU.TriggerInterrupt(InterruptType::NMI);
+				emulator->CPU.TriggerInterrupt(InterruptType::NMI);
 		}
 
 		// Happens at the same time as 1st cycle of NT byte fetch
@@ -323,18 +323,18 @@ void PPU::PPUCore::ProcessCycle(int scanline, int cycle)
 		}
 	}
 
-	emulator.Mapper.ProcessCycle(scanline, cycle);
+	emulator->Mapper->ProcessCycle(scanline, cycle);
 
 	if (cpuSyncCounter + 1 == 3)
 	{
 		if (Flag.VBlankStarted) cpuClocksSinceVBL++;
-		emulator.CPU.TickFromPPU();
+		emulator->CPU.TickFromPPU();
 		cpuSyncCounter = 0;
 	}
 	else cpuSyncCounter++;
 }
 
-void PPU::PPUCore::ProcessPixel(int x, int y)
+void PPUCore::ProcessPixel(int x, int y)
 {
 	processBackgroundForPixel(x, y);
 	if (Flag.DrawSprites)

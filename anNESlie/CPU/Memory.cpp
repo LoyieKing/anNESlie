@@ -78,24 +78,24 @@ void CPU::CPUCore::AdressWrite(Word val)
 	WriteByte(currentMemoryAddress, val);
 }
 
-Byte CPU::CPUCore::ReadByte(Word adress)
+Byte CPU::CPUCore::ReadByte(Word address)
 {
-	return memoryHandler.ReadByte(adress);
+	return memoryHandler.ReadByte(address);
 }
 
-void CPU::CPUCore::WriteByte(Word adress, Byte value)
+void CPU::CPUCore::WriteByte(Word address, Byte value)
 {
-	memoryHandler.WriteByte(adress, value);
+	memoryHandler.WriteByte(address, value);
 }
 
-Byte CPU::CPUCore::ReadWord(Word adress)
+Byte CPU::CPUCore::ReadWord(Word address)
 {
-	return memoryHandler.ReadWord(adress);
+	return memoryHandler.ReadWord(address);
 }
 
-void CPU::CPUCore::WriteWord(Word adress, Byte value)
+void CPU::CPUCore::WriteWord(Word address, Byte value)
 {
-	memoryHandler.WriteWord(adress, value);
+	memoryHandler.WriteWord(address, value);
 }
 
 Byte CPU::CPUCore::NextByte()

@@ -1,9 +1,9 @@
 #include "MemoryHandler.h"
 
 
-ROM::MemoryHandler::MemoryHandler(Byte* memory_adress, int memory_size)
+ROM::MemoryHandler::MemoryHandler(Byte* memory_address, int memory_size)
 {
-	memory = memory_adress;
+	memory = memory_address;
 	readHandlers = new std::function<Byte(int)>[memory_size];
 	writeHandlers = new std::function<void(int, Byte)>[memory_size];
 
@@ -26,71 +26,71 @@ ROM::MemoryHandler::~MemoryHandler()
 }
 
 
-Byte* ROM::MemoryHandler::GetMemoryAdress()
+Byte* ROM::MemoryHandler::GetMemoryAddress()
 {
 	return memory;
 }
 
-void ROM::MemoryHandler::SetMemoryAdress(Byte* memory_adress)
+void ROM::MemoryHandler::SetMemoryAddress(Byte* memory_address)
 {
-	memory = memory_adress;
+	memory = memory_address;
 }
 
-void ROM::MemoryHandler::SetReadHandler(Word adress, Byte(*handler)(int))
+void ROM::MemoryHandler::SetReadHandler(Word address, Byte(*handler)(int))
 {
-	readHandlers[adress] = handler;
+	readHandlers[address] = handler;
 }
 
-void ROM::MemoryHandler::SetReadHandler(Word adress, std::function<Byte(int)> handler)
+void ROM::MemoryHandler::SetReadHandler(Word address, std::function<Byte(int)> handler)
 {
-	readHandlers[adress] = handler;
+	readHandlers[address] = handler;
 }
 
-void ROM::MemoryHandler::SetReadHandler(Word adress_start, int adress_end, std::function<Byte(int)> handler)
+void ROM::MemoryHandler::SetReadHandler(Word address_start, int address_end, std::function<Byte(int)> handler)
 {
-	for (int i = adress_start; i < adress_end; i++)
+	for (int i = address_start; i < address_end; i++)
 		SetReadHandler(i, handler);
 }
 
-void ROM::MemoryHandler::SetWriteHandler(Word adress, void(*handler)(int, Byte))
+void ROM::MemoryHandler::SetWriteHandler(Word address, void(*handler)(int, Byte))
 {
-	writeHandlers[adress] = handler;
+	writeHandlers[address] = handler;
 }
 
-void ROM::MemoryHandler::SetWriteHandler(Word adress, std::function<void(int, Byte)>  handler)
+void ROM::MemoryHandler::SetWriteHandler(Word address, std::function<void(int, Byte)>  handler)
 {
-	writeHandlers[adress] = handler;
+	writeHandlers[address] = handler;
 }
 
-void ROM::MemoryHandler::SetWriteHandler(Word adress_start, int adress_end, std::function<void(int, Byte)>  handler)
+void ROM::MemoryHandler::SetWriteHandler(Word address_start, int address_end, std::function<void(int, Byte)>  handler)
 {
-	for (int i = adress_start; i < adress_end; i++)
+	for (int i = address_start; i < address_end; i++)
 		SetWriteHandler(i, handler);
 }
 
-Byte ROM::MemoryHandler::ReadByte(Word adress)
+Byte ROM::MemoryHandler::ReadByte(Word address)
 {
-	if (readHandlers[adress] == nullptr)
+	if (readHandlers[address] == nullptr)
 		return 0;
-	return readHandlers[adress](adress);
+	return readHandlers[address](address);
 }
 
-void ROM::MemoryHandler::WriteByte(Word adress, Byte value)
+void ROM::MemoryHandler::WriteByte(Word address, Byte value)
 {
-	if (writeHandlers[adress] == nullptr)
+	if (writeHandlers[address] == nullptr)
 		return;
-	writeHandlers[adress](adress, value);
+	writeHandlers[address](address, value);
 }
 
 
-Byte ROM::MemoryHandler::ReadWord(Word adress)
+Byte ROM::MemoryHandler::ReadWord(Word address)
 {
-	return ((short)ReadByte(adress)) | (((short)ReadByte(adress + 1)) << 8);
+	return ((short)ReadByte(address)) | (((short)ReadByte(address + 1)) << 8);
 }
 
-void ROM::MemoryHandler::WriteWord(Word adress, Word value)
+void ROM::MemoryHandler::WriteWord(Word address, Word value)
 {
-	WriteByte(adress, value);
-	WriteByte(adress + 1, value >> 8);
+	WriteByte(address, value);
+	WriteByte(address + 1, value >> 8);
 }
 

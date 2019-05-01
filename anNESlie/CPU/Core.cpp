@@ -1,12 +1,14 @@
 #include "Core.h"
 
-CPU::CPUCore::CPUCore() :
+CPU::CPUCore::CPUCore(Emulator*const _emulator) :
 	memoryAddressHasValue(false),
-	// init registers
-	registerA(0), registerP(0), registerPC(0), registerSP(0), registerX(0), registerY(0),
 	// Init memory handlers
-	memory(new Byte[CPU_MEMORY_SIZE]), memoryHandler(memory, CPU_MEMORY_SIZE)
+	memoryHandler(memory, CPU_MEMORY_SIZE)
 {
+	emulator = _emulator;
+
+
+
 
 #pragma region OpcodesBinding
 	opcodes[0x00].Opcode = 0x00;
@@ -1365,14 +1367,90 @@ CPU::CPUCore::CPUCore() :
 
 
 
+	/*InitializeMemoryMap*/
 
-	// TODO:complete memory handlers.
-	Byte* memory_pointer = memoryHandler.GetMemoryAdress();
-	memoryHandler.SetReadHandler(0x0000, 0x1FFF, [memory_pointer](int adress) {return memory_pointer[adress & 0x07FF]; });
-	//memoryHandler.SetReadHandler(0x2000,0x3FFF, [memory_pointer](int adress) {return memory_pointer[adress & 0x07FF]; })
+	Byte* memory_pointer = memoryHandler.GetMemoryAddress();
+	memoryHandler.SetReadHandler(0x0000, 0x1FFF,
+		[memory_pointer](int address) {
+			return memory_pointer[address & 0x07FF];
+		});
+	memoryHandler.SetReadHandler(0x2000, 0x3FFF,
+		[this](int address) {
+			return emulator->PPU.ReadRegister((address & 0x7) - 0x2000);
+		});
+	memoryHandler.SetReadHandler(0x4000, 0x4017,
+		[this](int address) {
+			return ReadIORegister(address);
+		});
 
+	memoryHandler.SetWriteHandler(0x0000, 0x1FFF,
+		[memory_pointer](int address, Byte value) {
+			memory_pointer[address & 0x07FF] = value;
+		});
+	memoryHandler.SetWriteHandler(0x0000, 0x1FFF,
+		[this](int address, Byte value) {
+			emulator->PPU.WriteRegister((address & 0x7) - 0x2000, value);
+		});
+	memoryHandler.SetWriteHandler(0x0000, 0x1FFF,
+		[this](int address, Byte value) {
+			WriteIORegister(address, value);
+		});
 
-	memoryHandler.SetWriteHandler(0x0000, 0x1FFF, [memory_pointer](int adress, Byte value) {memory_pointer[adress & 0x07FF] = value; });
-	//memoryHandler.SetWriteHandler(0x2000, 0x3FFF, [this](int adress, Byte value) {memoryHandler.GetMemoryAdress()[adress & 0x07FF] = value; });//TODO: _emulator.PPU.ReadRegister((addr & 0x7) - 0x2000));
-	//memoryHandler.SetWriteHandler(0x4000, 0x4017, [this](int adress, Byte value) {memoryHandler.GetMemoryAdress()[adress & 0x07FF] = value; });//TODO: ReadIORegister
+	emulator->Mapper->InitializeMemoryMap(this);
+
+	/*init registers*/
+	registerA = 0;
+	registerX = 0;
+	registerY = 0;
+	registerSP = 0xFD;
+	registerP = 0x24;
+	registerPC = ReadWord(InterruptHandlerOffsets[InterruptType::RESET]);
+}
+
+void CPU::CPUCore::Reset()
+{
+	registerSP -= 3;
+	setFlag_I(true);
+}
+
+void CPU::CPUCore::TickFromPPU()
+{
+	if (cycle-- > 0)
+		return;
+	ExecuteSingleInstruction();
+}
+
+void CPU::CPUCore::ExecuteSingleInstruction()
+{
+	for (int i = 0; i < 2; i++)
+	{
+		if (interrupts[i])
+		{
+			PushWord(registerPC);
+			Push(registerP);
+			registerPC = ReadWord(InterruptHandlerOffsets[i]);
+			setFlag_I(true);
+			interrupts[i] = false;
+			return;
+		}
+	}
+	currentInstruction = NextByte();
+
+	cycle += opcodes[currentInstruction].Cycles;
+
+	ResetInstructionAddressingMode();
+	// if (_numExecuted > 10000 && PC - 1 == 0xFF61)
+	//  if(_emulator.Controller.debug || 0x6E00 <= PC && PC <= 0x6EEF)
+	//      Console.WriteLine($"{(PC - 1).ToString("X4")}  {_currentInstruction.ToString("X2")}	{opcodeNames[_currentInstruction]}\t\t\tA:{A.ToString("X2")} X:{X.ToString("X2")} Y:{Y.ToString("X2")} P:{P.ToString("X2")} SP:{SP.ToString("X2")}");
+
+	std::function<void(void)> op = opcodes[currentInstruction].action;
+	if (op == nullptr)
+		throw "NULL opcode executing!";
+	op();
+}
+
+void CPU::CPUCore::TriggerInterrupt(InterruptType type)
+{
+	if (!getFlag_I() || type == NMI)
+		interrupts[type] = true;
 }

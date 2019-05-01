@@ -45,6 +45,15 @@
     <ClInclude Include="PPU\Core.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Emulator\Emulator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Mappers\BaseMapper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Controllers\Controller.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -78,6 +87,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PPU\Registers.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Emulator\Emulator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPU\IORegisters.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Mappers\BaseMapper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

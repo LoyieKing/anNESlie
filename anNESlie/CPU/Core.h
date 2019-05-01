@@ -37,6 +37,7 @@
 		bit7(最高位)表示符号位，如果它是1的话（表示当前数是负数），N置为1。
 */
 #pragma once
+#include "../Emulator/Emulator.h"
 #include "../ROM/MemoryHandler.h"
 #include "../Types.h"
 #include "Instructions.h"
@@ -47,6 +48,7 @@ namespace CPU
 
 	class CPUCore
 	{
+		Emulator* emulator;
 #pragma region Registers
 
 	private:
@@ -123,8 +125,7 @@ namespace CPU
 #pragma region Memory
 
 	private:
-		Byte* memory;
-		ROM::MemoryHandler memoryHandler;
+		Byte memory[CPU_MEMORY_SIZE];
 
 		bool memoryAddressHasValue;
 		Word currentMemoryAddress;
@@ -137,10 +138,10 @@ namespace CPU
 		Word AdressRead();
 		void AdressWrite(Word val);
 
-		Byte ReadByte(Word adress);
-		void WriteByte(Word adress, Byte value);
-		Byte ReadWord(Word adress);
-		void WriteWord(Word adress, Byte value);
+		Byte ReadByte(Word address);
+		void WriteByte(Word address, Byte value);
+		Byte ReadWord(Word address);
+		void WriteWord(Word address, Byte value);
 
 		Byte NextByte();
 		Word NextWord();
@@ -151,6 +152,9 @@ namespace CPU
 
 		void PushWord(Word value);
 		Word PopWord();
+
+	public:
+		ROM::MemoryHandler memoryHandler;
 
 #pragma endregion
 
@@ -225,14 +229,31 @@ namespace CPU
 		void ADCImpl(SByte value);
 		void CMPImpl(Byte reg);
 
-#pragma endregion
-
 		int cycle;
 		Word currentInstruction;
 
 		OpcodeDefinition opcodes[256];
+#pragma endregion
+
+#pragma region IORegisters
+		void WriteIORegister(Word reg, Byte val);
+		Byte ReadIORegister(Word reg);
+#pragma endregion
+
+
+#pragma region Core
+
+	private:
+		bool interrupts[2];
 	public:
-		CPUCore();
+		CPUCore(Emulator* const _emulator);
+
+		void Reset();
+		void TickFromPPU();
+		void ExecuteSingleInstruction();
+		void TriggerInterrupt(InterruptType type);
+
+#pragma endregion
 
 	};
 
