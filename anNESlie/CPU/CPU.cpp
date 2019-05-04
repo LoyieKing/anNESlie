@@ -1,5 +1,7 @@
 #include "CPU.h"
 
+#include "../PPU/PPU.h"
+#include "../Mappers/BaseMapper.h"
 
 Word InterruptHandlerOffsets[] = {
 	0xFFFA, 0xFFFE, 0xFFFC
@@ -1377,10 +1379,10 @@ CPU::CPU(Emulator* const _emulator) :
 		[memory_pointer](int address) {
 			return memory_pointer[address & 0x07FF];
 		});
-	//memoryHandler.SetReadHandler(0x2000, 0x3FFF,
-	//	[this](int address) {
-	//		return emulator->PPU->ReadRegister((address & 0x7) - 0x2000);
-	//	});
+	memoryHandler.SetReadHandler(0x2000, 0x3FFF,
+		[this](int address) {
+			return emulator->ppu->ReadRegister((address & 0x7) - 0x2000);
+		});
 	memoryHandler.SetReadHandler(0x4000, 0x4017,
 		[this](int address) {
 			return ReadIORegister(address);
@@ -1390,16 +1392,16 @@ CPU::CPU(Emulator* const _emulator) :
 		[memory_pointer](int address, Byte value) {
 			memory_pointer[address & 0x07FF] = value;
 		});
-	//memoryHandler.SetWriteHandler(0x0000, 0x1FFF,
-	//	[this](int address, Byte value) {
-	//		emulator->PPU->WriteRegister((address & 0x7) - 0x2000, value);
-	//	});
+	memoryHandler.SetWriteHandler(0x0000, 0x1FFF,
+		[this](int address, Byte value) {
+			emulator->ppu->WriteRegister((address & 0x7) - 0x2000, value);
+		});
 	memoryHandler.SetWriteHandler(0x0000, 0x1FFF,
 		[this](int address, Byte value) {
 			WriteIORegister(address, value);
 		});
 
-	//emulator->Mapper->InitializeMemoryMap(this);
+	emulator->Mapper->InitializeMemoryMap(this);
 
 	/*init registers*/
 	registerA = 0;
@@ -1413,6 +1415,9 @@ CPU::CPU(Emulator* const _emulator) :
 
 void CPU::ExecuteSingleInstruction()
 {
+	static int ops[1000];
+	static int opi = 0;
+
 	for (int i = 0; i < 2; i++)
 	{
 		if (interrupts[i])
@@ -1430,12 +1435,18 @@ void CPU::ExecuteSingleInstruction()
 	cycle += opcodes[currentInstruction].Cycles;
 
 	ResetInstructionAddressingMode();
-	// if (_numExecuted > 10000 && PC - 1 == 0xFF61)
-	//  if(_emulator.Controller.debug || 0x6E00 <= PC && PC <= 0x6EEF)
-	//      Console.WriteLine($"{(PC - 1).ToString("X4")}  {_currentInstruction.ToString("X2")}	{opcodeNames[_currentInstruction]}\t\t\tA:{A.ToString("X2")} X:{X.ToString("X2")} Y:{Y.ToString("X2")} P:{P.ToString("X2")} SP:{SP.ToString("X2")}");
 
 	std::function<void(void)> op = opcodes[currentInstruction].action;
 	if (op == nullptr)
 		throw "NULL opcode executing!";
 	op();
+	if (opi < 1000)
+	{
+		ops[opi] = currentInstruction;
+		opi++;
+	}
+	else
+	{
+		
+	}
 }

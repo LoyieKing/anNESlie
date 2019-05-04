@@ -44,7 +44,7 @@ namespace ROM
 		Byte ReadByte(Word address);
 		void WriteByte(Word address, Byte value);
 
-		Byte ReadWord(Word address);
+		Word ReadWord(Word address);
 		void WriteWord(Word address, Word value);
 
 	};

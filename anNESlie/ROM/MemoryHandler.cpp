@@ -83,9 +83,9 @@ void ROM::MemoryHandler::WriteByte(Word address, Byte value)
 }
 
 
-Byte ROM::MemoryHandler::ReadWord(Word address)
+Word ROM::MemoryHandler::ReadWord(Word address)
 {
-	return ((short)ReadByte(address)) | (((short)ReadByte(address + 1)) << 8);
+	return ((Word)ReadByte(address)) | (((Word)ReadByte(address + 1)) << 8);
 }
 
 void ROM::MemoryHandler::WriteWord(Word address, Word value)

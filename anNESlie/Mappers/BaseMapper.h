@@ -10,11 +10,7 @@
 
 class CPU;
 class PPU;
-
-namespace ROM
-{
-	class Cartridge;
-}
+class Emulator;
 
 namespace Mapper
 {
@@ -34,16 +30,16 @@ namespace Mapper
 		Word lastBankOffset;
 
 
-		BaseMapper(ROM::Cartridge* _emulator);
+		BaseMapper(Emulator* _emulator);
 
 	public:
 		int Id;
 		const char* Name;
 		const char* Description;
 
-		virtual void InitializeMemoryMap(CPU* cpu) = 0;
+		virtual void InitializeMemoryMap(CPU* cpu);
 		virtual void InitializeMemoryMap(PPU* ppu);
-		virtual void ProcessCycle(int scanline, int cycle) = 0;
+		virtual void ProcessCycle(int scanline, int cycle);
 		virtual void Save(std::ostream stream);
 		virtual void Load(std::istream stream);
 	};

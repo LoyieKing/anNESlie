@@ -5,13 +5,13 @@ typedef unsigned char Byte;
 typedef signed char SByte;
 
 /*16bits    2bytes    0xFFFF*/
-typedef short Word;
+typedef unsigned short Word;
 
 /*32bits    4bytes    0xFFFFFFFF*/
-typedef long DWord;
+typedef unsigned long DWord;
 
 /*64bits    8bytes    0xFFFFFFFFFFFFFFFF*/
-typedef long long QWord;
+typedef unsigned long long QWord;
 
 
 /*CPU Interrupt Type*/

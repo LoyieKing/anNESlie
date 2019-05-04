@@ -2,31 +2,19 @@
 #include "../CPU/CPU.h"
 #include"../PPU/PPU.h"
 #include"../ROM/Cartridge.h"
+#include "../Mappers/Mapper.h"
 #include"../Mappers/BaseMapper.h"
 #include"../Controllers/Controller.h"
 
 Emulator::Emulator(const char* rom_path)
 {
+	this->Cartridge = new ROM::Cartridge(rom_path);
+	this->Mapper = Mapper::LoadMapper(this, this->Cartridge->getMapperNumber());
 	this->cpu = new ::CPU(this);
 	this->ppu = new ::PPU(this);
-	this->Cartbridge = new ROM::Cartridge(rom_path);
 
-	this->cpu->memoryHandler.SetReadHandler(0x2000, 0x3FFF,
-		[this](int address) {
-			return ppu->ReadRegister((address & 0x7) - 0x2000);
-		});
-	this->cpu->memoryHandler.SetWriteHandler(0x0000, 0x1FFF,
-		[this](int address, Byte value) {
-			ppu->WriteRegister((address & 0x7) - 0x2000, value);
-		});
+	RawBitmap = this->ppu->rawBitmap;
 
-
-	this->Mapper->InitializeMemoryMap(this->cpu);
-	this->Mapper->InitializeMemoryMap(this->ppu);
-
-
-	// TODO: mapper and controller init
-	this->Mapper = 0;
 	this->Controller = 0;
 
 	romPath = rom_path;
@@ -42,7 +30,7 @@ Word Emulator::GetVRAMMirror(Word addr)
 	// HACK: C# version is QWORD here,maybe a bug?
 	Word entry = (addr - 0x2000) % 0x400;
 	Word table = (addr - 0x2000) / 0x400;
-	return this->ppu->VRAMMirrorLookUp[this->Cartbridge->getMirroringMode()][table] * 0x400 + entry;
+	return this->ppu->VRAMMirrorLookUp[this->Cartridge->getMirroringMode()][table] * 0x400 + entry;
 }
 
 void Emulator::PerformDMA(Word from)
@@ -75,5 +63,10 @@ void Emulator::TriggerInterrupt(InterruptType type)
 {
 	if (!this->cpu->getFlag_I() || type == NMI)
 		this->cpu->interrupts[type] = true;
+}
+
+void Emulator::ProcessFrame()
+{
+	this->ppu->ProcessFrame();
 }
 

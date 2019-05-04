@@ -88,7 +88,7 @@ void CPU::WriteByte(Word address, Byte value)
 	memoryHandler.WriteByte(address, value);
 }
 
-Byte CPU::ReadWord(Word address)
+Word CPU::ReadWord(Word address)
 {
 	return memoryHandler.ReadWord(address);
 }
@@ -100,7 +100,7 @@ void CPU::WriteWord(Word address, Byte value)
 
 Byte CPU::NextByte()
 {
-	Byte pc = getPC();
+	Word pc = getPC();
 	Byte result = memoryHandler.ReadByte(pc++);
 	setPC(pc);
 	return result;

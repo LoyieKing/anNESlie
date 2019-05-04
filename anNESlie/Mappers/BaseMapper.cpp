@@ -4,12 +4,16 @@
 #include "../CPU/CPU.h"
 #include "../PPU/PPU.h"
 
-Mapper::BaseMapper::BaseMapper(ROM::Cartridge* _cartridge)
+Mapper::BaseMapper::BaseMapper(Emulator* _emulator)
 {
-	prgROM = _cartridge->getPRGROM();
-	prgRAMLength = _cartridge->getPRGROMSize();
-	chrROM = _cartridge->getCHRROM();
-	chrROMLength = _cartridge->getCHRROMSize();
+	prgROM = _emulator->Cartridge->getPRGROM();
+	prgRAMLength = _emulator->Cartridge->getPRGROMSize();
+	chrROM = _emulator->Cartridge->getCHRROM();
+	chrROMLength = _emulator->Cartridge->getCHRROMSize();
+}
+
+void Mapper::BaseMapper::InitializeMemoryMap(CPU* cpu)
+{
 }
 
 void Mapper::BaseMapper::InitializeMemoryMap(PPU* ppu)
@@ -22,6 +26,10 @@ void Mapper::BaseMapper::InitializeMemoryMap(PPU* ppu)
 		[this](int address, Byte value) {
 			chrROM[address] = value;
 		});
+}
+
+void Mapper::BaseMapper::ProcessCycle(int scanline, int cycle)
+{
 }
 
 void Mapper::BaseMapper::Save(std::ostream stream)

@@ -1,4 +1,6 @@
 #include "PPU.h"
+#include "../Emulator/Emulator.h"
+#include "../Mappers/BaseMapper.h"
 
 const DWord PPU::palette[64] = {
 		0x7C7C7C, 0x0000FC, 0x0000BC, 0x4428BC, 0x940084, 0xA80020, 0xA81000, 0x881400,
@@ -41,8 +43,7 @@ PPU::PPU(Emulator*const _emulator) :
 		paletteRAM[(address - 0x3F00) & 0x1F] = val;
 		});
 
-
-	//emulator->Mapper->InitializeMemoryMap(this);
+	emulator->Mapper->InitializeMemoryMap(this);
 }
 
 void PPU::countSpritesOnLine(int scanline)

@@ -54,6 +54,12 @@
     <ClInclude Include="PPU\PPU.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Mappers\NROM.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Mappers\Mapper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -98,6 +104,12 @@
     <ClCompile Include="PPU\PPURegisters.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Mappers\NROM.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Mappers\Mapper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="anNESlie.rc">
@@ -111,5 +123,8 @@
     <Image Include="anNESlie.ico">
       <Filter>资源文件</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="mario.nes" />
   </ItemGroup>
 </Project>

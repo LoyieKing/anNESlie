@@ -18,14 +18,12 @@ class Emulator
 private:
 	const char* romPath;
 
-public:
 	CPU* cpu;
 	PPU* ppu;
-	ROM::Cartridge* Cartbridge;
+	ROM::Cartridge* Cartridge;
 	Mapper::BaseMapper* Mapper;
 	Controller::Controller* Controller;
 
-	Emulator(const char* rom_path);
 
 	void MapperProcessCycle(int scanline, int cycle);
 
@@ -35,5 +33,14 @@ public:
 	void Reset();
 	void TickFromPPU();
 	void TriggerInterrupt(InterruptType type);
+
+public:
+	friend class CPU;
+	friend class PPU;
+	friend class Mapper::BaseMapper;
+
+	Emulator(const char* rom_path);
+	DWord const* RawBitmap;
+	void ProcessFrame();
 
 };

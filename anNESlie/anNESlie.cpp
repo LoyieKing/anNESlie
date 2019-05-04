@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "anNESlie.h"
 #define MAX_LOADSTRING 100
+#include "Emulator/Emulator.h"
 
 // 全局变量:
 HINSTANCE hInst;                                // 当前实例
@@ -25,6 +26,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: 在此处放置代码。
+	Emulator emulator("mario.nes");
+	for (int i = 0; i < 1000; i++)
+	{
+		emulator.ProcessFrame();
+	}
+
 	
     // 初始化全局字符串
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);

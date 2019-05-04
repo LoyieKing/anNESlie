@@ -228,9 +228,11 @@ void CPU::CPY()
 {
 	CMPImpl(getY());
 }
+
+// HACK: Word D = AdressRead(); END LINE 262
 void CPU::LSR()
 {
-	Word D = AddressRead();
+	Byte D = AddressRead();
 	setFlag_C((D & 0x1) > 0);
 	D >>= 1;
 	setFlag_N_Z(D);
@@ -238,7 +240,7 @@ void CPU::LSR()
 }
 void CPU::ASL()
 {
-	Word D = AddressRead();
+	Byte D = AddressRead();
 	setFlag_C((D & 0x80) > 0);
 	D <<= 1;
 	setFlag_N_Z(D);
@@ -246,7 +248,7 @@ void CPU::ASL()
 }
 void CPU::ROR()
 {
-	Word D = AddressRead();
+	Byte D = AddressRead();
 	bool c = getFlag_C();
 	setFlag_C((D & 0x1) > 0);
 	D >>= 1;
@@ -257,7 +259,7 @@ void CPU::ROR()
 }
 void CPU::ROL()
 {
-	Word D = AddressRead();
+	Byte D = AddressRead();
 	bool c = getFlag_C();
 	setFlag_C((D & 0x80) > 0);
 	D <<= 1;
@@ -316,7 +318,7 @@ void CPU::ATX()
 
 void CPU::Branch(bool cond)
 {
-	Byte nPC = getPC() + NextSByte() + 1;
+	Word nPC = getPC() + NextSByte() + 1;
 	if (cond)
 	{
 		setPC(nPC);
