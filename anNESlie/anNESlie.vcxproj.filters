@@ -30,19 +30,10 @@
     <ClInclude Include="ROM\Cartridge.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CPU\Instructions.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ROM\MemoryHandler.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Types.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CPU\Core.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PPU\Core.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Emulator\Emulator.h">
@@ -52,6 +43,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Controllers\Controller.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPU\Instructions.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CPU\CPU.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PPU\PPU.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,34 +68,34 @@
     <ClCompile Include="ROM\MemoryHandler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CPU\Memory.cpp">
+    <ClCompile Include="Emulator\Emulator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Mappers\BaseMapper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CPU\Instruction.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CPU\Registers.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="CPU\Core.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PPU\Core.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PPU\Memory.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PPU\Registers.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Emulator\Emulator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="CPU\IORegisters.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Mappers\BaseMapper.cpp">
+    <ClCompile Include="CPU\CPU.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPU\CPUMemory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CPU\CPURegisters.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PPU\PPU.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PPU\PPUMemory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PPU\PPURegisters.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

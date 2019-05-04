@@ -151,11 +151,11 @@
   <ItemGroup>
     <ClInclude Include="anNESlie.h" />
     <ClInclude Include="Controllers\Controller.h" />
-    <ClInclude Include="CPU\Core.h" />
+    <ClInclude Include="CPU\CPU.h" />
     <ClInclude Include="CPU\Instructions.h" />
     <ClInclude Include="Emulator\Emulator.h" />
     <ClInclude Include="Mappers\BaseMapper.h" />
-    <ClInclude Include="PPU\Core.h" />
+    <ClInclude Include="PPU\PPU.h" />
     <ClInclude Include="ROM\MemoryHandler.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ROM\Cartridge.h" />
@@ -165,16 +165,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="anNESlie.cpp" />
-    <ClCompile Include="CPU\Core.cpp" />
-    <ClCompile Include="CPU\IORegisters.cpp" />
-    <ClCompile Include="CPU\Registers.cpp" />
+    <ClCompile Include="CPU\CPU.cpp" />
     <ClCompile Include="CPU\Instruction.cpp" />
-    <ClCompile Include="CPU\Memory.cpp" />
+    <ClCompile Include="CPU\IORegisters.cpp" />
+    <ClCompile Include="CPU\CPUMemory.cpp" />
+    <ClCompile Include="CPU\CPURegisters.cpp" />
     <ClCompile Include="Emulator\Emulator.cpp" />
     <ClCompile Include="Mappers\BaseMapper.cpp" />
-    <ClCompile Include="PPU\Core.cpp" />
-    <ClCompile Include="PPU\Memory.cpp" />
-    <ClCompile Include="PPU\Registers.cpp" />
+    <ClCompile Include="PPU\PPU.cpp" />
+    <ClCompile Include="PPU\PPUMemory.cpp" />
+    <ClCompile Include="PPU\PPURegisters.cpp" />
     <ClCompile Include="ROM\Cartridge.cpp" />
     <ClCompile Include="ROM\MemoryHandler.cpp" />
     <ClCompile Include="stdafx.cpp">

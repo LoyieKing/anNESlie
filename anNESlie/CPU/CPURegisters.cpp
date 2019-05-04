@@ -1,7 +1,7 @@
-#include "Core.h"
+#pragma once
+#include "CPU.h"
 
-
-void CPU::CPUCore::setFlag_N_Z(Byte val)
+void CPU::setFlag_N_Z(Byte val)
 {
 	if (val == 0)
 		registerP |= ZeroBit;
@@ -9,12 +9,12 @@ void CPU::CPUCore::setFlag_N_Z(Byte val)
 		registerP |= NegativeBit;
 }
 
-bool CPU::CPUCore::getFlag_N()
+bool CPU::getFlag_N()
 {
 	return registerP & NegativeBit;
 }
 
-void CPU::CPUCore::setFlag_N(bool val)
+void CPU::setFlag_N(bool val)
 {
 	if (val)
 		registerP |= NegativeBit;
@@ -22,12 +22,12 @@ void CPU::CPUCore::setFlag_N(bool val)
 		registerP &= NegativeBit;
 }
 
-bool CPU::CPUCore::getFlag_V()
+bool CPU::getFlag_V()
 {
 	return registerP & OverflowBit;
 }
 
-void CPU::CPUCore::setFlag_V(bool val)
+void CPU::setFlag_V(bool val)
 {
 	if (val)
 		registerP |= OverflowBit;
@@ -35,12 +35,12 @@ void CPU::CPUCore::setFlag_V(bool val)
 		registerP &= ~OverflowBit;
 }
 
-bool CPU::CPUCore::getFlag_Unused()
+bool CPU::getFlag_Unused()
 {
 	return registerP & UnusedBit;
 }
 
-void CPU::CPUCore::setFlag_Unused(bool val)
+void CPU::setFlag_Unused(bool val)
 {
 	if (val)
 		registerP |= UnusedBit;
@@ -48,12 +48,12 @@ void CPU::CPUCore::setFlag_Unused(bool val)
 		registerP &= ~UnusedBit;
 }
 
-bool CPU::CPUCore::getFlag_B()
+bool CPU::getFlag_B()
 {
 	return registerP & BreakSourceBit;
 }
 
-void CPU::CPUCore::setFlag_B(bool val)
+void CPU::setFlag_B(bool val)
 {
 	if (val)
 		registerP |= BreakSourceBit;
@@ -61,12 +61,12 @@ void CPU::CPUCore::setFlag_B(bool val)
 		registerP &= ~BreakSourceBit;
 }
 
-bool CPU::CPUCore::getFlag_D()
+bool CPU::getFlag_D()
 {
 	return registerP & DecimalModeBit;
 }
 
-void CPU::CPUCore::setFlag_D(bool val)
+void CPU::setFlag_D(bool val)
 {
 	if (val)
 		registerP |= DecimalModeBit;
@@ -74,12 +74,12 @@ void CPU::CPUCore::setFlag_D(bool val)
 		registerP &= ~DecimalModeBit;
 }
 
-bool CPU::CPUCore::getFlag_I()
+bool CPU::getFlag_I()
 {
 	return registerP & InterruptDisabledBit;
 }
 
-void CPU::CPUCore::setFlag_I(bool val)
+void CPU::setFlag_I(bool val)
 {
 	if (val)
 		registerP |= InterruptDisabledBit;
@@ -87,12 +87,12 @@ void CPU::CPUCore::setFlag_I(bool val)
 		registerP &= ~InterruptDisabledBit;
 }
 
-bool CPU::CPUCore::getFlag_Z()
+bool CPU::getFlag_Z()
 {
 	return registerP & ZeroBit;
 }
 
-void CPU::CPUCore::setFlag_Z(bool val)
+void CPU::setFlag_Z(bool val)
 {
 	if (val)
 		registerP |= ZeroBit;
@@ -100,12 +100,12 @@ void CPU::CPUCore::setFlag_Z(bool val)
 		registerP &= ~ZeroBit;
 }
 
-bool CPU::CPUCore::getFlag_C()
+bool CPU::getFlag_C()
 {
 	return registerP & CarryBit;
 }
 
-void CPU::CPUCore::setFlag_C(bool val)
+void CPU::setFlag_C(bool val)
 {
 	if (val)
 		registerP |= CarryBit;
@@ -114,62 +114,62 @@ void CPU::CPUCore::setFlag_C(bool val)
 }
 
 
-Byte CPU::CPUCore::getA()
+Byte CPU::getA()
 {
 	return registerA;
 }
 
-void CPU::CPUCore::setA(Byte val)
+void CPU::setA(Byte val)
 {
 	registerA = val;
 }
 
-Byte CPU::CPUCore::getX()
+Byte CPU::getX()
 {
 	return registerX;
 }
 
-void CPU::CPUCore::setX(Byte val)
+void CPU::setX(Byte val)
 {
 	registerX = val;
 }
 
-Byte CPU::CPUCore::getY()
+Byte CPU::getY()
 {
 	return registerY;
 }
 
-void CPU::CPUCore::setY(Byte val)
+void CPU::setY(Byte val)
 {
 	registerY = val;
 }
 
-Byte CPU::CPUCore::getSP()
+Byte CPU::getSP()
 {
 	return registerSP;
 }
 
-void CPU::CPUCore::setSP(Byte val)
+void CPU::setSP(Byte val)
 {
 	registerSP = val;
 }
 
-Word CPU::CPUCore::getPC()
+Word CPU::getPC()
 {
 	return registerPC;
 }
 
-void CPU::CPUCore::setPC(Word val)
+void CPU::setPC(Word val)
 {
 	registerPC = val;
 }
 
-Byte CPU::CPUCore::getP()
+Byte CPU::getP()
 {
 	return registerP;
 }
 
-void CPU::CPUCore::setP(Byte val)
+void CPU::setP(Byte val)
 {
 	registerP = val;
 }

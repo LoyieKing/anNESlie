@@ -1,11 +1,17 @@
-#include "Core.h"
+#pragma once
+#include "CPU.h"
+#include "../Emulator/Emulator.h"
 
-void CPU::CPUCore::WriteIORegister(Word reg, Byte val)
+#pragma region IORegisters
+
+#include "../Controllers/Controller.h"
+
+void CPU::WriteIORegister(Word reg, Byte val)
 {
 	switch (reg)
 	{
 	case 0x4014: // OAM DMA
-		emulator->PPU.PerformDMA(val);
+		emulator->PerformDMA(val);
 		break;
 	case 0x4016:
 		emulator->Controller->Strobe(val == 1);
@@ -15,7 +21,7 @@ void CPU::CPUCore::WriteIORegister(Word reg, Byte val)
 	throw "NotImplementedException";
 }
 
-Byte CPU::CPUCore::ReadIORegister(Word reg)
+Byte CPU::ReadIORegister(Word reg)
 {
 	switch (reg)
 	{
@@ -25,3 +31,5 @@ Byte CPU::CPUCore::ReadIORegister(Word reg)
 	return 0x00;
 	//throw new NotImplementedException();
 }
+
+#pragma endregion

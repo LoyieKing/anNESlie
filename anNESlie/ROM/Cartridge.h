@@ -74,15 +74,15 @@ namespace ROM
 		~Cartridge();
 
 
-		inline Byte* getRaw();	//获取完整ROM文件指针
-		inline int getPRGROMSize();	//Program Memory，游戏程序数据
-		inline int getCHRROMSize();	//Character Memory，用于显示（贴图等）数据的存储。
-		inline int getPRGROMOffset();
-		inline int getMapperNumber();	//Mapper数量
-		inline Byte* getPRGROM();
-		inline Byte* getCHRROM();
-		inline VRAMMirroringMode getMirroringMode();
-		inline Byte* getTrainer();	//不存在Tranier则返回nullptr
+		Byte* getRaw();	//获取完整ROM文件指针
+		int getPRGROMSize();	//Program Memory，游戏程序数据
+		int getCHRROMSize();	//Character Memory，用于显示（贴图等）数据的存储。
+		int getPRGROMOffset();
+		int getMapperNumber();	//Mapper数量
+		Byte* getPRGROM();
+		Byte* getCHRROM();
+		VRAMMirroringMode getMirroringMode();
+		Byte* getTrainer();	//不存在Tranier则返回nullptr
 	};
 
 

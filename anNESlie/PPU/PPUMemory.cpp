@@ -1,26 +1,26 @@
-#include "Core.h"
+#include "PPU.h"
 
-Byte PPUCore::ReadByte(Word address)
+Byte PPU::ReadByte(Word address)
 {
 	return memoryHandler.ReadByte(address);
 }
 
-void PPUCore::WriteByte(Word address, Byte value)
+void PPU::WriteByte(Word address, Byte value)
 {
 	memoryHandler.WriteByte(address, value);
 }
 
-Byte PPUCore::ReadWord(Word address)
+Byte PPU::ReadWord(Word address)
 {
 	return memoryHandler.ReadWord(address);
 }
 
-void PPUCore::WriteWord(Word address, Byte value)
+void PPU::WriteWord(Word address, Byte value)
 {
 	memoryHandler.WriteWord(address, value);
 }
 
-void PPUCore::WriteRegister(Byte reg, Byte val)
+void PPU::WriteRegister(Byte reg, Byte val)
 {
 	reg &= 0xF;
 	lastWrittenRegister = val & 0xFF;
@@ -52,7 +52,7 @@ void PPUCore::WriteRegister(Byte reg, Byte val)
 	throw "NotImplementedException!";
 }
 
-Byte PPUCore::ReadRegister(Byte reg)
+Byte PPU::ReadRegister(Byte reg)
 {
 	reg &= 0xF;
 	switch (reg)
@@ -73,24 +73,3 @@ Byte PPUCore::ReadRegister(Byte reg)
 	throw "NotImplementedException!";
 }
 
-Word PPUCore::GetVRAMMirror(Word addr)
-{
-	// HACK: C# version is QWORD here,maybe a bug?
-	Word entry = (addr - 0x2000) % 0x400;
-	Word table = (addr - 0x2000) / 0x400;
-	return VRAMMirrorLookUp[emulator.Cartridge.MirroringMode][table] * 0x400 + entry;
-}
-
-void PPUCore::PerformDMA(Word from)
-{
-	from <<= 8;
-	for(int i=0;i<0xFF;i++)
-	{
-		Byte oamAdress = Flag.getOAMAddress();
-		oam[oamAdress] = emulator.CPU.ReadByte(from);
-		from++;
-		Flag.setOAMAddress(oamAdress + 1);
-	}
-
-	emulator.CPU.Cycle += 513 + emulator.CPU.Cycle % 2;
-}

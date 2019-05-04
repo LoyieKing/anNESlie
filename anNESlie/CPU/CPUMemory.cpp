@@ -1,12 +1,12 @@
-#include "Core.h"
+#pragma once
+#include "CPU.h"
 
-
-void CPU::CPUCore::ResetInstructionAddressingMode()
+void CPU::ResetInstructionAddressingMode()
 {
 	memoryAddressHasValue = false;
 }
 
-Word CPU::CPUCore::Adress()
+Word CPU::Adress()
 {
 	Word tword;
 	Word tword2;
@@ -49,7 +49,7 @@ Word CPU::CPUCore::Adress()
 	return NULL;
 }
 
-Word CPU::CPUCore::AdressRead()
+Word CPU::AdressRead()
 {
 	if (opcodes[currentInstruction].Mode == Direct)
 		return rmwValue = getA();
@@ -61,14 +61,14 @@ Word CPU::CPUCore::AdressRead()
 	return rmwValue = ReadByte(currentMemoryAddress);
 }
 
-void CPU::CPUCore::AdressWrite(Word val)
+void CPU::AdressWrite(Word val)
 {
 	if (opcodes[currentInstruction].Mode == Direct)
 	{
 		setA(val);
 		return;
 	}
-	if (!memoryAddressHasValue) 
+	if (!memoryAddressHasValue)
 	{
 		memoryAddressHasValue = true;
 		currentMemoryAddress = Adress();
@@ -78,27 +78,27 @@ void CPU::CPUCore::AdressWrite(Word val)
 	WriteByte(currentMemoryAddress, val);
 }
 
-Byte CPU::CPUCore::ReadByte(Word address)
+Byte CPU::ReadByte(Word address)
 {
 	return memoryHandler.ReadByte(address);
 }
 
-void CPU::CPUCore::WriteByte(Word address, Byte value)
+void CPU::WriteByte(Word address, Byte value)
 {
 	memoryHandler.WriteByte(address, value);
 }
 
-Byte CPU::CPUCore::ReadWord(Word address)
+Byte CPU::ReadWord(Word address)
 {
 	return memoryHandler.ReadWord(address);
 }
 
-void CPU::CPUCore::WriteWord(Word address, Byte value)
+void CPU::WriteWord(Word address, Byte value)
 {
 	memoryHandler.WriteWord(address, value);
 }
 
-Byte CPU::CPUCore::NextByte()
+Byte CPU::NextByte()
 {
 	Byte pc = getPC();
 	Byte result = memoryHandler.ReadByte(pc++);
@@ -106,38 +106,38 @@ Byte CPU::CPUCore::NextByte()
 	return result;
 }
 
-Word CPU::CPUCore::NextWord()
+Word CPU::NextWord()
 {
 	Word result = NextByte() | ((Word)NextByte() << 8);
 	return result;
 }
 
-SByte CPU::CPUCore::NextSByte()
+SByte CPU::NextSByte()
 {
 	return (SByte)NextByte();
 }
 
-void CPU::CPUCore::Push(Byte value)
+void CPU::Push(Byte value)
 {
 	Byte sp = getSP();
 	memoryHandler.WriteByte(0x100 + sp, value);
 	setSP(sp - 1);
 }
 
-Byte CPU::CPUCore::Pop()
+Byte CPU::Pop()
 {
 	Byte sp = getSP() + 1;
 	setSP(sp);
 	return memoryHandler.ReadByte(sp);
 }
 
-void CPU::CPUCore::PushWord(Word value)
+void CPU::PushWord(Word value)
 {
 	Push(value >> 8);
 	Push(value & 0xFF);
 }
 
-Word CPU::CPUCore::PopWord()
+Word CPU::PopWord()
 {
 	Word result = Pop() | (Pop() << 8);
 	return result;

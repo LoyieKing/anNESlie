@@ -1,89 +1,89 @@
-#include "Core.h"
+#pragma once
+#include "CPU.h"
 
-
-void CPU::CPUCore::JSR()
+void CPU::JSR()
 {
 	PushWord(getPC() + 1);
 	setPC(NextWord());
 }
 
-void CPU::CPUCore::RTI()
+void CPU::RTI()
 {
 	NextByte();
 	setP(Pop());
 	setPC(PopWord());
 }
 
-void CPU::CPUCore::RTS()
+void CPU::RTS()
 {
 	NextByte();
 	setPC(PopWord() + 1);
 }
-void CPU::CPUCore::INY()
+void CPU::INY()
 {
 	setY(getY() + 1);
 }
-void CPU::CPUCore::DEY()
+void CPU::DEY()
 {
 	setY(getY() - 1);
 }
-void CPU::CPUCore::INX()
+void CPU::INX()
 {
 	setX(getX() + 1);
 }
-void CPU::CPUCore::DEX()
+void CPU::DEX()
 {
 	setX(getX() - 1);
 }
-void CPU::CPUCore::TAY()
+void CPU::TAY()
 {
 	setY(getA());
 }
-void CPU::CPUCore::TYA()
+void CPU::TYA()
 {
 	setA(getY());
 }
-void CPU::CPUCore::TAX()
+void CPU::TAX()
 {
 	setX(getA());
 }
-void CPU::CPUCore::TXA()
+void CPU::TXA()
 {
 	setA(getX());
 }
-void CPU::CPUCore::TSX()
+void CPU::TSX()
 {
 	setX(getSP());
 }
-void CPU::CPUCore::TXS()
+void CPU::TXS()
 {
 	setSP(getX());
 }
-void CPU::CPUCore::PHP()
+void CPU::PHP()
 {
 	Push(getFlag_B());
 }
-void CPU::CPUCore::PLP()
+void CPU::PLP()
 {
 	setP(Pop() & BreakSourceBit);
 }
 
-void CPU::CPUCore::PLA()
+void CPU::PLA()
 {
 	setA(Pop());
 }
-void CPU::CPUCore::PHA()
+void CPU::PHA()
 {
 	Push(getA());
 }
-void CPU::CPUCore::BIT()
+void CPU::BIT()
 {
 	Word val = AdressRead();
 	setFlag_V((val & 0x40) > 0);
 	setFlag_Z((val & getA()) == 0);
 	setFlag_N((val & 0x80) > 0);
 }
-void CPU::CPUCore::JMP()
+void CPU::JMP()
 {
 	if (!memoryAddressHasValue)
 		return;
@@ -101,134 +101,134 @@ void CPU::CPUCore::JMP()
 			cycle += 2;
 	}
 }
-void CPU::CPUCore::BCS()
+void CPU::BCS()
 {
 	Branch(getFlag_C());
 }
-void CPU::CPUCore::BCC()
+void CPU::BCC()
 {
 	Branch(!getFlag_C());
 }
-void CPU::CPUCore::BEQ()
+void CPU::BEQ()
 {
 	Branch(getFlag_Z());
 }
-void CPU::CPUCore::BNE()
+void CPU::BNE()
 {
 	Branch(!getFlag_Z());
 }
-void CPU::CPUCore::BVS()
+void CPU::BVS()
 {
 	Branch(getFlag_V());
 }
-void CPU::CPUCore::BVC()
+void CPU::BVC()
 {
 	Branch(!getFlag_V());
 }
-void CPU::CPUCore::BPL()
+void CPU::BPL()
 {
 	Branch(!getFlag_N());
 }
-void CPU::CPUCore::BMI()
+void CPU::BMI()
 {
 	Branch(getFlag_N());
 }
-void CPU::CPUCore::STA()
+void CPU::STA()
 {
 	AdressWrite(getA());
 }
-void CPU::CPUCore::STX()
+void CPU::STX()
 {
 	AdressWrite(getX());
 }
-void CPU::CPUCore::STY()
+void CPU::STY()
 {
 	AdressWrite(getY());
 }
-void CPU::CPUCore::CLC()
+void CPU::CLC()
 {
 	setFlag_C(false);
 }
-void CPU::CPUCore::SEC()
+void CPU::SEC()
 {
 	setFlag_C(true);
 }
-void CPU::CPUCore::CLI()
+void CPU::CLI()
 {
 	setFlag_I(false);
 }
-void CPU::CPUCore::SEI()
+void CPU::SEI()
 {
 	setFlag_I(true);
 }
-void CPU::CPUCore::CLV()
+void CPU::CLV()
 {
 	setFlag_V(false);
 }
-void CPU::CPUCore::CLD()
+void CPU::CLD()
 {
 	setFlag_D(false);
 }
-void CPU::CPUCore::SED()
+void CPU::SED()
 {
 	setFlag_D(true);
 }
-void CPU::CPUCore::NOP()
+void CPU::NOP()
 {
 
 }
-void CPU::CPUCore::LDA()
+void CPU::LDA()
 {
 	setA(AdressRead());
 }
-void CPU::CPUCore::LDY()
+void CPU::LDY()
 {
 	setY(AdressRead());
 }
-void CPU::CPUCore::LDX()
+void CPU::LDX()
 {
 	setX(AdressRead());
 }
-void CPU::CPUCore::ORA()
+void CPU::ORA()
 {
 	setA(getA() | AdressRead());
 }
-void CPU::CPUCore::AND()
+void CPU::AND()
 {
 	setA(getA() & AdressRead());
 }
-void CPU::CPUCore::EOR()
+void CPU::EOR()
 {
 	setA(getA() ^ AdressRead());
 }
-void CPU::CPUCore::SBC()
+void CPU::SBC()
 {
 	ADCImpl((Byte)~AdressRead());
 }
-void CPU::CPUCore::ADC()
+void CPU::ADC()
 {
 	ADCImpl(AdressRead());
 }
-void CPU::CPUCore::BRK()
+void CPU::BRK()
 {
 	NextByte();
 	Push(getP() | BreakSourceBit);
 	setFlag_I(true);
 	setPC(ReadByte(0xFFFE) | ReadByte(0xFFFF) << 8);
 }
-void CPU::CPUCore::CMP()
+void CPU::CMP()
 {
 	CMPImpl(getA());
 }
-void CPU::CPUCore::CPX()
+void CPU::CPX()
 {
 	CMPImpl(getX());
 }
-void CPU::CPUCore::CPY()
+void CPU::CPY()
 {
 	CMPImpl(getY());
 }
-void CPU::CPUCore::LSR()
+void CPU::LSR()
 {
 	Word D = AdressRead();
 	setFlag_C((D & 0x1) > 0);
@@ -236,7 +236,7 @@ void CPU::CPUCore::LSR()
 	setFlag_N_Z(D);
 	AdressWrite(D);
 }
-void CPU::CPUCore::ASL()
+void CPU::ASL()
 {
 	Word D = AdressRead();
 	setFlag_C((D & 0x80) > 0);
@@ -244,7 +244,7 @@ void CPU::CPUCore::ASL()
 	setFlag_N_Z(D);
 	AdressWrite(D);
 }
-void CPU::CPUCore::ROR()
+void CPU::ROR()
 {
 	Word D = AdressRead();
 	bool c = getFlag_C();
@@ -255,7 +255,7 @@ void CPU::CPUCore::ROR()
 	setFlag_N_Z(D);
 	AdressWrite(D);
 }
-void CPU::CPUCore::ROL()
+void CPU::ROL()
 {
 	Word D = AdressRead();
 	bool c = getFlag_C();
@@ -266,36 +266,36 @@ void CPU::CPUCore::ROL()
 	setFlag_N_Z(D);
 	AdressWrite(D);
 }
-void CPU::CPUCore::INC()
+void CPU::INC()
 {
 	Byte D = (Byte)(AdressRead() + 1);
 	setFlag_N_Z(D);
 	AdressWrite(D);
 }
-void CPU::CPUCore::DEC()
+void CPU::DEC()
 {
 	Byte D = (Byte)(AdressRead() - 1);
 	setFlag_N_Z(D);
 	AdressWrite(D);
 }
 //unofficial opcodes
-void CPU::CPUCore::SKB()
+void CPU::SKB()
 {
 	NextByte();
 }
-void CPU::CPUCore::ANC()
+void CPU::ANC()
 {
 	setA(getA() & AdressRead());
 	setFlag_C(getFlag_N());
 }
-void CPU::CPUCore::ALR()
+void CPU::ALR()
 {
 	setA(getA() & AdressRead());
 	setFlag_C((getA() & 0x1) > 0);
 	setA(getA() >> 1);
 	setFlag_N_Z(getA());
 }
-void CPU::CPUCore::ARR()
+void CPU::ARR()
 {
 	setA(getA() & AdressRead());
 	bool c = getFlag_C();
@@ -307,14 +307,14 @@ void CPU::CPUCore::ARR()
 	}
 	setFlag_N_Z(getA());
 }
-void CPU::CPUCore::ATX()
+void CPU::ATX()
 {
 	setA(getA() | ReadByte(0xEE));
 	setA(getA() & AdressRead());
 	setX(getA());
 }
 
-void CPU::CPUCore::Branch(bool cond)
+void CPU::Branch(bool cond)
 {
 	Byte nPC = getPC() + NextSByte() + 1;
 	if (cond)
@@ -324,10 +324,12 @@ void CPU::CPUCore::Branch(bool cond)
 	}
 }
 
-void  CPU::CPUCore::ADCImpl(SByte value)
+
+// TODO: Add impl
+void  CPU::ADCImpl(SByte value)
 {
 }
 
-void  CPU::CPUCore::CMPImpl(Byte reg)
+void  CPU::CMPImpl(Byte reg)
 {
 }

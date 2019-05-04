@@ -2,17 +2,25 @@
 #include <ostream>
 #include <istream>
 
-#include "../Emulator/Emulator.h"
-#include "../CPU/Core.h"
-#include "../PPU/Core.h"
+#include "../Types.h"
+//#include "../Emulator/Emulator.h"
+//#include "../CPU/Core.h"
+//#include "../PPU/Core.h"
+
+
+class CPU;
+class PPU;
+
+namespace ROM
+{
+	class Cartridge;
+}
 
 namespace Mapper
 {
 	class BaseMapper
 	{
 	protected:
-		Emulator* emulator;
-
 
 		int prgROMLength;
 		Byte* prgROM;
@@ -26,15 +34,15 @@ namespace Mapper
 		Word lastBankOffset;
 
 
-		BaseMapper(Emulator* _emulator);
+		BaseMapper(ROM::Cartridge* _emulator);
 
 	public:
 		int Id;
 		const char* Name;
 		const char* Description;
 
-		virtual void InitializeMemoryMap(CPU::CPUCore* cpu) = 0;
-		virtual void InitializeMemoryMap(PPUCore* ppu);
+		virtual void InitializeMemoryMap(CPU* cpu) = 0;
+		virtual void InitializeMemoryMap(PPU* ppu);
 		virtual void ProcessCycle(int scanline, int cycle) = 0;
 		virtual void Save(std::ostream stream);
 		virtual void Load(std::istream stream);

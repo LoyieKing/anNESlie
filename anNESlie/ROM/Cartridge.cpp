@@ -89,47 +89,47 @@ Cartridge::~Cartridge()
 	}
 }
 
-inline Byte* ROM::Cartridge::getRaw()
+Byte* ROM::Cartridge::getRaw()
 {
 	return data->Raw;
 }
 
-inline int ROM::Cartridge::getPRGROMSize()
+int ROM::Cartridge::getPRGROMSize()
 {
 	return data->PRGROMSize;
 }
 
-inline int ROM::Cartridge::getCHRROMSize()
+int ROM::Cartridge::getCHRROMSize()
 {
 	return data->CHRROMSize;
 }
 
-inline int ROM::Cartridge::getPRGROMOffset()
+int ROM::Cartridge::getPRGROMOffset()
 {
 	return data->PRGROMOffset;
 }
 
-inline int ROM::Cartridge::getMapperNumber()
+int ROM::Cartridge::getMapperNumber()
 {
 	return data->MapperNumber;
 }
 
-inline Byte* ROM::Cartridge::getPRGROM()
+Byte* ROM::Cartridge::getPRGROM()
 {
 	return data->PRGROM;
 }
 
-inline Byte* ROM::Cartridge::getCHRROM()
+Byte* ROM::Cartridge::getCHRROM()
 {
 	return data->CHRROM;
 }
 
-inline VRAMMirroringMode ROM::Cartridge::getMirroringMode()
+VRAMMirroringMode ROM::Cartridge::getMirroringMode()
 {
 	return data->MirroringMode;
 }
 
-inline Byte* ROM::Cartridge::getTrainer()
+Byte* ROM::Cartridge::getTrainer()
 {
 	return data->hasTrainer ? data->Trainer : nullptr;
 }

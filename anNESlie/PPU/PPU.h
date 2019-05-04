@@ -10,8 +10,10 @@ const int GAME_HEIGHT = 240;
 const int SCANLINE_COUNT = 261;
 const int CYCLES_PER_LINE = 341;
 
-class PPUCore
+class PPU
 {
+public:
+	friend class Emulator;
 #pragma region Core
 
 private:
@@ -44,7 +46,7 @@ private:
 
 	Emulator* emulator;
 public:
-	PPUCore(Emulator* const _emulator);
+	PPU(Emulator* const _emulator);
 
 	void ProcessFrame();
 	void ProcessScanline(int line);
@@ -74,8 +76,6 @@ public:
 
 	void WriteRegister(Byte reg, Byte val);
 	Byte ReadRegister(Byte reg);
-	Word GetVRAMMirror(Word addr);
-	void PerformDMA(Word from);
 #pragma endregion
 
 
