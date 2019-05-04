@@ -138,9 +138,9 @@ public:
 	ROM::MemoryHandler memoryHandler;
 	void ResetInstructionAddressingMode();
 
-	Word Adress();
-	Word AdressRead();
-	void AdressWrite(Word val);
+	Word Address();
+	Byte AddressRead();
+	void AddressWrite(Byte val);
 
 	Byte ReadByte(Word address);
 	void WriteByte(Word address, Byte value);
@@ -227,7 +227,7 @@ private:
 	void ATX();
 
 	void Branch(bool cond);
-	void ADCImpl(SByte value);
+	void ADCImpl(Byte value);
 	void CMPImpl(Byte reg);
 
 	Word currentInstruction;

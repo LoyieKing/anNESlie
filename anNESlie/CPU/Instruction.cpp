@@ -78,7 +78,7 @@ void CPU::PHA()
 }
 void CPU::BIT()
 {
-	Word val = AdressRead();
+	Word val = AddressRead();
 	setFlag_V((val & 0x40) > 0);
 	setFlag_Z((val & getA()) == 0);
 	setFlag_N((val & 0x80) > 0);
@@ -135,15 +135,15 @@ void CPU::BMI()
 }
 void CPU::STA()
 {
-	AdressWrite(getA());
+	AddressWrite(getA());
 }
 void CPU::STX()
 {
-	AdressWrite(getX());
+	AddressWrite(getX());
 }
 void CPU::STY()
 {
-	AdressWrite(getY());
+	AddressWrite(getY());
 }
 void CPU::CLC()
 {
@@ -179,35 +179,35 @@ void CPU::NOP()
 }
 void CPU::LDA()
 {
-	setA(AdressRead());
+	setA(AddressRead());
 }
 void CPU::LDY()
 {
-	setY(AdressRead());
+	setY(AddressRead());
 }
 void CPU::LDX()
 {
-	setX(AdressRead());
+	setX(AddressRead());
 }
 void CPU::ORA()
 {
-	setA(getA() | AdressRead());
+	setA(getA() | AddressRead());
 }
 void CPU::AND()
 {
-	setA(getA() & AdressRead());
+	setA(getA() & AddressRead());
 }
 void CPU::EOR()
 {
-	setA(getA() ^ AdressRead());
+	setA(getA() ^ AddressRead());
 }
 void CPU::SBC()
 {
-	ADCImpl((Byte)~AdressRead());
+	ADCImpl((Byte)~AddressRead());
 }
 void CPU::ADC()
 {
-	ADCImpl(AdressRead());
+	ADCImpl(AddressRead());
 }
 void CPU::BRK()
 {
@@ -230,53 +230,53 @@ void CPU::CPY()
 }
 void CPU::LSR()
 {
-	Word D = AdressRead();
+	Word D = AddressRead();
 	setFlag_C((D & 0x1) > 0);
 	D >>= 1;
 	setFlag_N_Z(D);
-	AdressWrite(D);
+	AddressWrite(D);
 }
 void CPU::ASL()
 {
-	Word D = AdressRead();
+	Word D = AddressRead();
 	setFlag_C((D & 0x80) > 0);
 	D <<= 1;
 	setFlag_N_Z(D);
-	AdressWrite(D);
+	AddressWrite(D);
 }
 void CPU::ROR()
 {
-	Word D = AdressRead();
+	Word D = AddressRead();
 	bool c = getFlag_C();
 	setFlag_C((D & 0x1) > 0);
 	D >>= 1;
 	if (c)
 		D |= 0x80;
 	setFlag_N_Z(D);
-	AdressWrite(D);
+	AddressWrite(D);
 }
 void CPU::ROL()
 {
-	Word D = AdressRead();
+	Word D = AddressRead();
 	bool c = getFlag_C();
 	setFlag_C((D & 0x80) > 0);
 	D <<= 1;
 	if (c)
 		D |= 0x1;
 	setFlag_N_Z(D);
-	AdressWrite(D);
+	AddressWrite(D);
 }
 void CPU::INC()
 {
-	Byte D = (Byte)(AdressRead() + 1);
+	Byte D = (Byte)(AddressRead() + 1);
 	setFlag_N_Z(D);
-	AdressWrite(D);
+	AddressWrite(D);
 }
 void CPU::DEC()
 {
-	Byte D = (Byte)(AdressRead() - 1);
+	Byte D = (Byte)(AddressRead() - 1);
 	setFlag_N_Z(D);
-	AdressWrite(D);
+	AddressWrite(D);
 }
 //unofficial opcodes
 void CPU::SKB()
@@ -285,19 +285,19 @@ void CPU::SKB()
 }
 void CPU::ANC()
 {
-	setA(getA() & AdressRead());
+	setA(getA() & AddressRead());
 	setFlag_C(getFlag_N());
 }
 void CPU::ALR()
 {
-	setA(getA() & AdressRead());
+	setA(getA() & AddressRead());
 	setFlag_C((getA() & 0x1) > 0);
 	setA(getA() >> 1);
 	setFlag_N_Z(getA());
 }
 void CPU::ARR()
 {
-	setA(getA() & AdressRead());
+	setA(getA() & AddressRead());
 	bool c = getFlag_C();
 	setFlag_C((getA() & 0x1) > 0);
 	setA(getA() >> 1);
@@ -310,7 +310,7 @@ void CPU::ARR()
 void CPU::ATX()
 {
 	setA(getA() | ReadByte(0xEE));
-	setA(getA() & AdressRead());
+	setA(getA() & AddressRead());
 	setX(getA());
 }
 
@@ -324,12 +324,19 @@ void CPU::Branch(bool cond)
 	}
 }
 
-
-// TODO: Add impl
-void  CPU::ADCImpl(SByte value)
+void  CPU::ADCImpl(Byte val)
 {
+	int nA = (SByte)registerA + (SByte)val + (SByte)(getFlag_C() ? 1 : 0);
+	setFlag_V(nA < -128 || nA > 127);
+	setFlag_C((registerA + val + (Byte)(getFlag_C() ? 1 : 0)) > 0xFF);
+	registerA = (Byte)(nA & 0xFF);
 }
 
 void  CPU::CMPImpl(Byte reg)
 {
+	Byte d = reg - AddressRead();
+
+	setFlag_N((d & 0x80) > 0 && d != 0);
+	setFlag_C(d >= 0);
+	setFlag_Z(d == 0);
 }

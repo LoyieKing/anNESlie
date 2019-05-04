@@ -6,7 +6,7 @@ void CPU::ResetInstructionAddressingMode()
 	memoryAddressHasValue = false;
 }
 
-Word CPU::Adress()
+Word CPU::Address()
 {
 	Word tword;
 	Word tword2;
@@ -49,19 +49,19 @@ Word CPU::Adress()
 	return NULL;
 }
 
-Word CPU::AdressRead()
+Byte CPU::AddressRead()
 {
 	if (opcodes[currentInstruction].Mode == Direct)
 		return rmwValue = getA();
 	if (!memoryAddressHasValue)
 	{
 		memoryAddressHasValue = true;
-		currentMemoryAddress = Adress();
+		currentMemoryAddress = Address();
 	}
 	return rmwValue = ReadByte(currentMemoryAddress);
 }
 
-void CPU::AdressWrite(Word val)
+void CPU::AddressWrite(Byte val)
 {
 	if (opcodes[currentInstruction].Mode == Direct)
 	{
@@ -71,7 +71,7 @@ void CPU::AdressWrite(Word val)
 	if (!memoryAddressHasValue)
 	{
 		memoryAddressHasValue = true;
-		currentMemoryAddress = Adress();
+		currentMemoryAddress = Address();
 	}
 	if (opcodes[currentInstruction].RMW)
 		WriteByte(currentMemoryAddress, rmwValue);
