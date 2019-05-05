@@ -40,7 +40,11 @@ public:
 	friend class Mapper::BaseMapper;
 
 	Emulator(const char* rom_path);
+	~Emulator();
+
 	DWord const* RawBitmap;
 	void ProcessFrame();
 
+	void DumpMemoryCPU();
+	void DumpMemoryPPU();
 };

@@ -3,175 +3,176 @@
 
 void CPU::JSR()
 {
-	PushWord(getPC() + 1);
-	setPC(NextWord());
+	PushWord(Register.PC + 1);
+	Register.PC = NextWord();
 }
 
 void CPU::RTI()
 {
 	NextByte();
-	setP(Pop());
-	setPC(PopWord());
+	Register.setP(Pop());
+	Register.PC = PopWord();
 }
 
 void CPU::RTS()
 {
 	NextByte();
-	setPC(PopWord() + 1);
+	Register.PC = PopWord() + 1;
 }
 void CPU::INY()
 {
-	setY(getY() + 1);
+	Register.Y = Register.getY() + 1;
 }
 void CPU::DEY()
 {
-	setY(getY() - 1);
+	Register.Y = Register.getY() - 1;
 }
 void CPU::INX()
 {
-	setX(getX() + 1);
+	Register.X = Register.getX() + 1;
 }
 void CPU::DEX()
 {
-	setX(getX() - 1);
+	Register.X = Register.getX() - 1;
 }
 void CPU::TAY()
 {
-	setY(getA());
+	Register.Y = Register.getA();
 }
 void CPU::TYA()
 {
-	setA(getY());
+	Register.setA(Register.getY());
 }
 void CPU::TAX()
 {
-	setX(getA());
+	Register.X = Register.getA();
 }
 void CPU::TXA()
 {
-	setA(getX());
+	Register.setA(Register.getX());
 }
 void CPU::TSX()
 {
-	setX(getSP());
+	Register.X = Register.SP;
 }
 void CPU::TXS()
 {
-	setSP(getX());
+	Register.SP = Register.getX();
 }
 void CPU::PHP()
 {
-	Push(getFlag_B());
+	Push(Register.P.BreakSource ? Register.BreakSourceBit : 0);
 }
 void CPU::PLP()
 {
-	setP(Pop() & BreakSourceBit);
+	Register.setP(Pop() & ~Register.BreakSourceBit);
 }
 
 void CPU::PLA()
 {
-	setA(Pop());
+	Register.setA(Pop());
 }
 void CPU::PHA()
 {
-	Push(getA());
+	Push(Register.getA());
 }
 void CPU::BIT()
 {
 	Word val = AddressRead();
-	setFlag_V((val & 0x40) > 0);
-	setFlag_Z((val & getA()) == 0);
-	setFlag_N((val & 0x80) > 0);
+	Register.P.Overflow = ((val & 0x40) > 0);
+	Register.P.Zero = ((val & Register.getA()) == 0);
+	Register.P.Negative = ((val & 0x80) > 0);
 }
 void CPU::JMP()
 {
 	if (!memoryAddressHasValue)
 		return;
 	if (currentInstruction == 0x4C)
-		setPC(NextWord());
+		Register.PC = NextWord();
 	else if (currentInstruction == 0x6C)
 	{
 		Word off = NextWord();
 
 		Word hi = (off & 0xFF) == 0xFF ? off - 0xFF : off + 1;
-		Word oldPC = getPC();
-		setPC(ReadByte(off) | ReadByte(hi) << 8);
+		Word oldPC = Register.PC;
+		Register.PC = (ReadByte(off) | ReadByte(hi) << 8);
 
-		if ((oldPC & 0xFF00) != (getPC() & 0xFF00))
+		if ((oldPC & 0xFF00) != (Register.PC & 0xFF00))
 			cycle += 2;
 	}
 }
 void CPU::BCS()
 {
-	Branch(getFlag_C());
+	
+	Branch(Register.P.Carry);
 }
 void CPU::BCC()
 {
-	Branch(!getFlag_C());
+	Branch(!Register.P.Carry);
 }
 void CPU::BEQ()
 {
-	Branch(getFlag_Z());
+	Branch(Register.P.Zero);
 }
 void CPU::BNE()
 {
-	Branch(!getFlag_Z());
+	Branch(!Register.P.Zero);
 }
 void CPU::BVS()
 {
-	Branch(getFlag_V());
+	Branch(Register.P.Overflow);
 }
 void CPU::BVC()
 {
-	Branch(!getFlag_V());
+	Branch(!Register.P.Overflow);
 }
 void CPU::BPL()
 {
-	Branch(!getFlag_N());
+	Branch(!Register.P.Negative);
 }
 void CPU::BMI()
 {
-	Branch(getFlag_N());
+	Branch(Register.P.Negative);
 }
 void CPU::STA()
 {
-	AddressWrite(getA());
+	AddressWrite(Register.getA());
 }
 void CPU::STX()
 {
-	AddressWrite(getX());
+	AddressWrite(Register.getX());
 }
 void CPU::STY()
 {
-	AddressWrite(getY());
+	AddressWrite(Register.getY());
 }
 void CPU::CLC()
 {
-	setFlag_C(false);
+	Register.P.Carry = false;
 }
 void CPU::SEC()
 {
-	setFlag_C(true);
+	Register.P.Carry = true;
 }
 void CPU::CLI()
 {
-	setFlag_I(false);
+	Register.P.InterruptDisabled = false;
 }
 void CPU::SEI()
 {
-	setFlag_I(true);
+	Register.P.InterruptDisabled = true;
 }
 void CPU::CLV()
 {
-	setFlag_V(false);
+	Register.P.Overflow = false;
 }
 void CPU::CLD()
 {
-	setFlag_D(false);
+	Register.P.DecimalMode = false;
 }
 void CPU::SED()
 {
-	setFlag_D(true);
+	Register.P.DecimalMode = true;
 }
 void CPU::NOP()
 {
@@ -179,27 +180,27 @@ void CPU::NOP()
 }
 void CPU::LDA()
 {
-	setA(AddressRead());
+	Register.setA(AddressRead());
 }
 void CPU::LDY()
 {
-	setY(AddressRead());
+	Register.Y = AddressRead();
 }
 void CPU::LDX()
 {
-	setX(AddressRead());
+	Register.X = AddressRead();
 }
 void CPU::ORA()
 {
-	setA(getA() | AddressRead());
+	Register.setA(Register.getA() | AddressRead());
 }
 void CPU::AND()
 {
-	setA(getA() & AddressRead());
+	Register.setA(Register.getA() & AddressRead());
 }
 void CPU::EOR()
 {
-	setA(getA() ^ AddressRead());
+	Register.setA(Register.getA() ^ AddressRead());
 }
 void CPU::SBC()
 {
@@ -212,72 +213,72 @@ void CPU::ADC()
 void CPU::BRK()
 {
 	NextByte();
-	Push(getP() | BreakSourceBit);
-	setFlag_I(true);
-	setPC(ReadByte(0xFFFE) | ReadByte(0xFFFF) << 8);
+	Push( Register.getP() | Register.BreakSourceBit);
+	Register.P.InterruptDisabled = true;
+	Register.PC = ReadByte(0xFFFE) | ReadByte(0xFFFF) << 8;
 }
 void CPU::CMP()
 {
-	CMPImpl(getA());
+	CMPImpl(Register.getA());
 }
 void CPU::CPX()
 {
-	CMPImpl(getX());
+	CMPImpl(Register.getX());
 }
 void CPU::CPY()
 {
-	CMPImpl(getY());
+	CMPImpl(Register.getY());
 }
 
 // HACK: Word D = AdressRead(); END LINE 262
 void CPU::LSR()
 {
 	Byte D = AddressRead();
-	setFlag_C((D & 0x1) > 0);
+	Register.P.Carry = (D & 0x1) > 0;
 	D >>= 1;
-	setFlag_N_Z(D);
+	Register.setFlagNZ(D);
 	AddressWrite(D);
 }
 void CPU::ASL()
 {
 	Byte D = AddressRead();
-	setFlag_C((D & 0x80) > 0);
+	Register.P.Carry = (D & 0x80) > 0;
 	D <<= 1;
-	setFlag_N_Z(D);
+	Register.setFlagNZ(D);
 	AddressWrite(D);
 }
 void CPU::ROR()
 {
 	Byte D = AddressRead();
-	bool c = getFlag_C();
-	setFlag_C((D & 0x1) > 0);
+	bool c = Register.P.Carry;
+	Register.P.Carry = (D & 0x1) > 0;
 	D >>= 1;
 	if (c)
 		D |= 0x80;
-	setFlag_N_Z(D);
+	Register.setFlagNZ(D);
 	AddressWrite(D);
 }
 void CPU::ROL()
 {
 	Byte D = AddressRead();
-	bool c = getFlag_C();
-	setFlag_C((D & 0x80) > 0);
+	bool c = Register.P.Carry;
+	Register.P.Carry = (D & 0x80) > 0;
 	D <<= 1;
 	if (c)
 		D |= 0x1;
-	setFlag_N_Z(D);
+	Register.setFlagNZ(D);
 	AddressWrite(D);
 }
 void CPU::INC()
 {
 	Byte D = (Byte)(AddressRead() + 1);
-	setFlag_N_Z(D);
+	Register.setFlagNZ(D);
 	AddressWrite(D);
 }
 void CPU::DEC()
 {
 	Byte D = (Byte)(AddressRead() - 1);
-	setFlag_N_Z(D);
+	Register.setFlagNZ(D);
 	AddressWrite(D);
 }
 //unofficial opcodes
@@ -287,58 +288,58 @@ void CPU::SKB()
 }
 void CPU::ANC()
 {
-	setA(getA() & AddressRead());
-	setFlag_C(getFlag_N());
+	Register.setA(Register.getA() & AddressRead());
+	Register.P.Carry = Register.P.Negative;
 }
 void CPU::ALR()
 {
-	setA(getA() & AddressRead());
-	setFlag_C((getA() & 0x1) > 0);
-	setA(getA() >> 1);
-	setFlag_N_Z(getA());
+	Register.setA(Register.getA() & AddressRead());
+	Register.P.Carry = (Register.getA() & 0x1) > 0;
+	Register.setA(Register.getA() >> 1);
+	Register.setFlagNZ(Register.getA());
 }
 void CPU::ARR()
 {
-	setA(getA() & AddressRead());
-	bool c = getFlag_C();
-	setFlag_C((getA() & 0x1) > 0);
-	setA(getA() >> 1);
+	Register.setA(Register.getA() & AddressRead());
+	bool c = Register.P.Carry;
+	Register.P.Carry = (Register.getA() & 0x1) > 0;
+	Register.setA(Register.getA() >> 1);
 	if (c)
 	{
-		setA(getA() | 0x80);
+		Register.setA(Register.getA() | 0x80);
 	}
-	setFlag_N_Z(getA());
+	Register.setFlagNZ(Register.getA());
 }
 void CPU::ATX()
 {
-	setA(getA() | ReadByte(0xEE));
-	setA(getA() & AddressRead());
-	setX(getA());
+	Register.setA(Register.getA() | ReadByte(0xEE));
+	Register.setA(Register.getA() & AddressRead());
+	Register.X = Register.getA();
 }
 
 void CPU::Branch(bool cond)
 {
-	Word nPC = getPC() + NextSByte() + 1;
+	Word nPC = Register.PC + NextSByte() + 1;
 	if (cond)
 	{
-		setPC(nPC);
+		Register.PC = nPC;
 		cycle++;
 	}
 }
 
 void  CPU::ADCImpl(Byte val)
 {
-	int nA = (SByte)registerA + (SByte)val + (SByte)(getFlag_C() ? 1 : 0);
-	setFlag_V(nA < -128 || nA > 127);
-	setFlag_C((registerA + val + (Byte)(getFlag_C() ? 1 : 0)) > 0xFF);
-	registerA = (Byte)(nA & 0xFF);
+	int nA = (SByte)Register.getA() + (SByte)val + (SByte)(Register.P.Carry ? 1 : 0);
+	Register.P.Overflow = nA < -128 || nA > 127;
+	Register.P.Carry = (Register.getA() + val + (Byte)(Register.P.Carry ? 1 : 0)) > 0xFF;
+	Register.setA(nA & 0xFF);
 }
 
 void  CPU::CMPImpl(Byte reg)
 {
 	Byte d = reg - AddressRead();
 
-	setFlag_N((d & 0x80) > 0 && d != 0);
-	setFlag_C(d >= 0);
-	setFlag_Z(d == 0);
+	Register.P.Negative = (d & 0x80) > 0 && d != 0;
+	Register.P.Carry = d >= 0;
+	Register.P.Zero = d == 0;
 }

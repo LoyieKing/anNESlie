@@ -10,12 +10,31 @@
 HINSTANCE hInst;                                // 当前实例
 WCHAR szTitle[MAX_LOADSTRING];                  // 标题栏文本
 WCHAR szWindowClass[MAX_LOADSTRING];            // 主窗口类名
+HWND hWnd;
 
 // 此代码模块中包含的函数的前向声明:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+
+Emulator emulator("mario.nes");
+int i = 0;
+
+DWORD WINAPI ProcessFrame(LPVOID param)
+{
+	while (true)
+	{
+		i++;
+		int s = GetTickCount();
+		emulator.ProcessFrame();
+		//emulator.DumpMemoryCPU();
+		int e = GetTickCount();
+		//int sleepTime = 1000.0 / 60.0 - (e - s);
+		//Sleep(sleepTime > 0 ? sleepTime : 0);
+		//InvalidateRect(hWnd, NULL, false);
+	}
+}
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -26,12 +45,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: 在此处放置代码。
-	Emulator emulator("mario.nes");
-	for (int i = 0; i < 1000; i++)
-	{
-		emulator.ProcessFrame();
-	}
-
 	
     // 初始化全局字符串
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -45,6 +58,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_ANNESLIE));
+
+	auto hThread = CreateThread(
+		NULL,//default security attributes
+		0,//use default stack size
+		ProcessFrame,//thread function
+		0,//argument to thread function
+		0,//use default creation flags
+		NULL);//returns the thread identifier
 
     MSG msg;
 
@@ -110,6 +131,14 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    {
       return FALSE;
    }
+   ::hWnd = hWnd;
+   //HDC hdc = GetDC(hWnd);
+   //HDC mdc = CreateCompatibleDC(hdc);
+   //HBITMAP bmp = CreateCompatibleBitmap(hdc, GAME_WIDTH, GAME_HEIGHT);
+
+   //SelectObject(mdc, bmp);
+   //
+
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
@@ -153,6 +182,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: 在此处添加使用 hdc 的任何绘图代码...
+			//for (int i = 0; i < GAME_WIDTH; i++)
+			//{
+			//	for (int j = 0; j < GAME_HEIGHT; j++)
+			//	{
+			//		SetPixel(hdc, i, j, emulator.RawBitmap[i * GAME_WIDTH + j]);
+			//	}
+			//}
             EndPaint(hWnd, &ps);
         }
         break;

@@ -5,6 +5,7 @@
 #include "../Mappers/Mapper.h"
 #include"../Mappers/BaseMapper.h"
 #include"../Controllers/Controller.h"
+#include "../Controllers/NES001Controller.h"
 
 Emulator::Emulator(const char* rom_path)
 {
@@ -12,12 +13,23 @@ Emulator::Emulator(const char* rom_path)
 	this->Mapper = Mapper::LoadMapper(this, this->Cartridge->getMapperNumber());
 	this->cpu = new ::CPU(this);
 	this->ppu = new ::PPU(this);
+	this->Controller = new Controller::NES001Controller();
 
 	RawBitmap = this->ppu->rawBitmap;
 
-	this->Controller = 0;
 
 	romPath = rom_path;
+}
+
+Emulator::~Emulator()
+{
+	if (Cartridge != nullptr)
+	{
+		delete this->Cartridge;
+		delete this->cpu;
+		delete this->ppu;
+		Cartridge = nullptr;
+	}
 }
 
 void Emulator::MapperProcessCycle(int scanline, int cycle)
@@ -48,8 +60,8 @@ void Emulator::PerformDMA(Word from)
 
 void Emulator::Reset()
 {
-	this->cpu->registerSP -= 3;
-	this->cpu->setFlag_I(true);
+	this->cpu->Register.SP -= 3;
+	this->cpu->Register.P.InterruptDisabled = true;
 }
 
 void Emulator::TickFromPPU()
@@ -61,12 +73,32 @@ void Emulator::TickFromPPU()
 
 void Emulator::TriggerInterrupt(InterruptType type)
 {
-	if (!this->cpu->getFlag_I() || type == NMI)
+	if (!this->cpu->Register.P.InterruptDisabled || type == NMI)
 		this->cpu->interrupts[type] = true;
 }
 
 void Emulator::ProcessFrame()
 {
 	this->ppu->ProcessFrame();
+}
+
+void Emulator::DumpMemoryCPU()
+{
+	FILE* fpWrite = fopen("cpu.dump", "w");
+	for (int i = 0; i < 0xFFFF; i++)
+	{
+		fprintf(fpWrite, "%d", (int)cpu->ReadByte(i));
+	}
+	fclose(fpWrite);
+}
+
+void Emulator::DumpMemoryPPU()
+{
+	FILE* fpWrite = fopen("ppu.dump", "w");
+	for (int i = 0; i < 0xFFFF; i++)
+	{
+		fprintf(fpWrite, "%c", (char)ppu->ReadByte(i));
+	}
+	fclose(fpWrite);
 }
 

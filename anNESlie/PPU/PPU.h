@@ -4,9 +4,6 @@
 #include "../Emulator/Emulator.h"
 
 
-const int GAME_WIDTH = 256;
-const int GAME_HEIGHT = 240;
-
 const int SCANLINE_COUNT = 261;
 const int CYCLES_PER_LINE = 341;
 
@@ -28,10 +25,10 @@ private:
 	bool isSprite0[8];
 	int spriteCount;
 
-	QWord tileShiftRegister;
-	DWord currentNametableByte;
-	DWord currentHighTile, currentLowTile;
-	DWord currentColor;
+	Word tileShiftRegister;
+	Byte currentNametableByte;
+	Byte currentHighTile, currentLowTile;
+	Byte currentColor;
 
 	int cpuClocksSinceVBL;
 	int ppuClocksSinceVBL;

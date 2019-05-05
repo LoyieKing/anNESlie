@@ -41,7 +41,8 @@
 #include "../ROM/MemoryHandler.h"
 #include "../Types.h"
 #include "Instructions.h"
-
+#include <vector>
+#include <string>
 
 class Emulator;
 
@@ -49,80 +50,73 @@ const int CPU_MEMORY_SIZE = 0xFFFF;
 
 class CPU
 {
+	std::vector<std::string> logs;
+
 	Emulator* emulator;
 public:
 	friend class Emulator;
 #pragma region Registers
 
 private:
-	Byte registerA;		//Accumulator		算数寄存器
-	Byte registerX;		//Index Register	地址寄存器
-	Byte registerY;		//Index Register	地址寄存器
-	Byte registerSP;	//Stack Pointer		栈指针寄存器
-	Word registerPC;	//Program Counter	程序计数器
-	Byte registerP;		//Status Register	状态寄存器
+	//Byte registerP;		//Status Register	状态寄存器
 	/*********************************
 	 Status Register
 	 7 6 5 4 3 2 1 0
 	 N V   B D I Z C
 	*********************************/
 
+	struct Register
+	{
+		Byte A;		//Accumulator		算数寄存器
+		Byte X;		//Index Register	地址寄存器
+		Byte Y;		//Index Register	地址寄存器
+	public:
+		const Byte CarryBit = 0b00000001;
+		const Byte ZeroBit = 0b00000010;
+		const Byte InterruptDisabledBit = 0b00000100;
+		const Byte DecimalModeBit = 0b00001000;
+		const Byte BreakSourceBit = 0b00010000;
+		const Byte UnusedBit = 0b00100000;
+		const Byte OverflowBit = 0b01000000;
+		const Byte NegativeBit = 0b10000000;
+
+		Byte SP;	//Stack Pointer		栈指针寄存器
+
+		Word PC;	//Program Counter	程序计数器
+
+		Byte getA();
+		void setA(Byte val);
+
+		Byte getX();
+		void setX(Byte val);
+
+		Byte getY();
+		void setY(Byte val);
+
+		struct
+		{
+		public:
+			bool Carry;
+			bool Zero;
+			bool InterruptDisabled;
+			bool DecimalMode;
+			bool BreakSource;
+			bool Unused;
+			bool Overflow;
+			bool Negative;
+
+		}P;
+
+		void setFlagNZ(Byte val);
+		void setP(Byte val);
+		Byte getP();
+	};
 public:
-	const Byte CarryBit = 0b00000001;
-	const Byte ZeroBit = 0b00000010;
-	const Byte InterruptDisabledBit = 0b00000100;
-	const Byte DecimalModeBit = 0b00001000;
-	const Byte BreakSourceBit = 0b00010000;
-	const Byte UnusedBit = 0b00100000;
-	const Byte OverflowBit = 0b01000000;
-	const Byte NegativeBit = 0b10000000;
 
 	/*状态寄存器标志位们的访问器*/
-	void setFlag_N_Z(Byte val);		//设置负数标志_零标志
 
-	bool getFlag_N();				//负数标志访问器
-	void setFlag_N(bool val);
+	Register Register;
 
-	bool getFlag_V();				//溢出标志访问器
-	void setFlag_V(bool val);
-
-	bool getFlag_Unused();			//未使用标志位
-	void setFlag_Unused(bool val);
-
-	bool getFlag_B();				//BRK标志访问器
-	void setFlag_B(bool val);
-
-	bool getFlag_D();				//BCD标志访问器
-	void setFlag_D(bool val);
-
-	bool getFlag_I();				//中断禁止标志访问器
-	void setFlag_I(bool val);
-
-	bool getFlag_Z();				//零标志访问器
-	void setFlag_Z(bool val);
-
-	bool getFlag_C();				//进位标志访问器
-	void setFlag_C(bool val);
-
-
-	/*寄存器们的访问器*/
-	Byte getA();
-	void setA(Byte val);
-
-	Byte getX();
-	void setX(Byte val);
-
-	Byte getY();
-	void setY(Byte val);
-
-	Byte getSP();
-	void setSP(Byte val);
-
-	Word getPC();
-	void setPC(Word val);
-
-	Byte getP();
-	void setP(Byte val);
 #pragma endregion 
 
 #pragma region Memory
@@ -145,7 +139,6 @@ public:
 	Byte ReadByte(Word address);
 	void WriteByte(Word address, Byte value);
 	Word ReadWord(Word address);
-	void WriteWord(Word address, Byte value);
 
 	Byte NextByte();
 	Word NextWord();

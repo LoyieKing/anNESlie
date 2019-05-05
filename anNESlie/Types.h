@@ -19,3 +19,6 @@ enum InterruptType
 {
 	NMI, IRQ, RESET
 };
+
+const int GAME_WIDTH = 256;
+const int GAME_HEIGHT = 240;

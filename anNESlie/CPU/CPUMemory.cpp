@@ -14,37 +14,37 @@ Word CPU::Address()
 	switch (opcodes[currentInstruction].Mode)
 	{
 	case Immediate:
-		tword = getPC(); setPC(tword + 1); return tword;
+		return Register.PC++;
 	case ZeroPage:
 		return NextByte();
 	case Absolute:
 		return NextWord();
 	case ZeroPageX:
-		return (NextByte() + getX()) & 0xFF;
+		return (NextByte() + Register.getX()) & 0xFF;
 	case ZeroPageY:
-		return (NextByte() + getY()) & 0xFF;
+		return (NextByte() + Register.getY()) & 0xFF;
 	case AbsoluteX:
 		tword = NextWord();
 		if (opcodes[currentInstruction].PageBoundary &&
-			(tword & 0xFF00) != ((tword + getX()) & 0xFF00))
+			(tword & 0xFF00) != ((tword + Register.getX()) & 0xFF00))
 			cycle += 1;
-		return tword + getX();
+		return tword + Register.getX();
 	case AbsoluteY:
 		tword = NextWord();
 		if (opcodes[currentInstruction].PageBoundary &&
-			(tword & 0xFF00) != ((tword + getY()) & 0xFF00))
+			(tword & 0xFF00) != ((tword + Register.getY()) & 0xFF00))
 			cycle += 1;
-		return tword + getY();
+		return tword + Register.getY();
 	case IndirectX:
-		tword = (NextByte() + getX()) & 0xFF;
+		tword = (NextByte() + Register.getX()) & 0xFF;
 		return ReadByte(tword) | (ReadByte((tword + 1) & 0xFF) << 8);
 	case IndirectY:
 		tword = NextByte() & 0xFF;
 		tword2 = ReadByte(tword) | (ReadByte((tword + 1) & 0xFF) << 8);
 		if (opcodes[currentInstruction].PageBoundary &&
-			(tword2 & 0xFF00) != ((tword2 + getY()) & 0xFF00))
+			(tword2 & 0xFF00) != ((tword2 + Register.getY()) & 0xFF00))
 			cycle += 1;
-		return (tword2 + getY()) & 0xFFFF;
+		return (tword2 + Register.getY()) & 0xFFFF;
 	}
 	return NULL;
 }
@@ -52,7 +52,7 @@ Word CPU::Address()
 Byte CPU::AddressRead()
 {
 	if (opcodes[currentInstruction].Mode == Direct)
-		return rmwValue = getA();
+		return rmwValue = Register.getA();
 	if (!memoryAddressHasValue)
 	{
 		memoryAddressHasValue = true;
@@ -65,7 +65,7 @@ void CPU::AddressWrite(Byte val)
 {
 	if (opcodes[currentInstruction].Mode == Direct)
 	{
-		setA(val);
+		Register.setA(val);
 		return;
 	}
 	if (!memoryAddressHasValue)
@@ -80,30 +80,33 @@ void CPU::AddressWrite(Byte val)
 
 Byte CPU::ReadByte(Word address)
 {
-	return memoryHandler.ReadByte(address);
+	char log[256];
+	Byte val = memoryHandler.ReadByte(address);
+	sprintf(log, "Read Byte from 0x%04x, value is 0x%02x.", address, val);
+	logs.push_back(log);
+	return val;
 }
 
 void CPU::WriteByte(Word address, Byte value)
 {
+	char log[256];
+	sprintf(log, "Write Byte 0x%02x to 0x%04x.", value, address);
+	logs.push_back(log);
 	memoryHandler.WriteByte(address, value);
 }
 
 Word CPU::ReadWord(Word address)
 {
-	return memoryHandler.ReadWord(address);
-}
-
-void CPU::WriteWord(Word address, Byte value)
-{
-	memoryHandler.WriteWord(address, value);
+	char log[256];
+	Word val = memoryHandler.ReadWord(address);
+	sprintf(log, "Read Word from 0x%04x, value is 0x%04x.", address, val);
+	logs.push_back(log);
+	return val;
 }
 
 Byte CPU::NextByte()
 {
-	Word pc = getPC();
-	Byte result = memoryHandler.ReadByte(pc++);
-	setPC(pc);
-	return result;
+	return ReadByte(Register.PC++);
 }
 
 Word CPU::NextWord()
@@ -119,16 +122,14 @@ SByte CPU::NextSByte()
 
 void CPU::Push(Byte value)
 {
-	Byte sp = getSP();
-	memoryHandler.WriteByte(0x100 + sp, value);
-	setSP(sp - 1);
+	memoryHandler.WriteByte(0x100 + Register.SP, value);
+	Register.SP--;
 }
 
 Byte CPU::Pop()
 {
-	Byte sp = getSP() + 1;
-	setSP(sp);
-	return memoryHandler.ReadByte(sp);
+	Register.SP++;
+	return memoryHandler.ReadByte(0x100 + Register.SP);
 }
 
 void CPU::PushWord(Word value)

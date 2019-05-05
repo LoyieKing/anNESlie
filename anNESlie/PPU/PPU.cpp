@@ -16,6 +16,18 @@ const DWord PPU::palette[64] = {
 PPU::PPU(Emulator*const _emulator) :
 	memoryHandler(memory, 0x3FFF)
 {
+	this->bufferPos = 0;
+	this->cpuClocksSinceVBL = 0;
+	this->cpuSyncCounter = 0;
+	memset(&this->Flag, 0, sizeof(this->Flag));
+	memset(this->isSprite0, 0, sizeof(this->isSprite0));
+	this->ppuClocksSinceVBL = 0;
+	this->spriteCount = 0;
+	this->T = 0;
+	this->tileShiftRegister = 0;
+	this->v = 0;
+	this->X = 0;
+
 	emulator = _emulator;
 
 	/*InitializeMemoryMap*/

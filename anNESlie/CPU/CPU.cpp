@@ -1,7 +1,9 @@
-#include "CPU.h"
+﻿#include "CPU.h"
 
 #include "../PPU/PPU.h"
 #include "../Mappers/BaseMapper.h"
+
+#include <stdio.h>
 
 Word InterruptHandlerOffsets[] = {
 	0xFFFA, 0xFFFE, 0xFFFC
@@ -12,6 +14,11 @@ CPU::CPU(Emulator* const _emulator) :
 	// Init memory handlers
 	memoryHandler(memory, CPU_MEMORY_SIZE)
 {
+	//file = fopen("log.txt", "w");
+	interrupts[0] = 0;
+	interrupts[1] = 0;
+	this->cycle = 0;
+
 	emulator = _emulator;
 
 
@@ -1392,40 +1399,40 @@ CPU::CPU(Emulator* const _emulator) :
 		[memory_pointer](int address, Byte value) {
 			memory_pointer[address & 0x07FF] = value;
 		});
-	memoryHandler.SetWriteHandler(0x0000, 0x1FFF,
+	memoryHandler.SetWriteHandler(0x2000, 0x3FFF,
 		[this](int address, Byte value) {
 			emulator->ppu->WriteRegister((address & 0x7) - 0x2000, value);
 		});
-	memoryHandler.SetWriteHandler(0x0000, 0x1FFF,
+	memoryHandler.SetWriteHandler(0x4000, 0x4017,
 		[this](int address, Byte value) {
 			WriteIORegister(address, value);
 		});
 
 	emulator->Mapper->InitializeMemoryMap(this);
 
-	/*init registers*/
-	registerA = 0;
-	registerX = 0;
-	registerY = 0;
-	registerSP = 0xFD;
-	registerP = 0x24;
-	registerPC = ReadWord(InterruptHandlerOffsets[InterruptType::RESET]);
+	/*init Register.s*/
+	Register.setA(0);
+	Register.setX(0);
+	Register.setY(0);
+	Register.SP = 0xFD;
+	Register.setP(0x24);
+	Register.PC = ReadWord(InterruptHandlerOffsets[InterruptType::RESET]);
 }
 
 
 void CPU::ExecuteSingleInstruction()
 {
-	static int ops[1000];
-	static int opi = 0;
+	static int ops[100000];
+	static QWord opi = 0;
 
 	for (int i = 0; i < 2; i++)
 	{
 		if (interrupts[i])
 		{
-			PushWord(registerPC);
-			Push(registerP);
-			registerPC = ReadWord(InterruptHandlerOffsets[i]);
-			setFlag_I(true);
+			PushWord(Register.PC);
+			Push(Register.getP());
+			Register.PC = ReadWord(InterruptHandlerOffsets[i]);
+			Register.P.InterruptDisabled = true;
 			interrupts[i] = false;
 			return;
 		}
@@ -1440,13 +1447,10 @@ void CPU::ExecuteSingleInstruction()
 	if (op == nullptr)
 		throw "NULL opcode executing!";
 	op();
-	if (opi < 1000)
+	opi++;
+	if (opi < 100000)
 	{
 		ops[opi] = currentInstruction;
-		opi++;
 	}
-	else
-	{
-		
-	}
+	
 }
