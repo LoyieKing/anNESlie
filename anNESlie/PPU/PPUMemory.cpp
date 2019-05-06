@@ -1,5 +1,6 @@
 #include "PPU.h"
 
+
 Byte PPU::ReadByte(Word address)
 {
 	return memoryHandler.ReadByte(address);
@@ -10,15 +11,15 @@ void PPU::WriteByte(Word address, Byte value)
 	memoryHandler.WriteByte(address, value);
 }
 
-Byte PPU::ReadWord(Word address)
+Word PPU::ReadWord(Word address)
 {
 	return memoryHandler.ReadWord(address);
 }
 
-void PPU::WriteWord(Word address, Byte value)
-{
-	memoryHandler.WriteWord(address, value);
-}
+//void PPU::WriteWord(Word address, Byte value)
+//{
+//	memoryHandler.WriteWord(address, value);
+//}
 
 void PPU::WriteRegister(Byte reg, Byte val)
 {

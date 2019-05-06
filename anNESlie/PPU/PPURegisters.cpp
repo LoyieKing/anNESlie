@@ -140,6 +140,7 @@ void PPU::setPPUSCROLL(Word value)
 	Flag.AddressLatch ^= true;
 }
 
+int readBufferi = 0;
 Byte PPU::getPPUDATA()
 {
 	Word busAdress = Flag.getBusAddress();
@@ -149,11 +150,13 @@ Byte PPU::getPPUDATA()
 		Byte temp = readBuffer;
 		readBuffer = ret;
 		ret = temp;
+		readBufferi++;
 	}
 	else
 	{
 		// Palette read should also read VRAM into read buffer
 		readBuffer = ReadByte(busAdress - 0x1000);
+		readBufferi++;
 	}
 	Flag.setBusAddress(busAdress + Flag.VRAMIncrement);
 	return ret;

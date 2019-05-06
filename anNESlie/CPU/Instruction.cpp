@@ -21,23 +21,23 @@ void CPU::RTS()
 }
 void CPU::INY()
 {
-	Register.Y = Register.getY() + 1;
+	Register.setY(Register.getY() + 1);
 }
 void CPU::DEY()
 {
-	Register.Y = Register.getY() - 1;
+	Register.setY(Register.getY() - 1);
 }
 void CPU::INX()
 {
-	Register.X = Register.getX() + 1;
+	Register.setX(Register.getX() + 1);
 }
 void CPU::DEX()
 {
-	Register.X = Register.getX() - 1;
+	Register.setX(Register.getX() - 1);
 }
 void CPU::TAY()
 {
-	Register.Y = Register.getA();
+	Register.setY(Register.getA());
 }
 void CPU::TYA()
 {
@@ -45,7 +45,7 @@ void CPU::TYA()
 }
 void CPU::TAX()
 {
-	Register.X = Register.getA();
+	Register.setX(Register.getA());
 }
 void CPU::TXA()
 {
@@ -53,7 +53,7 @@ void CPU::TXA()
 }
 void CPU::TSX()
 {
-	Register.X = Register.SP;
+	Register.setX(Register.SP);
 }
 void CPU::TXS()
 {
@@ -85,8 +85,6 @@ void CPU::BIT()
 }
 void CPU::JMP()
 {
-	if (!memoryAddressHasValue)
-		return;
 	if (currentInstruction == 0x4C)
 		Register.PC = NextWord();
 	else if (currentInstruction == 0x6C)
@@ -184,11 +182,11 @@ void CPU::LDA()
 }
 void CPU::LDY()
 {
-	Register.Y = AddressRead();
+	Register.setY(AddressRead());
 }
 void CPU::LDX()
 {
-	Register.X = AddressRead();
+	Register.setX(AddressRead());
 }
 void CPU::ORA()
 {
@@ -314,7 +312,7 @@ void CPU::ATX()
 {
 	Register.setA(Register.getA() | ReadByte(0xEE));
 	Register.setA(Register.getA() & AddressRead());
-	Register.X = Register.getA();
+	Register.setX(Register.getA());
 }
 
 void CPU::Branch(bool cond)
@@ -337,7 +335,7 @@ void  CPU::ADCImpl(Byte val)
 
 void  CPU::CMPImpl(Byte reg)
 {
-	Byte d = reg - AddressRead();
+	short d = reg - AddressRead();
 
 	Register.P.Negative = (d & 0x80) > 0 && d != 0;
 	Register.P.Carry = d >= 0;

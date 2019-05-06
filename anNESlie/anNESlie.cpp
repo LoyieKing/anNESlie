@@ -12,6 +12,13 @@ WCHAR szTitle[MAX_LOADSTRING];                  // 标题栏文本
 WCHAR szWindowClass[MAX_LOADSTRING];            // 主窗口类名
 HWND hWnd;
 
+HDC hMemDc;
+HDC hDc;
+BITMAPINFO binfo;
+HBITMAP bmp;
+BITMAPINFO bmpInfo;
+
+
 // 此代码模块中包含的函数的前向声明:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -21,17 +28,35 @@ INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 Emulator emulator("mario.nes");
 int i = 0;
 
+Byte RawBitmap[GAME_HEIGHT * GAME_WIDTH * 3];
+
 DWORD WINAPI ProcessFrame(LPVOID param)
 {
 	while (true)
 	{
+		if (emulator.isNull())
+			continue;
 		i++;
 		int s = GetTickCount();
 		emulator.ProcessFrame();
+		for (int i = 0; i < GAME_HEIGHT; i++)
+		{
+			for (int j = 0; j < GAME_WIDTH; j++)
+			{
+				RawBitmap[(GAME_WIDTH * (GAME_HEIGHT - i - 1) + j) * 3 + 2] = (emulator.RawBitmap[GAME_WIDTH * i + j] & 0xFF0000) >> 16;
+				RawBitmap[(GAME_WIDTH * (GAME_HEIGHT - i - 1) + j) * 3 + 1] = (emulator.RawBitmap[GAME_WIDTH * i + j] & 0x00FF00) >> 8;
+				RawBitmap[(GAME_WIDTH * (GAME_HEIGHT - i - 1) + j) * 3 + 0] = (emulator.RawBitmap[GAME_WIDTH * i + j] & 0x0000FF);
+
+			}
+		}
+		//SetDIBits(hMemDc, bmp, 0, GAME_HEIGHT, emulator.RawBitmap, &binfo, DIB_RGB_COLORS);
 		//emulator.DumpMemoryCPU();
+		SetDIBits(hMemDc, bmp, 0, GAME_HEIGHT, RawBitmap, &bmpInfo, DIB_RGB_COLORS);
+
+		BitBlt(hDc, 0, 0, GAME_WIDTH, GAME_HEIGHT, hMemDc, 0, 0, SRCCOPY);
 		int e = GetTickCount();
-		//int sleepTime = 1000.0 / 60.0 - (e - s);
-		//Sleep(sleepTime > 0 ? sleepTime : 0);
+		int sleepTime = 1000.0 / 60.0 - (e - s);
+		Sleep(sleepTime > 0 ? sleepTime : 0);
 		//InvalidateRect(hWnd, NULL, false);
 	}
 }
@@ -132,12 +157,28 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
    ::hWnd = hWnd;
-   //HDC hdc = GetDC(hWnd);
-   //HDC mdc = CreateCompatibleDC(hdc);
-   //HBITMAP bmp = CreateCompatibleBitmap(hdc, GAME_WIDTH, GAME_HEIGHT);
 
-   //SelectObject(mdc, bmp);
-   //
+
+   hDc = GetDC(hWnd);
+   hMemDc= CreateCompatibleDC(hDc);
+
+   bmp = CreateCompatibleBitmap(hDc, GAME_WIDTH, GAME_HEIGHT);
+   SelectObject(hMemDc, bmp);
+
+   bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+   bmpInfo.bmiHeader.biWidth = GAME_WIDTH;
+   bmpInfo.bmiHeader.biHeight = GAME_HEIGHT;
+   bmpInfo.bmiHeader.biPlanes = 1;
+   bmpInfo.bmiHeader.biBitCount = 24;
+   bmpInfo.bmiHeader.biCompression = BI_RGB;
+   bmpInfo.bmiHeader.biSizeImage = 0;
+   bmpInfo.bmiHeader.biXPelsPerMeter = 3000;
+   bmpInfo.bmiHeader.biYPelsPerMeter = 3000;
+   bmpInfo.bmiHeader.biClrUsed = 0;
+   bmpInfo.bmiHeader.biClrImportant = 0;
+
+   //SetDIBits(hMemDc, bmp, 0, GAME_HEIGHT, emulator.RawBitmap, &bmpInfo, DIB_RGB_COLORS);
+
 
 
    ShowWindow(hWnd, nCmdShow);
@@ -177,21 +218,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
         }
         break;
-    case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: 在此处添加使用 hdc 的任何绘图代码...
-			//for (int i = 0; i < GAME_WIDTH; i++)
-			//{
-			//	for (int j = 0; j < GAME_HEIGHT; j++)
-			//	{
-			//		SetPixel(hdc, i, j, emulator.RawBitmap[i * GAME_WIDTH + j]);
-			//	}
-			//}
-            EndPaint(hWnd, &ps);
-        }
-        break;
+   // case WM_PAINT:
+   //     {
+   //         PAINTSTRUCT ps;
+   //         HDC hdc = BeginPaint(hWnd, &ps);
+
+			//BitBlt(hdc, 0, 0, GAME_WIDTH, GAME_HEIGHT, hMemDc, 0, 0, SRCCOPY);
+
+   //         EndPaint(hWnd, &ps);
+   //     }
+   //     break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;

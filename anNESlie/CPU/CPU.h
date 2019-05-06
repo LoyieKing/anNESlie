@@ -50,7 +50,7 @@ const int CPU_MEMORY_SIZE = 0xFFFF;
 
 class CPU
 {
-	std::vector<std::string> logs;
+	//std::vector<std::string> logs;
 
 	Emulator* emulator;
 public:
@@ -65,8 +65,9 @@ private:
 	 N V   B D I Z C
 	*********************************/
 
-	struct Register
+	struct REGISTER
 	{
+	private:
 		Byte A;		//Accumulator		算数寄存器
 		Byte X;		//Index Register	地址寄存器
 		Byte Y;		//Index Register	地址寄存器
@@ -115,7 +116,7 @@ public:
 
 	/*状态寄存器标志位们的访问器*/
 
-	Register Register;
+	REGISTER Register;
 
 #pragma endregion 
 

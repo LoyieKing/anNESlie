@@ -14,17 +14,27 @@ const DWord PPU::palette[64] = {
 };
 
 PPU::PPU(Emulator*const _emulator) :
-	memoryHandler(memory, 0x3FFF)
+	memoryHandler(memory, 0x3FFF,false)
 {
-	this->bufferPos = 0;
-	this->cpuClocksSinceVBL = 0;
-	this->cpuSyncCounter = 0;
+	readBuffer = 0;
+	bufferPos = 0;
+	cpuClocksSinceVBL = 0;
+	cpuSyncCounter = 0;
+	currentNametableByte = 0;
+	currentHighTile = 0;
+	currentLowTile = 0;
+	currentColor = 0;
+	lastWrittenRegister =0;
 	memset(&this->Flag, 0, sizeof(this->Flag));
 	memset(this->isSprite0, 0, sizeof(this->isSprite0));
-	this->ppuClocksSinceVBL = 0;
-	this->spriteCount = 0;
+	memset(this->memory, 0, sizeof(this->memory));
+	memset(this->oam, 0, sizeof(this->oam));
+	memset(this->vram, 0, sizeof(this->vram));
+	memset(this->paletteRAM, 0, sizeof(this->paletteRAM));
+	ppuClocksSinceVBL = 0;
+	spriteCount = 0;
 	this->T = 0;
-	this->tileShiftRegister = 0;
+	tileShiftRegister = 0;
 	this->v = 0;
 	this->X = 0;
 
@@ -110,7 +120,7 @@ void PPU::shiftTileRegister()
 	for (int x = 0; x < 8; x++)
 	{
 		Word palette = ((currentHighTile & 0x80) >> 6) | ((currentLowTile & 0x80) >> 7);
-		tileShiftRegister |= (palette + currentColor * 4) << ((7 - x) * 4);
+		tileShiftRegister |= (((DWord)palette) + ((DWord)currentColor) * 4) << ((7 - x) * 4);
 		currentLowTile <<= 1;
 		currentHighTile <<= 1;
 	}

@@ -102,3 +102,8 @@ void Emulator::DumpMemoryPPU()
 	fclose(fpWrite);
 }
 
+bool Emulator::isNull()
+{
+	return cpu == nullptr;
+}
+

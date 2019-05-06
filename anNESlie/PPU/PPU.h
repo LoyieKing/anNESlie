@@ -25,9 +25,9 @@ private:
 	bool isSprite0[8];
 	int spriteCount;
 
-	Word tileShiftRegister;
+	QWord tileShiftRegister;
 	Byte currentNametableByte;
-	Byte currentHighTile, currentLowTile;
+	Word currentHighTile, currentLowTile;
 	Byte currentColor;
 
 	int cpuClocksSinceVBL;
@@ -56,15 +56,21 @@ private:
 	Byte memory[0x3FFF];
 	Byte ReadByte(Word address);
 	void WriteByte(Word address, Byte value);
-	Byte ReadWord(Word address);
-	void WriteWord(Word address, Byte value);
+	Word ReadWord(Word address);
+	//void WriteWord(Word address, Byte value);
 
 
 	Byte oam[0x100];
 	Byte vram[0x2000];
 	Byte paletteRAM[0x20];
 
-	Byte VRAMMirrorLookUp[5][4];
+	Byte VRAMMirrorLookUp[5][4] = {
+		{0, 0, 1, 1},	// H
+		{0, 1, 0, 1},	// V
+		{0, 1, 2, 3},	// All
+		{0, 0, 0, 0},	// Upper
+		{1, 1, 1, 1}	// Lower
+	};
 
 	Byte lastWrittenRegister;
 
@@ -112,7 +118,7 @@ public:
 			return busAddress;
 		}
 
-		inline void setBusAddress(Byte val)
+		inline void setBusAddress(Word val)
 		{
 			busAddress = val & 0x3FFF;
 		}

@@ -80,27 +80,27 @@ void CPU::AddressWrite(Byte val)
 
 Byte CPU::ReadByte(Word address)
 {
-	char log[256];
+	//char log[256];
 	Byte val = memoryHandler.ReadByte(address);
-	sprintf(log, "Read Byte from 0x%04x, value is 0x%02x.", address, val);
-	logs.push_back(log);
+	//sprintf(log, "Read Byte from 0x%04x, value is 0x%02x.", address, val);
+	//logs.push_back(log);
 	return val;
 }
 
 void CPU::WriteByte(Word address, Byte value)
 {
-	char log[256];
-	sprintf(log, "Write Byte 0x%02x to 0x%04x.", value, address);
-	logs.push_back(log);
+	//char log[256];
+	//sprintf(log, "Write Byte 0x%02x to 0x%04x.", value, address);
+	//logs.push_back(log);
 	memoryHandler.WriteByte(address, value);
 }
 
 Word CPU::ReadWord(Word address)
 {
-	char log[256];
+	//char log[256];
 	Word val = memoryHandler.ReadWord(address);
-	sprintf(log, "Read Word from 0x%04x, value is 0x%04x.", address, val);
-	logs.push_back(log);
+	//sprintf(log, "Read Word from 0x%04x, value is 0x%04x.", address, val);
+	//logs.push_back(log);
 	return val;
 }
 
@@ -122,14 +122,14 @@ SByte CPU::NextSByte()
 
 void CPU::Push(Byte value)
 {
-	memoryHandler.WriteByte(0x100 + Register.SP, value);
+	WriteByte(0x100 + Register.SP, value);
 	Register.SP--;
 }
 
 Byte CPU::Pop()
 {
 	Register.SP++;
-	return memoryHandler.ReadByte(0x100 + Register.SP);
+	return ReadByte(0x100 + Register.SP);
 }
 
 void CPU::PushWord(Word value)

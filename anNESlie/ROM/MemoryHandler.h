@@ -1,6 +1,8 @@
 #pragma once
 #include <functional>
 #include "..\Types.h"
+#include <vector>
+#include <string>
 //using namespace std;
 
 namespace ROM
@@ -23,12 +25,15 @@ namespace ROM
 	class MemoryHandler
 	{
 	private:
+		bool log;
+		std::vector<std::string> logs;
+
 		Byte* memory;
 		std::function<Byte(int)>* readHandlers;
 		std::function<void(int, Byte)>* writeHandlers;
 
 	public:
-		MemoryHandler(Byte* memory_address, int memory_size);
+		MemoryHandler(Byte* memory_address, int memory_size, bool log = false);
 		~MemoryHandler();
 
 		Byte* GetMemoryAddress();
@@ -45,7 +50,7 @@ namespace ROM
 		void WriteByte(Word address, Byte value);
 
 		Word ReadWord(Word address);
-		void WriteWord(Word address, Word value);
+		//void WriteWord(Word address, Word value);
 
 	};
 }

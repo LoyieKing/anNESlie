@@ -1,46 +1,46 @@
 #pragma once
 #include "CPU.h"
 
-Byte CPU::Register::getA()
+Byte CPU::REGISTER::getA()
 {
 	return A;
 }
 
-void CPU::Register::setA(Byte val)
+void CPU::REGISTER::setA(Byte val)
 {
 	A = val;
 	setFlagNZ(val);
 }
 
-Byte CPU::Register::getX()
+Byte CPU::REGISTER::getX()
 {
 	return X;
 }
 
-void CPU::Register::setX(Byte val)
+void CPU::REGISTER::setX(Byte val)
 {
 	X = val;
 	setFlagNZ(val);
 }
 
-Byte CPU::Register::getY()
+Byte CPU::REGISTER::getY()
 {
 	return Y;
 }
 
-void CPU::Register::setY(Byte val)
+void CPU::REGISTER::setY(Byte val)
 {
 	Y = val;
 	setFlagNZ(val);
 }
 
-void CPU::Register::setFlagNZ(Byte val)
+void CPU::REGISTER::setFlagNZ(Byte val)
 {
 	P.Zero = val == 0;
 	P.Negative = (val & 0x80) > 0;
 }
 
-void CPU::Register::setP(Byte val)
+void CPU::REGISTER::setP(Byte val)
 {
 	P.BreakSource = val & BreakSourceBit;
 	P.Carry = val & CarryBit;
@@ -52,7 +52,7 @@ void CPU::Register::setP(Byte val)
 	P.Zero = val & ZeroBit;
 }
 
-Byte CPU::Register::getP()
+Byte CPU::REGISTER::getP()
 {
 	return (
 		P.BreakSource << BreakSourceBit |

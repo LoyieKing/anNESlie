@@ -14,6 +14,7 @@ CPU::CPU(Emulator* const _emulator) :
 	// Init memory handlers
 	memoryHandler(memory, CPU_MEMORY_SIZE)
 {
+	//logs.reserve(100000);
 	//file = fopen("log.txt", "w");
 	interrupts[0] = 0;
 	interrupts[1] = 0;
@@ -1422,7 +1423,7 @@ CPU::CPU(Emulator* const _emulator) :
 
 void CPU::ExecuteSingleInstruction()
 {
-	static int ops[100000];
+	//static int ops[100000];
 	static QWord opi = 0;
 
 	for (int i = 0; i < 2; i++)
@@ -1437,6 +1438,10 @@ void CPU::ExecuteSingleInstruction()
 			return;
 		}
 	}
+	//if (logs.size() >= 100000)
+	//{
+	//	opi++;
+	//}
 	currentInstruction = NextByte();
 
 	cycle += opcodes[currentInstruction].Cycles;
@@ -1444,13 +1449,15 @@ void CPU::ExecuteSingleInstruction()
 	ResetInstructionAddressingMode();
 
 	std::function<void(void)> op = opcodes[currentInstruction].action;
-	if (op == nullptr)
+	
+	if (!op )
 		throw "NULL opcode executing!";
+	
 	op();
 	opi++;
-	if (opi < 100000)
-	{
-		ops[opi] = currentInstruction;
-	}
+	//if (opi < 100000)
+	//{
+	//	ops[opi] = currentInstruction;
+	//}
 	
 }

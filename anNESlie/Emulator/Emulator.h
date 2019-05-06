@@ -47,4 +47,6 @@ public:
 
 	void DumpMemoryCPU();
 	void DumpMemoryPPU();
+
+	bool isNull();
 };
