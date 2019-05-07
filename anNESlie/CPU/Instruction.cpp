@@ -317,7 +317,9 @@ void CPU::ATX()
 
 void CPU::Branch(bool cond)
 {
-	Word nPC = Register.PC + NextSByte() + 1;
+	// WARN: DO NOT! use NextByte() here, it will cause a compile error
+	Word nPC = Register.PC + (SByte)ReadByte(Register.PC) + 1;
+	Register.PC++;
 	if (cond)
 	{
 		Register.PC = nPC;

@@ -5,6 +5,8 @@
 #include "anNESlie.h"
 #define MAX_LOADSTRING 100
 #include "Emulator/Emulator.h"
+#include <Windows.h>
+#include <stdio.h>
 
 // 全局变量:
 HINSTANCE hInst;                                // 当前实例
@@ -26,7 +28,6 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 Emulator emulator("mario.nes");
-int i = 0;
 
 Byte RawBitmap[GAME_HEIGHT * GAME_WIDTH * 3];
 
@@ -36,9 +37,10 @@ DWORD WINAPI ProcessFrame(LPVOID param)
 	{
 		if (emulator.isNull())
 			continue;
-		i++;
 		int s = GetTickCount();
+
 		emulator.ProcessFrame();
+
 		for (int i = 0; i < GAME_HEIGHT; i++)
 		{
 			for (int j = 0; j < GAME_WIDTH; j++)
@@ -103,6 +105,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
     }
+	CloseHandle(hThread);
 
     return (int) msg.wParam;
 }

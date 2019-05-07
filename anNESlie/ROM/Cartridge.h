@@ -69,7 +69,7 @@ namespace ROM
 			OUT_OF_MEMORY
 		}READ_EXCEPTION;
 
-		Cartridge(CString file_name);
+		Cartridge(const char* file_name);
 		Cartridge(const Cartridge&);
 		~Cartridge();
 

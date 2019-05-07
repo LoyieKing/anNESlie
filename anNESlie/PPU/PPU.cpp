@@ -14,7 +14,7 @@ const DWord PPU::palette[64] = {
 };
 
 PPU::PPU(Emulator*const _emulator) :
-	memoryHandler(memory, 0x3FFF,false)
+	memoryHandler(memory, PPU_MEMORY_SIZE)
 {
 	readBuffer = 0;
 	bufferPos = 0;
@@ -41,7 +41,7 @@ PPU::PPU(Emulator*const _emulator) :
 	emulator = _emulator;
 
 	/*InitializeMemoryMap*/
-	memoryHandler.SetReadHandler(0x2000, 0x2FFF, [this](int address) {
+	memoryHandler.SetReadHandler(0x2000, 0x2FFF, [this](Word address)->Byte {
 		return vram[emulator->GetVRAMMirror(address)];
 		});
 	memoryHandler.SetReadHandler(0x3000, 0x3EFF, [this](int address) {

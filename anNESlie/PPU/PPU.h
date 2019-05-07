@@ -3,9 +3,10 @@
 #include "../ROM/MemoryHandler.h"
 #include "../Emulator/Emulator.h"
 
-
+const int PPU_MEMORY_SIZE = 0x3FFF + 1;
 const int SCANLINE_COUNT = 261;
 const int CYCLES_PER_LINE = 341;
+
 
 class PPU
 {
@@ -53,7 +54,7 @@ public:
 
 #pragma region Memory
 private:
-	Byte memory[0x3FFF];
+	Byte memory[PPU_MEMORY_SIZE];
 	Byte ReadByte(Word address);
 	void WriteByte(Word address, Byte value);
 	Word ReadWord(Word address);

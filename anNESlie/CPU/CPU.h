@@ -46,7 +46,7 @@
 
 class Emulator;
 
-const int CPU_MEMORY_SIZE = 0xFFFF;
+const int CPU_MEMORY_SIZE = 0xFFFF + 1;
 
 class CPU
 {
@@ -141,9 +141,12 @@ public:
 	void WriteByte(Word address, Byte value);
 	Word ReadWord(Word address);
 
-	Byte NextByte();
+	// WARN: The macro here is used to slove a msvc compile error, PLEASE DO NOT change them!
+#define NextByte() ReadByte(Register.PC++)
+#define NextSByte() ((SByte)ReadByte(Register.PC++))
+	//Byte NextByte();
 	Word NextWord();
-	SByte NextSByte();
+	//SByte NextSByte();
 
 	void Push(Byte value);
 	Byte Pop();

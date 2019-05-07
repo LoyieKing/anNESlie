@@ -22,7 +22,6 @@ CPU::CPU(Emulator* const _emulator) :
 
 	emulator = _emulator;
 
-
 #pragma region OpcodesBinding
 	opcodes[0x00].Opcode = 0x00;
 	opcodes[0x00].Cycles = 7;
@@ -1382,10 +1381,9 @@ CPU::CPU(Emulator* const _emulator) :
 
 	/*InitializeMemoryMap*/
 
-	Byte* memory_pointer = memoryHandler.GetMemoryAddress();
 	memoryHandler.SetReadHandler(0x0000, 0x1FFF,
-		[memory_pointer](int address) {
-			return memory_pointer[address & 0x07FF];
+		[this](int address) {
+			return memory[address & 0x07FF];
 		});
 	memoryHandler.SetReadHandler(0x2000, 0x3FFF,
 		[this](int address) {
@@ -1397,8 +1395,8 @@ CPU::CPU(Emulator* const _emulator) :
 		});
 
 	memoryHandler.SetWriteHandler(0x0000, 0x1FFF,
-		[memory_pointer](int address, Byte value) {
-			memory_pointer[address & 0x07FF] = value;
+		[this](int address, Byte value) {
+			memory[address & 0x07FF] = value;
 		});
 	memoryHandler.SetWriteHandler(0x2000, 0x3FFF,
 		[this](int address, Byte value) {
@@ -1450,11 +1448,14 @@ void CPU::ExecuteSingleInstruction()
 
 	std::function<void(void)> op = opcodes[currentInstruction].action;
 	
-	if (!op )
+	if (!op)
+	{
+		//return;
 		throw "NULL opcode executing!";
+	}
 	
 	op();
-	opi++;
+	//opi++;
 	//if (opi < 100000)
 	//{
 	//	ops[opi] = currentInstruction;

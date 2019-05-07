@@ -103,22 +103,26 @@ Word CPU::ReadWord(Word address)
 	//logs.push_back(log);
 	return val;
 }
-
-Byte CPU::NextByte()
-{
-	return ReadByte(Register.PC++);
-}
+//
+//Byte CPU::NextByte()
+//{
+//	return ReadByte(Register.PC++);
+//}
 
 Word CPU::NextWord()
 {
-	Word result = NextByte() | ((Word)NextByte() << 8);
-	return result;
+	
+	Word byte1 = NextByte();
+	Word byte2 = NextByte();
+	// WARN: The annotated code here will cause a compile error.
+	//Word result = NextByte() | ((Word)NextByte() << 8);
+	return byte1 | byte2 << 8;
 }
 
-SByte CPU::NextSByte()
-{
-	return (SByte)NextByte();
-}
+//SByte CPU::NextSByte()
+//{
+//	return (SByte)NextByte();
+//}
 
 void CPU::Push(Byte value)
 {
@@ -132,14 +136,17 @@ Byte CPU::Pop()
 	return ReadByte(0x100 + Register.SP);
 }
 
+Word CPU::PopWord()
+{
+	Word byte1 = Pop();
+	Word byte2 = Pop();
+	Word result = byte1 | (byte2 << 8);
+	return result;
+}
+
+
 void CPU::PushWord(Word value)
 {
 	Push(value >> 8);
 	Push(value & 0xFF);
-}
-
-Word CPU::PopWord()
-{
-	Word result = Pop() | (Pop() << 8);
-	return result;
 }

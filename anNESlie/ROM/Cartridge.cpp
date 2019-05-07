@@ -1,24 +1,25 @@
 #include "Cartridge.h"
+#include <fstream>
 
 using namespace ROM;
 
-Cartridge::Cartridge(CString file_name)
+Cartridge::Cartridge(const char* file_name)
 {
-
-	CFile file;
-	if (!file.Open(file_name, CFile::modeRead))
+	std::ifstream file;
+	file.open(file_name, std::ios::binary);
+	if (file.fail())
 		throw Cartridge::FILE_OPEN_FAIL;
-
 	/*读取文件开头四字节，判断是否为NES ROM，不是则结束，减少无意义的磁盘性能和内存浪费*/
 	int ident;
-	if (file.Read(&ident, 4) != 4)
-		throw Cartridge::ROM_FORMAT_WRONG;
+	file.read((char*)(&ident), 4);
 	if (ident != 0x1A53454E)// 0x1A53454E = (BYTE)"N E S 0x1A"
 		throw Cartridge::ROM_FORMAT_WRONG;
 
 	/*读入完整文件*/
-	ULONGLONG fileLength = file.GetLength();
-	
+	file.seekg(0, std::ios::end);
+	ULONGLONG fileLength = file.tellg();
+	file.seekg(4);
+
 	data = new Data;
 	Byte* praw = new Byte[fileLength];
 	data->Raw = praw;
@@ -28,7 +29,7 @@ Cartridge::Cartridge(CString file_name)
 	praw[1] = 'E';
 	praw[2] = 'S';
 	praw[3] = 0x1A;
-	file.Read(praw + 4, fileLength - 4);// 排除掉开头的四个字节
+	file.read((char*)praw + 4, fileLength - 4);// 排除掉开头的四个字节
 
 
 	/*开始解析*/

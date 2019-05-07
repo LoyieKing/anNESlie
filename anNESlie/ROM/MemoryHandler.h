@@ -25,26 +25,16 @@ namespace ROM
 	class MemoryHandler
 	{
 	private:
-		bool log;
-		std::vector<std::string> logs;
-
-		Byte* memory;
-		std::function<Byte(int)>* readHandlers;
-		std::function<void(int, Byte)>* writeHandlers;
+		std::function<Byte(Word)>* readHandlers;
+		std::function<void(Word, Byte)>* writeHandlers;
 
 	public:
-		MemoryHandler(Byte* memory_address, int memory_size, bool log = false);
+		MemoryHandler(Byte* memory_address, int memory_size);
 		~MemoryHandler();
 
-		Byte* GetMemoryAddress();
-		void SetMemoryAddress(Byte* memory_address);
 
-		void SetReadHandler(Word address, Byte(*handler)(int));
-		void SetReadHandler(Word address, std::function<Byte(int)> handler);
-		void SetReadHandler(Word address_start, int address_end, std::function<Byte(int)> handler);
-		void SetWriteHandler(Word address, void (*handler)(int, Byte));
-		void SetWriteHandler(Word address, std::function<void(int, Byte)>  handler);
-		void SetWriteHandler(Word address_start, int address_end, std::function<void(int, Byte)>  handler);
+		void SetReadHandler(Word address_start, Word address_end, std::function<Byte(Word)> handler);
+		void SetWriteHandler(Word address_start, Word address_end, std::function<void(Word, Byte)>  handler);
 
 		Byte ReadByte(Word address);
 		void WriteByte(Word address, Byte value);
