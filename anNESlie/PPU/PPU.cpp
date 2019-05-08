@@ -2,7 +2,7 @@
 #include "../Emulator/Emulator.h"
 #include "../Mappers/BaseMapper.h"
 
-const DWord PPU::palette[64] = {
+Color PPU::palette[64] = {
 		0x7C7C7C, 0x0000FC, 0x0000BC, 0x4428BC, 0x940084, 0xA80020, 0xA81000, 0x881400,
 		0x503000, 0x007800, 0x006800, 0x005800, 0x004058, 0x000000, 0x000000, 0x000000,
 		0xBCBCBC, 0x0078F8, 0x0058F8, 0x6844FC, 0xD800CC, 0xE40058, 0xF83800, 0xE45C10,
@@ -135,7 +135,7 @@ void PPU::processBackgroundForPixel(int cycle, int scanline)
 		// https://www.romhacking.net/forum/index.php?topic=20554.0
 		// Don't know if any game actually uses it, but a test ROM I wrote unexpectedly showed this
 		// corner case
-		rawBitmap[bufferPos] = palette[ReadByte(0x3F00 + ((Flag.getBusAddress() & 0x3F00) == 0x3F00 ? Flag.getBusAddress() & 0x001F : 0)) & 0x3F];
+		emulator->ScreenOutput[bufferPos] = palette[ReadByte(0x3F00 + ((Flag.getBusAddress() & 0x3F00) == 0x3F00 ? Flag.getBusAddress() & 0x001F : 0)) & 0x3F];
 		return;
 	}
 
@@ -145,7 +145,7 @@ void PPU::processBackgroundForPixel(int cycle, int scanline)
 	if (scanline != -1)
 	{
 		priority[bufferPos] = paletteEntry;
-		rawBitmap[bufferPos] = palette[ReadByte(0x3F00u + paletteEntry) & 0x3F];
+		emulator->ScreenOutput[bufferPos] = palette[ReadByte(0x3F00u + paletteEntry) & 0x3F];
 	}
 }
 
@@ -234,7 +234,7 @@ void PPU::processSpritesForPixel(int x, int scanline)
 				if (scanline != -1)
 				{
 					Word address = ReadByte(0x3F10 + _palette * 4 + color) & 0x3F;
-					rawBitmap[bufferPos] = palette[address];
+					emulator->ScreenOutput[bufferPos] = palette[address];
 				}
 			}
 		}
@@ -245,7 +245,7 @@ void PPU::ProcessFrame()
 {
 	for (int i = 0; i < GAME_WIDTH * GAME_HEIGHT; i++)
 	{
-		rawBitmap[i] = 0;
+		emulator->ScreenOutput[i] = 0;
 		priority[i] = 0;
 	}
 	bufferPos = 0;

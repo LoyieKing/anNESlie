@@ -42,7 +42,9 @@ public:
 	Emulator(const char* rom_path);
 	~Emulator();
 
-	DWord const* RawBitmap;
+	//DWord const* RawBitmap;
+	Color ScreenOutput[GAME_HEIGHT * GAME_WIDTH];
+
 	void ProcessFrame();
 
 	void DumpMemoryCPU();

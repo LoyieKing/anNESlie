@@ -22,3 +22,13 @@ enum InterruptType
 
 const int GAME_WIDTH = 256;
 const int GAME_HEIGHT = 240;
+
+struct Color
+{
+	Byte R;
+	Byte G;
+	Byte B;
+
+	Color();
+	Color(DWord RGB);
+};

@@ -15,7 +15,7 @@ Emulator::Emulator(const char* rom_path)
 	this->ppu = new ::PPU(this);
 	this->Controller = new Controller::NES001Controller();
 
-	RawBitmap = this->ppu->rawBitmap;
+	//RawBitmap = this->ppu->rawBitmap;
 
 
 	romPath = rom_path;

@@ -29,7 +29,7 @@ INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 Emulator emulator("mario.nes");
 
-Byte RawBitmap[GAME_HEIGHT * GAME_WIDTH * 3];
+//Byte RawBitmap[GAME_HEIGHT * GAME_WIDTH * 3];
 
 DWORD WINAPI ProcessFrame(LPVOID param)
 {
@@ -41,19 +41,19 @@ DWORD WINAPI ProcessFrame(LPVOID param)
 
 		emulator.ProcessFrame();
 
-		for (int i = 0; i < GAME_HEIGHT; i++)
-		{
-			for (int j = 0; j < GAME_WIDTH; j++)
-			{
-				RawBitmap[(GAME_WIDTH * (GAME_HEIGHT - i - 1) + j) * 3 + 2] = (emulator.RawBitmap[GAME_WIDTH * i + j] & 0xFF0000) >> 16;
-				RawBitmap[(GAME_WIDTH * (GAME_HEIGHT - i - 1) + j) * 3 + 1] = (emulator.RawBitmap[GAME_WIDTH * i + j] & 0x00FF00) >> 8;
-				RawBitmap[(GAME_WIDTH * (GAME_HEIGHT - i - 1) + j) * 3 + 0] = (emulator.RawBitmap[GAME_WIDTH * i + j] & 0x0000FF);
+		//for (int i = 0; i < GAME_HEIGHT; i++)
+		//{
+		//	for (int j = 0; j < GAME_WIDTH; j++)
+		//	{
+		//		RawBitmap[(GAME_WIDTH * (GAME_HEIGHT - i - 1) + j) * 3 + 2] = (emulator.RawBitmap[GAME_WIDTH * i + j] & 0xFF0000) >> 16;
+		//		RawBitmap[(GAME_WIDTH * (GAME_HEIGHT - i - 1) + j) * 3 + 1] = (emulator.RawBitmap[GAME_WIDTH * i + j] & 0x00FF00) >> 8;
+		//		RawBitmap[(GAME_WIDTH * (GAME_HEIGHT - i - 1) + j) * 3 + 0] = (emulator.RawBitmap[GAME_WIDTH * i + j] & 0x0000FF);
 
-			}
-		}
+		//	}
+		//}
 		//SetDIBits(hMemDc, bmp, 0, GAME_HEIGHT, emulator.RawBitmap, &binfo, DIB_RGB_COLORS);
 		//emulator.DumpMemoryCPU();
-		SetDIBits(hMemDc, bmp, 0, GAME_HEIGHT, RawBitmap, &bmpInfo, DIB_RGB_COLORS);
+		SetDIBits(hMemDc, bmp, 0, GAME_HEIGHT, emulator.ScreenOutput, &bmpInfo, DIB_RGB_COLORS);
 
 		BitBlt(hDc, 0, 0, GAME_WIDTH, GAME_HEIGHT, hMemDc, 0, 0, SRCCOPY);
 		int e = GetTickCount();
@@ -170,7 +170,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
    bmpInfo.bmiHeader.biWidth = GAME_WIDTH;
-   bmpInfo.bmiHeader.biHeight = GAME_HEIGHT;
+   bmpInfo.bmiHeader.biHeight = -GAME_HEIGHT;
    bmpInfo.bmiHeader.biPlanes = 1;
    bmpInfo.bmiHeader.biBitCount = 24;
    bmpInfo.bmiHeader.biCompression = BI_RGB;

@@ -15,10 +15,10 @@ public:
 #pragma region Core
 
 private:
-	const static DWord palette[64];
+	static Color palette[64];
 
 	DWord bufferPos;
-	DWord rawBitmap[GAME_WIDTH * GAME_HEIGHT];
+	//DWord rawBitmap[GAME_WIDTH * GAME_HEIGHT];
 	DWord priority[GAME_WIDTH * GAME_HEIGHT];
 
 	int cpuSyncCounter;
