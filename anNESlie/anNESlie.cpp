@@ -21,6 +21,7 @@ HBITMAP bmp;
 BITMAPINFO bmpInfo;
 
 
+
 // 此代码模块中包含的函数的前向声明:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -55,7 +56,10 @@ DWORD WINAPI ProcessFrame(LPVOID param)
 		//emulator.DumpMemoryCPU();
 		SetDIBits(hMemDc, bmp, 0, GAME_HEIGHT, emulator.ScreenOutput, &bmpInfo, DIB_RGB_COLORS);
 
-		BitBlt(hDc, 0, 0, GAME_WIDTH, GAME_HEIGHT, hMemDc, 0, 0, SRCCOPY);
+		RECT clientRect;
+		GetClientRect(hWnd, &clientRect);
+		StretchBlt(hDc, 0, 0, clientRect.right, clientRect.bottom, hMemDc, 0, 0, GAME_WIDTH, GAME_HEIGHT, SRCCOPY);
+		//BitBlt(hDc, 0, 0, GAME_WIDTH, GAME_HEIGHT, hMemDc, 0, 0, SRCCOPY);
 		int e = GetTickCount();
 		int sleepTime = 1000.0 / 60.0 - (e - s);
 		Sleep(sleepTime > 0 ? sleepTime : 0);

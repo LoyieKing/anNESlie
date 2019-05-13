@@ -158,6 +158,7 @@
     <ClInclude Include="CPU\CPU.h" />
     <ClInclude Include="CPU\Instructions.h" />
     <ClInclude Include="Emulator\Emulator.h" />
+    <ClInclude Include="Emulator\Setting.h" />
     <ClInclude Include="Mappers\BaseMapper.h" />
     <ClInclude Include="Mappers\Mapper.h" />
     <ClInclude Include="Mappers\NROM.h" />
@@ -171,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="anNESlie.cpp" />
+    <ClCompile Include="Controllers\Controller.cpp" />
     <ClCompile Include="Controllers\NES001Controller.cpp" />
     <ClCompile Include="CPU\CPU.cpp" />
     <ClCompile Include="CPU\Instruction.cpp" />
@@ -178,6 +180,7 @@
     <ClCompile Include="CPU\CPUMemory.cpp" />
     <ClCompile Include="CPU\CPURegisters.cpp" />
     <ClCompile Include="Emulator\Emulator.cpp" />
+    <ClCompile Include="Emulator\Setting.cpp" />
     <ClCompile Include="Mappers\BaseMapper.cpp" />
     <ClCompile Include="Mappers\Mapper.cpp" />
     <ClCompile Include="Mappers\NROM.cpp" />

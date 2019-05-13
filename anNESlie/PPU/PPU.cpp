@@ -3,14 +3,10 @@
 #include "../Mappers/BaseMapper.h"
 
 Color PPU::palette[64] = {
-		0x7C7C7C, 0x0000FC, 0x0000BC, 0x4428BC, 0x940084, 0xA80020, 0xA81000, 0x881400,
-		0x503000, 0x007800, 0x006800, 0x005800, 0x004058, 0x000000, 0x000000, 0x000000,
-		0xBCBCBC, 0x0078F8, 0x0058F8, 0x6844FC, 0xD800CC, 0xE40058, 0xF83800, 0xE45C10,
-		0xAC7C00, 0x00B800, 0x00A800, 0x00A844, 0x008888, 0x000000, 0x000000, 0x000000,
-		0xF8F8F8, 0x3CBCFC, 0x6888FC, 0x9878F8, 0xF878F8, 0xF85898, 0xF87858, 0xFCA044,
-		0xF8B800, 0xB8F818, 0x58D854, 0x58F898, 0x00E8D8, 0x787878, 0x000000, 0x000000,
-		0xFCFCFC, 0xA4E4FC, 0xB8B8F8, 0xD8B8F8, 0xF8B8F8, 0xF8A4C0, 0xF0D0B0, 0xFCE0A8,
-		0xF8D878, 0xD8F878, 0xB8F8B8, 0xB8F8D8, 0x00FCFC, 0xF8D8F8, 0x000000, 0x000000
+		0x7C7C7C, 0x0000FC, 0x0000BC, 0x4428BC, 0x940084, 0xA80020, 0xA81000, 0x881400,0x503000, 0x007800, 0x006800, 0x005800, 0x004058, 0x000000, 0x000000, 0x000000,
+		0xBCBCBC, 0x0078F8, 0x0058F8, 0x6844FC, 0xD800CC, 0xE40058, 0xF83800, 0xE45C10,0xAC7C00, 0x00B800, 0x00A800, 0x00A844, 0x008888, 0x000000, 0x000000, 0x000000,
+		0xF8F8F8, 0x3CBCFC, 0x6888FC, 0x9878F8, 0xF878F8, 0xF85898, 0xF87858, 0xFCA044,0xF8B800, 0xB8F818, 0x58D854, 0x58F898, 0x00E8D8, 0x787878, 0x000000, 0x000000,
+		0xFCFCFC, 0xA4E4FC, 0xB8B8F8, 0xD8B8F8, 0xF8B8F8, 0xF8A4C0, 0xF0D0B0, 0xFCE0A8,0xF8D878, 0xD8F878, 0xB8F8B8, 0xB8F8D8, 0x00FCFC, 0xF8D8F8, 0x000000, 0x000000
 };
 
 PPU::PPU(Emulator*const _emulator) :
@@ -65,7 +61,7 @@ PPU::PPU(Emulator*const _emulator) :
 		paletteRAM[(address - 0x3F00) & 0x1F] = val;
 		});
 
-	emulator->Mapper->InitializeMemoryMap(this);
+	emulator->mapper->InitializeMemoryMap(this);
 }
 
 void PPU::countSpritesOnLine(int scanline)
@@ -154,8 +150,8 @@ void PPU::processSpritesForPixel(int x, int scanline)
 
 	for (int idx = spriteCount * 4 - 4; idx >= 0; idx -= 4)
 	{
-		DWord spriteX = scanlineOAM[idx + 3];
-		DWord spriteY = scanlineOAM[idx] + 1;
+		Byte spriteX = scanlineOAM[idx + 3];
+		Byte spriteY = scanlineOAM[idx] + 1;
 
 		// Don't draw this sprite iFlag...
 		if (spriteY == 0 || // it's located at y = 0
@@ -169,13 +165,13 @@ void PPU::processSpritesForPixel(int x, int scanline)
 		// to that of the Gameboy / Gameboy Color, so I've sort of just copy/pasted
 		// handling code wholesale from my GBC emulator at
 		// https://github.com/Xyene/Nitrous-Emulator/blob/master/src/main/java/nitrous/lcd/LCD.java#L642
-		DWord tileIdx = scanlineOAM[idx + 1];
+		Word tileIdx = scanlineOAM[idx + 1];
 		if (Flag.TallSpritesEnabled) tileIdx &= ~0x1u;
 		tileIdx *= 16;
 
-		DWord attrib = scanlineOAM[idx + 2] & 0xE3;
+		Byte attrib = scanlineOAM[idx + 2] & 0xE3;
 
-		DWord _palette = attrib & 0x3;
+		Byte _palette = attrib & 0x3;
 		bool front = (attrib & 0x20) == 0;
 		bool flipX = (attrib & 0x40) > 0;
 		bool flipY = (attrib & 0x80) > 0;
@@ -183,7 +179,7 @@ void PPU::processSpritesForPixel(int x, int scanline)
 		int px = (int)(x - spriteX);
 		int line = (int)(scanline - spriteY);
 
-		DWord tableBase = Flag.TallSpritesEnabled ? (scanlineOAM[idx + 1] & 1) * 0x1000 : Flag.SpriteTableAddress;
+		Word tableBase = Flag.TallSpritesEnabled ? ((Word)(scanlineOAM[idx + 1] & 1)) * 0x1000 : Flag.SpriteTableAddress;
 
 		if (Flag.TallSpritesEnabled)
 		{
@@ -201,7 +197,7 @@ void PPU::processSpritesForPixel(int x, int scanline)
 		int logicalX = flipX ? 7 - px : px;
 		int logicalLine = flipY ? 7 - line : line;
 
-		DWord address = (DWord)(tableBase + tileIdx + logicalLine);
+		Word address = tableBase + tileIdx + logicalLine;
 
 		// this looks bad, but it's about as readable as it's going to get
 		DWord color = (DWord)(

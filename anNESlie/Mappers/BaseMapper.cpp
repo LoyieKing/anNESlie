@@ -6,10 +6,10 @@
 
 Mapper::BaseMapper::BaseMapper(Emulator* _emulator)
 {
-	prgROM = _emulator->Cartridge->getPRGROM();
-	prgRAMLength = _emulator->Cartridge->getPRGROMSize();
-	chrROM = _emulator->Cartridge->getCHRROM();
-	chrROMLength = _emulator->Cartridge->getCHRROMSize();
+	prgROM = _emulator->cartridge->getPRGROM();
+	prgRAMLength = _emulator->cartridge->getPRGROMSize();
+	chrROM = _emulator->cartridge->getCHRROM();
+	chrROMLength = _emulator->cartridge->getCHRROMSize();
 }
 
 void Mapper::BaseMapper::InitializeMemoryMap(CPU* cpu)

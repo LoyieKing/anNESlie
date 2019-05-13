@@ -1407,7 +1407,7 @@ CPU::CPU(Emulator* const _emulator) :
 			WriteIORegister(address, value);
 		});
 
-	emulator->Mapper->InitializeMemoryMap(this);
+	emulator->mapper->InitializeMemoryMap(this);
 
 	/*init Register.s*/
 	Register.setA(0);

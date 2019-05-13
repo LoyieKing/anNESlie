@@ -63,6 +63,9 @@
     <ClInclude Include="Controllers\NES001Controller.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Emulator\Setting.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -117,6 +120,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Types.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Controllers\Controller.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Emulator\Setting.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

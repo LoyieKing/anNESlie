@@ -46,6 +46,7 @@
 
 class Emulator;
 
+
 const int CPU_MEMORY_SIZE = 0xFFFF + 1;
 
 class CPU

@@ -22,7 +22,7 @@ private:
 	DWord priority[GAME_WIDTH * GAME_HEIGHT];
 
 	int cpuSyncCounter;
-	DWord scanlineOAM[8 * 4];
+	Byte scanlineOAM[8 * 4];
 	bool isSprite0[8];
 	int spriteCount;
 
@@ -61,8 +61,10 @@ private:
 	//void WriteWord(Word address, Byte value);
 
 
-	Byte oam[0x100];
-	Byte vram[0x2000];
+	
+	Byte oam[0x100];//Object Attribute Memory, or Sprites Memory
+
+	Byte vram[0x1000];
 	Byte paletteRAM[0x20];
 
 	Byte VRAMMirrorLookUp[5][4] = {
@@ -92,9 +94,9 @@ public:
 		bool NMIEnabled;
 		bool IsMaster;
 		bool TallSpritesEnabled;
-		DWord PatternTableAddress;
-		DWord SpriteTableAddress;
-		DWord VRAMIncrement;
+		Word PatternTableAddress;
+		Word SpriteTableAddress;
+		Word VRAMIncrement;
 
 		/* PPUMASK register */
 		bool GrayscaleEnabled;
@@ -139,8 +141,8 @@ public:
 		}
 
 		/* PPUSCROLL registers */
-		DWord ScrollX;
-		DWord ScrollY;
+		Word ScrollX;
+		Word ScrollY;
 
 		inline bool RenderingEnabled()
 		{
