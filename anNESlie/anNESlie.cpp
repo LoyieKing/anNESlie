@@ -41,29 +41,15 @@ DWORD WINAPI ProcessFrame(LPVOID param)
 		int s = GetTickCount();
 
 		emulator.ProcessFrame();
-
-		//for (int i = 0; i < GAME_HEIGHT; i++)
-		//{
-		//	for (int j = 0; j < GAME_WIDTH; j++)
-		//	{
-		//		RawBitmap[(GAME_WIDTH * (GAME_HEIGHT - i - 1) + j) * 3 + 2] = (emulator.RawBitmap[GAME_WIDTH * i + j] & 0xFF0000) >> 16;
-		//		RawBitmap[(GAME_WIDTH * (GAME_HEIGHT - i - 1) + j) * 3 + 1] = (emulator.RawBitmap[GAME_WIDTH * i + j] & 0x00FF00) >> 8;
-		//		RawBitmap[(GAME_WIDTH * (GAME_HEIGHT - i - 1) + j) * 3 + 0] = (emulator.RawBitmap[GAME_WIDTH * i + j] & 0x0000FF);
-
-		//	}
-		//}
-		//SetDIBits(hMemDc, bmp, 0, GAME_HEIGHT, emulator.RawBitmap, &binfo, DIB_RGB_COLORS);
-		//emulator.DumpMemoryCPU();
 		SetDIBits(hMemDc, bmp, 0, GAME_HEIGHT, emulator.ScreenOutput, &bmpInfo, DIB_RGB_COLORS);
 
 		RECT clientRect;
 		GetClientRect(hWnd, &clientRect);
 		StretchBlt(hDc, 0, 0, clientRect.right, clientRect.bottom, hMemDc, 0, 0, GAME_WIDTH, GAME_HEIGHT, SRCCOPY);
-		//BitBlt(hDc, 0, 0, GAME_WIDTH, GAME_HEIGHT, hMemDc, 0, 0, SRCCOPY);
+
 		int e = GetTickCount();
 		int sleepTime = 1000.0 / 60.0 - (e - s);
 		Sleep(sleepTime > 0 ? sleepTime : 0);
-		//InvalidateRect(hWnd, NULL, false);
 	}
 }
 
@@ -184,8 +170,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    bmpInfo.bmiHeader.biClrUsed = 0;
    bmpInfo.bmiHeader.biClrImportant = 0;
 
-   //SetDIBits(hMemDc, bmp, 0, GAME_HEIGHT, emulator.RawBitmap, &bmpInfo, DIB_RGB_COLORS);
-
 
 
    ShowWindow(hWnd, nCmdShow);
@@ -229,9 +213,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
    //     {
    //         PAINTSTRUCT ps;
    //         HDC hdc = BeginPaint(hWnd, &ps);
-
-			//BitBlt(hdc, 0, 0, GAME_WIDTH, GAME_HEIGHT, hMemDc, 0, 0, SRCCOPY);
-
    //         EndPaint(hWnd, &ps);
    //     }
    //     break;
