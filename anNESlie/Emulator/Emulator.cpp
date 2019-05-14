@@ -54,10 +54,10 @@ Word Emulator::GetVRAMMirror(Word addr)
 void Emulator::PerformDMA(Word from)
 {
 	from <<= 8;
-	for (int i = 0; i < 0xFF; i++)
+	for (int i = 0; i <= 0xFF; i++)
 	{
 		Byte oamAdress = this->ppu->Flag.getOAMAddress();
-		this->ppu->oam[oamAdress] = this->cpu->ReadByte(from);
+		((Byte*)this->ppu->oam)[oamAdress] = this->cpu->ReadByte(from);
 		from++;
 		this->ppu->Flag.setOAMAddress(oamAdress + 1);
 	}

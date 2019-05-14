@@ -70,16 +70,16 @@ void PPU::countSpritesOnLine(int scanline)
 	int height = Flag.TallSpritesEnabled ? 16 : 8;
 
 	//0x100:oam.Length
-	for (int idx = 0; idx < 0x100; idx += 4)
+	for (int idx = 0; idx < 64; idx++)
 	{
-		int y = oam[idx] + 1;
+		int y = oam[idx].Y + 1;
 		if (scanline >= y && scanline < y + height)
 		{
 			isSprite0[spriteCount] = idx == 0;
-			scanlineOAM[spriteCount * 4 + 0] = oam[idx + 0];
-			scanlineOAM[spriteCount * 4 + 1] = oam[idx + 1];
-			scanlineOAM[spriteCount * 4 + 2] = oam[idx + 2];
-			scanlineOAM[spriteCount * 4 + 3] = oam[idx + 3];
+			scanlineOAM[spriteCount].Attribute = oam[idx].Attribute;
+			scanlineOAM[spriteCount].TileIndex = oam[idx].TileIndex;
+			scanlineOAM[spriteCount].X = oam[idx].X;
+			scanlineOAM[spriteCount].Y = oam[idx].Y;
 			spriteCount++;
 		}
 
@@ -147,12 +147,12 @@ void PPU::processBackgroundForPixel(int cycle, int scanline)
 
 void PPU::processSpritesForPixel(int x, int scanline)
 {
-
-	for (int idx = spriteCount * 4 - 4; idx >= 0; idx -= 4)
+	for (int idx = spriteCount -1; idx >= 0; idx--)
 	{
-		Byte spriteX = scanlineOAM[idx + 3];
-		Byte spriteY = scanlineOAM[idx] + 1;
-
+		int spriteX = scanlineOAM[idx].X;
+		int spriteY = scanlineOAM[idx].Y + 1;
+		if (spriteX == 0)
+			spriteX = 0;
 		// Don't draw this sprite iFlag...
 		if (spriteY == 0 || // it's located at y = 0
 			spriteY > 239 || // it's located past y = 239 ($EF)
@@ -165,21 +165,21 @@ void PPU::processSpritesForPixel(int x, int scanline)
 		// to that of the Gameboy / Gameboy Color, so I've sort of just copy/pasted
 		// handling code wholesale from my GBC emulator at
 		// https://github.com/Xyene/Nitrous-Emulator/blob/master/src/main/java/nitrous/lcd/LCD.java#L642
-		Word tileIdx = scanlineOAM[idx + 1];
+		Word tileIdx = scanlineOAM[idx].TileIndex;
 		if (Flag.TallSpritesEnabled) tileIdx &= ~0x1u;
 		tileIdx *= 16;
 
-		Byte attrib = scanlineOAM[idx + 2] & 0xE3;
+		Byte attrib = scanlineOAM[idx].Attribute & 0xE3;
 
 		Byte _palette = attrib & 0x3;
 		bool front = (attrib & 0x20) == 0;
 		bool flipX = (attrib & 0x40) > 0;
 		bool flipY = (attrib & 0x80) > 0;
 
-		int px = (int)(x - spriteX);
-		int line = (int)(scanline - spriteY);
+		int px = x - spriteX;
+		int line = scanline - spriteY;
 
-		Word tableBase = Flag.TallSpritesEnabled ? ((Word)(scanlineOAM[idx + 1] & 1)) * 0x1000 : Flag.SpriteTableAddress;
+		Word tableBase = Flag.TallSpritesEnabled ? ((Word)(scanlineOAM[idx].TileIndex & 1)) * 0x1000 : Flag.SpriteTableAddress;
 
 		if (Flag.TallSpritesEnabled)
 		{
@@ -196,6 +196,7 @@ void PPU::processSpritesForPixel(int x, int scanline)
 		// here we handle the x and y flipping by tweaking the indices we are accessing
 		int logicalX = flipX ? 7 - px : px;
 		int logicalLine = flipY ? 7 - line : line;
+		
 
 		Word address = tableBase + tileIdx + logicalLine;
 

@@ -15,6 +15,14 @@ public:
 #pragma region Core
 
 private:
+	struct OAM
+	{
+		Byte Y;
+		Byte TileIndex;
+		Byte Attribute;
+		Byte X;
+	};
+
 	static Color palette[64];
 
 	DWord bufferPos;
@@ -22,7 +30,7 @@ private:
 	DWord priority[GAME_WIDTH * GAME_HEIGHT];
 
 	int cpuSyncCounter;
-	Byte scanlineOAM[8 * 4];
+	OAM scanlineOAM[8];
 	bool isSprite0[8];
 	int spriteCount;
 
@@ -62,7 +70,7 @@ private:
 
 
 	
-	Byte oam[0x100];//Object Attribute Memory, or Sprites Memory
+	OAM oam[64];//Object Attribute Memory, or Sprites Memory
 
 	Byte vram[0x1000];
 	Byte paletteRAM[0x20];

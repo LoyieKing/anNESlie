@@ -1,6 +1,5 @@
 #pragma once
 #include "../Types.h"
-#include "NES001Controller.h"
 
 namespace Controller
 {
@@ -14,7 +13,7 @@ namespace Controller
 	{
 	protected:
 		const static int key_number;
-		const static Key* keys;
+		const static Key const* keys;
 
 	public:
 		const static int ControllerID;
@@ -24,7 +23,7 @@ namespace Controller
 		virtual Key const* GetKeys();
 
 		virtual void Strobe(bool on) = 0;
-		virtual int ReadState() = 0;
+		virtual Byte ReadState() = 0;
 		virtual void PressKey(int keyCode) = 0;
 		virtual void ReleaseKey(int keyCode) = 0;
 	};

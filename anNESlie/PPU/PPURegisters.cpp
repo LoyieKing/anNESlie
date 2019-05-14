@@ -182,12 +182,12 @@ void PPU::setOAMADDR(Byte value)
 
 Byte PPU::getOAMDATA()
 {
-	return oam[Flag.getOAMAddress()];
+	return ((Byte*)oam)[Flag.getOAMAddress()];
 }
 
 void PPU::setOAMDATA(Byte value)
 {
 	Byte oamAdress = Flag.getOAMAddress();
-	oam[oamAdress] = value;
+	((Byte*)oam)[oamAdress] = value;
 	Flag.setOAMAddress(oamAdress + 1);
 }

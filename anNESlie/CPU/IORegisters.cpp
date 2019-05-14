@@ -1,9 +1,6 @@
 #pragma once
 #include "CPU.h"
 #include "../Emulator/Emulator.h"
-
-#pragma region IORegisters
-
 #include "../Controllers/Controller.h"
 
 void CPU::WriteIORegister(Word reg, Byte val)
@@ -26,10 +23,8 @@ Byte CPU::ReadIORegister(Word reg)
 	switch (reg)
 	{
 	case 0x4016:
-		return (Word)emulator->controller->ReadState() & 0x1;
+		return (Byte)emulator->controller->ReadState() & 0x1;
 	}
 	return 0x00;
 	//throw new NotImplementedException();
 }
-
-#pragma endregion

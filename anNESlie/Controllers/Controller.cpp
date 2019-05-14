@@ -1,8 +1,8 @@
 #include "Controller.h"
 #include "NES001Controller.h"
 
-const int Controller::Controller::key_number = 0;
-const Controller::Key* Controller::Controller::keys = nullptr;
+//const int Controller::Controller::key_number = 0;
+const  Controller::Key const*  Controller::Controller::keys = nullptr;
 
 
 int Controller::Controller::GetKeyNumber()

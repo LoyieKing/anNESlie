@@ -20,23 +20,22 @@ Controller::NES001Controller::NES001Controller()
 {
 	data = 0;
 	serialData = 0;
-	strobing = 0;
+	strobing = false;
 }
 
 
 void Controller::NES001Controller::Strobe(bool on)
 {
 	serialData = data;
-	strobing = true;
+	strobing = on;
 }
 
-int Controller::NES001Controller::ReadState()
+Byte Controller::NES001Controller::ReadState()
 {
-	Byte ret = serialData & 0x80;
+	Byte ret = (serialData & 0x80) > 0;
 	if (!strobing)
 	{
 		serialData <<= 1;
-		serialData &= 0xFF;
 	}
 	return ret;
 }

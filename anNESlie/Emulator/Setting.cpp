@@ -4,6 +4,10 @@
 
 Setting* Setting::setting = nullptr;
 
+Setting::Setting()
+{
+}
+
 void Setting::clearSetting()
 {
 	if (setting == nullptr)
