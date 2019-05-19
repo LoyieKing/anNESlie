@@ -9,7 +9,7 @@ Color PPU::palette[64] = {
 		0xFCFCFC, 0xA4E4FC, 0xB8B8F8, 0xD8B8F8, 0xF8B8F8, 0xF8A4C0, 0xF0D0B0, 0xFCE0A8,0xF8D878, 0xD8F878, 0xB8F8B8, 0xB8F8D8, 0x00FCFC, 0xF8D8F8, 0x000000, 0x000000
 };
 
-PPU::PPU(Emulator*const _emulator) :
+PPU::PPU(Emulator* const _emulator) :
 	memoryHandler(memory, PPU_MEMORY_SIZE)
 {
 	readBuffer = 0;
@@ -20,7 +20,7 @@ PPU::PPU(Emulator*const _emulator) :
 	currentHighTile = 0;
 	currentLowTile = 0;
 	currentColor = 0;
-	lastWrittenRegister =0;
+	lastWrittenRegister = 0;
 	memset(&this->Flag, 0, sizeof(this->Flag));
 	memset(this->isSprite0, 0, sizeof(this->isSprite0));
 	memset(this->memory, 0, sizeof(this->memory));
@@ -37,7 +37,7 @@ PPU::PPU(Emulator*const _emulator) :
 	emulator = _emulator;
 
 	/*InitializeMemoryMap*/
-	memoryHandler.SetReadHandler(0x2000, 0x2FFF, [this](Word address)->Byte {
+	memoryHandler.SetReadHandler(0x2000, 0x2FFF, [this](Word address) {
 		return vram[emulator->GetVRAMMirror(address)];
 		});
 	memoryHandler.SetReadHandler(0x3000, 0x3EFF, [this](int address) {
@@ -108,7 +108,7 @@ void PPU::nextAttributeByte()
 {
 	Word V = getV();
 	Word address = 0x23C0 | (V & 0x0C00) | ((V >> 4) & 0x38) | ((V >> 2) & 0x07);
-	currentColor = (ReadByte(address) >> (DWord)((getCoarseX() & 2) | ((getCoarseY() & 2) << 1))) & 0x3;
+	currentColor = (ReadByte(address) >> (SByte)((getCoarseX() & 2) | ((getCoarseY() & 2) << 1))) & 0x3;
 }
 
 void PPU::shiftTileRegister()
@@ -116,7 +116,8 @@ void PPU::shiftTileRegister()
 	for (int x = 0; x < 8; x++)
 	{
 		Word palette = ((currentHighTile & 0x80) >> 6) | ((currentLowTile & 0x80) >> 7);
-		tileShiftRegister |= (((DWord)palette) + ((DWord)currentColor) * 4) << ((7 - x) * 4);
+		QWord t = (QWord)palette + ((Word)currentColor) * 4;
+		tileShiftRegister |= t << ((7 - x) * 4);
 		currentLowTile <<= 1;
 		currentHighTile <<= 1;
 	}
@@ -147,7 +148,7 @@ void PPU::processBackgroundForPixel(int cycle, int scanline)
 
 void PPU::processSpritesForPixel(int x, int scanline)
 {
-	for (int idx = spriteCount -1; idx >= 0; idx--)
+	for (int idx = spriteCount - 1; idx >= 0; idx--)
 	{
 		int spriteX = scanlineOAM[idx].X;
 		int spriteY = scanlineOAM[idx].Y + 1;
@@ -196,7 +197,7 @@ void PPU::processSpritesForPixel(int x, int scanline)
 		// here we handle the x and y flipping by tweaking the indices we are accessing
 		int logicalX = flipX ? 7 - px : px;
 		int logicalLine = flipY ? 7 - line : line;
-		
+
 
 		Word address = tableBase + tileIdx + logicalLine;
 

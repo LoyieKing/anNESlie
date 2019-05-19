@@ -10,6 +10,7 @@
 
 Emulator::Emulator(const char* rom_path)
 {
+	romPath = rom_path;
 	this->cartridge = new ROM::Cartridge(rom_path);
 	this->mapper = Mapper::LoadMapper(this, this->cartridge->getMapperNumber());
 	this->cpu = new ::CPU(this);

@@ -18,18 +18,16 @@ Cartridge::Cartridge(const char* file_name)
 	/*读入完整文件*/
 	file.seekg(0, std::ios::end);
 	ULONGLONG fileLength = file.tellg();
-	file.seekg(4);
+	file.seekg(0, std::ios::beg);
+	
 
 	data = new Data;
 	Byte* praw = new Byte[fileLength];
 	data->Raw = praw;
 	if (praw == nullptr)
 		throw Cartridge::OUT_OF_MEMORY;
-	praw[0] = 'N';
-	praw[1] = 'E';
-	praw[2] = 'S';
-	praw[3] = 0x1A;
-	file.read((char*)praw + 4, fileLength - 4);// 排除掉开头的四个字节
+
+	file.read((char*)praw, fileLength);// 排除掉开头的四个字节
 
 
 	/*开始解析*/

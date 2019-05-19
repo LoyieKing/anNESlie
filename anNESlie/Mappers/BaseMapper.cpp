@@ -6,8 +6,11 @@
 
 Mapper::BaseMapper::BaseMapper(Emulator* _emulator)
 {
+	prgROMLength = _emulator->cartridge->getPRGROMSize();
 	prgROM = _emulator->cartridge->getPRGROM();
+
 	prgRAMLength = _emulator->cartridge->getPRGROMSize();
+
 	chrROM = _emulator->cartridge->getCHRROM();
 	chrROMLength = _emulator->cartridge->getCHRROMSize();
 }
