@@ -12,7 +12,7 @@ Emulator::Emulator(const char* rom_path)
 {
 	romPath = rom_path;
 	this->cartridge = new ROM::Cartridge(rom_path);
-	this->mapper = Mapper::LoadMapper(this, this->cartridge->getMapperNumber());
+	this->mapper = Mapper::LoadMapper(this, this->cartridge->MapperNumber);
 	this->cpu = new ::CPU(this);
 	this->ppu = new ::PPU(this);
 
@@ -49,7 +49,7 @@ Word Emulator::GetVRAMMirror(Word addr)
 	// HACK: C# version is QWORD here,maybe a bug?
 	Word entry = (addr - 0x2000) % 0x400;
 	Word table = (addr - 0x2000) / 0x400;
-	return this->ppu->VRAMMirrorLookUp[this->cartridge->getMirroringMode()][table] * 0x400 + entry;
+	return this->ppu->VRAMMirrorLookUp[this->cartridge->MirroringMode][table] * 0x400 + entry;
 }
 
 void Emulator::PerformDMA(Word from)

@@ -6,13 +6,15 @@
 
 Mapper::BaseMapper::BaseMapper(Emulator* _emulator)
 {
-	prgROMLength = _emulator->cartridge->getPRGROMSize();
-	prgROM = _emulator->cartridge->getPRGROM();
+	prgROMLength = _emulator->cartridge->PRGROMSize;
+	prgROM = _emulator->cartridge->PRGROM;
 
-	prgRAMLength = _emulator->cartridge->getPRGROMSize();
+	prgRAMLength = _emulator->cartridge->PRGROMSize;
 
-	chrROM = _emulator->cartridge->getCHRROM();
-	chrROMLength = _emulator->cartridge->getCHRROMSize();
+	chrROM = _emulator->cartridge->CHRROM;
+	chrROMLength = _emulator->cartridge->CHRROMSize;
+
+	lastBankOffset = prgROMLength - 0x4000;
 }
 
 void Mapper::BaseMapper::InitializeMemoryMap(CPU* cpu)

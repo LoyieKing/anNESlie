@@ -39,29 +39,21 @@ namespace ROM
 
 	class Cartridge
 	{
-	private:
-		/*ROM数据区域*/
-		typedef struct
-		{
-			Byte* Raw;
-			int PRGROMSize;
-			int CHRROMSize;
-			int PRGROMOffset;
-			int MapperNumber;
-			Byte* PRGROM;
-			Byte* CHRROM;
-			VRAMMirroringMode MirroringMode;
-
-			bool hasTrainer;
-			Byte* Trainer;
-		}Data;
-
-		Data* data;
-
-		/*引用计数实现*/
-		int* ref_count;
-
 	public:
+		/*ROM数据区域*/
+
+		Byte* Raw;
+		int PRGROMSize;						//Program Memory，游戏程序数据
+		int CHRROMSize;						//Character Memory，用于显示（贴图等）数据的存储。
+		int PRGROMOffset;
+		int MapperNumber;					//Mapper对应的ID
+		Byte* PRGROM;
+		Byte* CHRROM;
+		VRAMMirroringMode MirroringMode;
+
+		bool hasTrainer;
+		Byte* Trainer;						//不存在Tranier则为nullptr
+
 		enum
 		{
 			FILE_OPEN_FAIL,
@@ -70,19 +62,6 @@ namespace ROM
 		}READ_EXCEPTION;
 
 		Cartridge(const char* file_name);
-		Cartridge(const Cartridge&);
-		~Cartridge();
-
-
-		Byte* getRaw();	//获取完整ROM文件指针
-		int getPRGROMSize();	//Program Memory，游戏程序数据
-		int getCHRROMSize();	//Character Memory，用于显示（贴图等）数据的存储。
-		int getPRGROMOffset();
-		int getMapperNumber();	//Mapper数量
-		Byte* getPRGROM();
-		Byte* getCHRROM();
-		VRAMMirroringMode getMirroringMode();
-		Byte* getTrainer();	//不存在Tranier则返回nullptr
 	};
 
 

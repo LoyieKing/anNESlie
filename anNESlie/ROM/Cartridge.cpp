@@ -21,114 +21,41 @@ Cartridge::Cartridge(const char* file_name)
 	file.seekg(0, std::ios::beg);
 	
 
-	data = new Data;
-	Byte* praw = new Byte[fileLength];
-	data->Raw = praw;
-	if (praw == nullptr)
+	Byte* Raw = new Byte[fileLength];
+	if (Raw == nullptr)
 		throw Cartridge::OUT_OF_MEMORY;
 
-	file.read((char*)praw, fileLength);// 排除掉开头的四个字节
+	file.read((char*)Raw, fileLength);// 排除掉开头的四个字节
 
 
 	/*开始解析*/
-	data->PRGROMSize = praw[4] * 0x4000; // 16kb units
-	data->CHRROMSize = praw[5] * 0x2000; // 8kb units
-	//data->PRGRAMSize = praw[8] * 0x2000;
+	PRGROMSize = Raw[4] * 0x4000; // 16kb units
+	CHRROMSize = Raw[5] * 0x2000; // 8kb units
+	//PRGRAMSize = praw[8] * 0x2000;
 
-	bool hasTrainer = (praw[6] & 0b100) > 0;
-	data->hasTrainer = hasTrainer;
+	bool hasTrainer = (Raw[6] & 0b100) > 0;
+	hasTrainer = hasTrainer;
 	if (hasTrainer)
 	{
-		data->Trainer = praw + 16;
-		data->PRGROMOffset = 16 + 512;
+		Trainer = Raw + 16;
+		PRGROMOffset = 16 + 512;
 	}
 	else
 	{
-		data->Trainer = nullptr;
-		data->PRGROMOffset = 16;
+		Trainer = nullptr;
+		PRGROMOffset = 16;
 	}
-	//data->PRGROMOffset = 16 + (hasTrainer ? 512 : 0);
+	//PRGROMOffset = 16 + (hasTrainer ? 512 : 0);
 
-	data->MirroringMode = (praw[6] & 0x1) > 0 ? Vertical : Horizontal;
-	if ((praw[6] & 0x8) > 0) data->MirroringMode = All;
+	MirroringMode = (Raw[6] & 0x1) > 0 ? Vertical : Horizontal;
+	if ((Raw[6] & 0x8) > 0) MirroringMode = All;
 
-	data->MapperNumber = (praw[6] >> 4) | (praw[7] & 0xF0);
+	MapperNumber = (Raw[6] >> 4) | (Raw[7] & 0xF0);
 
-	data->PRGROM = praw + data->PRGROMOffset;
+	PRGROM = Raw + PRGROMOffset;
 
-	if (data->CHRROMSize == 0)
-		data->CHRROM = new Byte[0x2000];
+	if (CHRROMSize == 0)
+		CHRROM = new Byte[0x2000];
 	else
-		data->CHRROM = praw + data->PRGROMOffset + data->PRGROMSize;
-
-
-	/*创建引用计数*/
-	ref_count = new int;
-	*ref_count = 1;
-}
-
-Cartridge::Cartridge(const Cartridge &rom_data)
-{
-	data = rom_data.data;
-	ref_count = rom_data.ref_count;
-	*ref_count++;
-}
-
-Cartridge::~Cartridge()
-{
-	*ref_count--;
-	if (*ref_count == 0)
-	{
-		delete[] data->Raw;
-		if (data->CHRROMSize == 0)
-			delete[] data->CHRROM;
-		delete data;
-
-		delete ref_count;
-	}
-}
-
-Byte* ROM::Cartridge::getRaw()
-{
-	return data->Raw;
-}
-
-int ROM::Cartridge::getPRGROMSize()
-{
-	return data->PRGROMSize;
-}
-
-int ROM::Cartridge::getCHRROMSize()
-{
-	return data->CHRROMSize;
-}
-
-int ROM::Cartridge::getPRGROMOffset()
-{
-	return data->PRGROMOffset;
-}
-
-int ROM::Cartridge::getMapperNumber()
-{
-	return data->MapperNumber;
-}
-
-Byte* ROM::Cartridge::getPRGROM()
-{
-	return data->PRGROM;
-}
-
-Byte* ROM::Cartridge::getCHRROM()
-{
-	return data->CHRROM;
-}
-
-VRAMMirroringMode ROM::Cartridge::getMirroringMode()
-{
-	return data->MirroringMode;
-}
-
-Byte* ROM::Cartridge::getTrainer()
-{
-	return data->hasTrainer ? data->Trainer : nullptr;
+		CHRROM = Raw + PRGROMOffset + PRGROMSize;
 }

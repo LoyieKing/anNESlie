@@ -28,7 +28,7 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
-Emulator emulator("spritecans.nes");
+Emulator emulator("mario.nes");
 
 //Byte RawBitmap[GAME_HEIGHT * GAME_WIDTH * 3];
 
