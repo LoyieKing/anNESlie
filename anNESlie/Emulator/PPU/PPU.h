@@ -1,7 +1,7 @@
 #pragma once
 #include "../Types.h"
 #include "../ROM/MemoryHandler.h"
-#include "../Emulator/Emulator.h"
+#include "../Emulator.h"
 
 const int PPU_MEMORY_SIZE = 0x3FFF + 1;
 const int SCANLINE_COUNT = 261;

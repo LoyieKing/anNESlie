@@ -1,5 +1,5 @@
 #include "PPU.h"
-#include "../Emulator/Emulator.h"
+#include "../Emulator.h"
 #include "../Mappers/BaseMapper.h"
 
 Color PPU::palette[64] = {

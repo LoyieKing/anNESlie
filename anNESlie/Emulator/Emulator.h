@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Types.h"
+#include "Types.h"
 
 class CPU;
 class PPU;
@@ -43,6 +43,9 @@ public:
 
 	void Reset();
 	void ProcessFrame();
+
+	Color* GetPalette();
+	void SetPalette(Color* palette);
 
 	void DumpMemoryCPU();
 	void DumpMemoryPPU();

@@ -1,6 +1,6 @@
 #pragma once
 #include "CPU.h"
-#include "../Emulator/Emulator.h"
+#include "../Emulator.h"
 #include "../Controllers/Controller.h"
 
 void CPU::WriteIORegister(Word reg, Byte val)

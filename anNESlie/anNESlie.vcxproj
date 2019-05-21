@@ -153,49 +153,49 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="anNESlie.h" />
-    <ClInclude Include="Controllers\Controller.h" />
-    <ClInclude Include="Controllers\NES001Controller.h" />
-    <ClInclude Include="CPU\CPU.h" />
-    <ClInclude Include="CPU\Instructions.h" />
+    <ClInclude Include="Emulator\Controllers\Controller.h" />
+    <ClInclude Include="Emulator\Controllers\NES001Controller.h" />
+    <ClInclude Include="Emulator\CPU\CPU.h" />
+    <ClInclude Include="Emulator\CPU\Instructions.h" />
     <ClInclude Include="Emulator\Emulator.h" />
-    <ClInclude Include="Emulator\Setting.h" />
-    <ClInclude Include="Mappers\BaseMapper.h" />
-    <ClInclude Include="Mappers\Mapper.h" />
-    <ClInclude Include="Mappers\NROM.h" />
-    <ClInclude Include="PPU\PPU.h" />
-    <ClInclude Include="ROM\MemoryHandler.h" />
+    <ClInclude Include="Setting.h" />
+    <ClInclude Include="Emulator\Mappers\BaseMapper.h" />
+    <ClInclude Include="Emulator\Mappers\Mapper.h" />
+    <ClInclude Include="Emulator\Mappers\NROM.h" />
+    <ClInclude Include="Emulator\PPU\PPU.h" />
+    <ClInclude Include="Emulator\ROM\MemoryHandler.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="ROM\Cartridge.h" />
-    <ClInclude Include="Types.h" />
+    <ClInclude Include="Emulator\ROM\Cartridge.h" />
+    <ClInclude Include="Emulator\Types.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="anNESlie.cpp" />
-    <ClCompile Include="Controllers\Controller.cpp" />
-    <ClCompile Include="Controllers\NES001Controller.cpp" />
-    <ClCompile Include="CPU\CPU.cpp" />
-    <ClCompile Include="CPU\Instruction.cpp" />
-    <ClCompile Include="CPU\IORegisters.cpp" />
-    <ClCompile Include="CPU\CPUMemory.cpp" />
-    <ClCompile Include="CPU\CPURegisters.cpp" />
+    <ClCompile Include="Emulator\Controllers\Controller.cpp" />
+    <ClCompile Include="Emulator\Controllers\NES001Controller.cpp" />
+    <ClCompile Include="Emulator\CPU\CPU.cpp" />
+    <ClCompile Include="Emulator\CPU\Instruction.cpp" />
+    <ClCompile Include="Emulator\CPU\IORegisters.cpp" />
+    <ClCompile Include="Emulator\CPU\CPUMemory.cpp" />
+    <ClCompile Include="Emulator\CPU\CPURegisters.cpp" />
     <ClCompile Include="Emulator\Emulator.cpp" />
-    <ClCompile Include="Emulator\Setting.cpp" />
-    <ClCompile Include="Mappers\BaseMapper.cpp" />
-    <ClCompile Include="Mappers\Mapper.cpp" />
-    <ClCompile Include="Mappers\NROM.cpp" />
-    <ClCompile Include="PPU\PPU.cpp" />
-    <ClCompile Include="PPU\PPUMemory.cpp" />
-    <ClCompile Include="PPU\PPURegisters.cpp" />
-    <ClCompile Include="ROM\Cartridge.cpp" />
-    <ClCompile Include="ROM\MemoryHandler.cpp" />
+    <ClCompile Include="Setting.cpp" />
+    <ClCompile Include="Emulator\Mappers\BaseMapper.cpp" />
+    <ClCompile Include="Emulator\Mappers\Mapper.cpp" />
+    <ClCompile Include="Emulator\Mappers\NROM.cpp" />
+    <ClCompile Include="Emulator\PPU\PPU.cpp" />
+    <ClCompile Include="Emulator\PPU\PPUMemory.cpp" />
+    <ClCompile Include="Emulator\PPU\PPURegisters.cpp" />
+    <ClCompile Include="Emulator\ROM\Cartridge.cpp" />
+    <ClCompile Include="Emulator\ROM\MemoryHandler.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Types.cpp" />
+    <ClCompile Include="Emulator\Types.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="anNESlie.rc" />

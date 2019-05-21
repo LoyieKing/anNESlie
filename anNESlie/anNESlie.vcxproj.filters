@@ -27,43 +27,43 @@
     <ClInclude Include="anNESlie.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ROM\Cartridge.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ROM\MemoryHandler.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Types.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Emulator\Emulator.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Mappers\BaseMapper.h">
+    <ClInclude Include="Emulator\CPU\CPU.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Controllers\Controller.h">
+    <ClInclude Include="Emulator\CPU\Instructions.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CPU\Instructions.h">
+    <ClInclude Include="Emulator\Mappers\BaseMapper.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="CPU\CPU.h">
+    <ClInclude Include="Emulator\Mappers\Mapper.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="PPU\PPU.h">
+    <ClInclude Include="Emulator\Mappers\NROM.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Mappers\NROM.h">
+    <ClInclude Include="Emulator\PPU\PPU.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Mappers\Mapper.h">
+    <ClInclude Include="Emulator\ROM\Cartridge.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Controllers\NES001Controller.h">
+    <ClInclude Include="Emulator\ROM\MemoryHandler.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Emulator\Setting.h">
+    <ClInclude Include="Emulator\Controllers\Controller.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Emulator\Controllers\NES001Controller.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Setting.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Emulator\Types.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -74,58 +74,58 @@
     <ClCompile Include="anNESlie.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ROM\Cartridge.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ROM\MemoryHandler.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Emulator\Emulator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Mappers\BaseMapper.cpp">
+    <ClCompile Include="Emulator\CPU\CPU.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CPU\Instruction.cpp">
+    <ClCompile Include="Emulator\CPU\CPUMemory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CPU\IORegisters.cpp">
+    <ClCompile Include="Emulator\CPU\CPURegisters.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CPU\CPU.cpp">
+    <ClCompile Include="Emulator\CPU\Instruction.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CPU\CPUMemory.cpp">
+    <ClCompile Include="Emulator\CPU\IORegisters.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CPU\CPURegisters.cpp">
+    <ClCompile Include="Emulator\Mappers\BaseMapper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="PPU\PPU.cpp">
+    <ClCompile Include="Emulator\Mappers\Mapper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="PPU\PPUMemory.cpp">
+    <ClCompile Include="Emulator\Mappers\NROM.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="PPU\PPURegisters.cpp">
+    <ClCompile Include="Emulator\PPU\PPU.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Mappers\NROM.cpp">
+    <ClCompile Include="Emulator\PPU\PPUMemory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Mappers\Mapper.cpp">
+    <ClCompile Include="Emulator\PPU\PPURegisters.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Controllers\NES001Controller.cpp">
+    <ClCompile Include="Emulator\ROM\Cartridge.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Types.cpp">
+    <ClCompile Include="Emulator\ROM\MemoryHandler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Controllers\Controller.cpp">
+    <ClCompile Include="Emulator\Controllers\Controller.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Emulator\Setting.cpp">
+    <ClCompile Include="Emulator\Controllers\NES001Controller.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Setting.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Emulator\Types.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

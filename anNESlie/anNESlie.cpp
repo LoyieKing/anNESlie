@@ -28,6 +28,7 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+bool stop = false;
 Emulator emulator("mario.nes");
 
 //Byte RawBitmap[GAME_HEIGHT * GAME_WIDTH * 3];
@@ -40,6 +41,11 @@ DWORD WINAPI ProcessFrame(LPVOID param)
 			continue;
 		int s = GetTickCount();
 
+		if (stop)
+		{
+			stop = false;
+			return 0;
+		}
 		emulator.ProcessFrame();
 		SetDIBits(hMemDc, bmp, 0, GAME_HEIGHT, emulator.ScreenOutput, &bmpInfo, DIB_RGB_COLORS);
 
@@ -95,7 +101,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			DispatchMessage(&msg);
 		}
 	}
-	CloseHandle(hThread);
+	stop = true;
+	Sleep(100);
+	//CloseHandle(hThread);
 
 	return (int)msg.wParam;
 }
@@ -210,7 +218,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 	break;
 	case WM_KEYDOWN:
-		emulator.KeyDown(wParam);
+		if (wParam == VK_END)
+			stop = true;
+		else
+			emulator.KeyDown(wParam);
 		break;
 	case WM_KEYUP:
 		emulator.KeyUp(wParam);

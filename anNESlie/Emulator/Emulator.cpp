@@ -1,12 +1,12 @@
 #include "Emulator.h"
-#include "../CPU/CPU.h"
-#include"../PPU/PPU.h"
-#include"../ROM/Cartridge.h"
-#include "../Mappers/Mapper.h"
-#include"../Mappers/BaseMapper.h"
-#include"../Controllers/Controller.h"
-#include "../Controllers/NES001Controller.h"
-#include "Setting.h"
+#include "CPU/CPU.h"
+#include "PPU/PPU.h"
+#include "ROM/Cartridge.h"
+#include "Mappers/Mapper.h"
+#include "Mappers/BaseMapper.h"
+#include "Controllers/Controller.h"
+#include "Controllers/NES001Controller.h"
+#include "../Setting.h"
 
 Emulator::Emulator(const char* rom_path)
 {
@@ -87,6 +87,17 @@ void Emulator::TriggerInterrupt(InterruptType type)
 void Emulator::ProcessFrame()
 {
 	this->ppu->ProcessFrame();
+}
+
+Color* Emulator::GetPalette()
+{
+	return ppu->palette;
+}
+
+void Emulator::SetPalette(Color* palette)
+{
+	for (int i = 0; i < 64; i++)
+		ppu->palette[i] = palette[i];
 }
 
 void Emulator::DumpMemoryCPU()
