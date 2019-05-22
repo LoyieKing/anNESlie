@@ -154,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MFCInterface\EmulatorDialog.h" />
     <ClInclude Include="Emulator\Controllers\Controller.h" />
     <ClInclude Include="Emulator\Controllers\NES001Controller.h" />
     <ClInclude Include="Emulator\CPU\CPU.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="MFCInterface\WelcomeDialog.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MFCInterface\EmulatorDialog.cpp" />
     <ClCompile Include="Emulator\Controllers\Controller.cpp" />
     <ClCompile Include="Emulator\Controllers\NES001Controller.cpp" />
     <ClCompile Include="Emulator\CPU\CPU.cpp" />

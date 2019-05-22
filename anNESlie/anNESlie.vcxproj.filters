@@ -69,6 +69,9 @@
     <ClInclude Include="MFCInterface\Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="MFCInterface\EmulatorDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Emulator\Emulator.cpp">
@@ -129,6 +132,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MFCInterface\WelcomeDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MFCInterface\EmulatorDialog.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -40,5 +40,6 @@ public:
 	CListBox listBox;
 	afx_msg void OnDblclkList1();
 	afx_msg void OnClickedButton1();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
 

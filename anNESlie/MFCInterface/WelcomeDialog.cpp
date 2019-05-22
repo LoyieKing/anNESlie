@@ -1,11 +1,12 @@
 #include "framework.h"
 #include "WelcomeDialog.h"
 #include "resource.h"
-
+#include "EmulatorDialog.h"
 
 WelcomeDialog::WelcomeDialog(CWnd* pParent/*=nullptr*/) :
 	CDialogEx(IDD_WELCOMEDIALOG, pParent)
 {
+
 
 	//m_hIcon = AfxGetApp()->LoadIcon(IDI_SMALL);
 }
@@ -50,7 +51,13 @@ void WelcomeDialog::loadGame()
 	WCHAR wstr[256];
 	StrCpyW(wstr, L"game\\");
 	listBox.GetText(index, wstr + 5);
-	char str[256];
+
+
+	char str[256] = { 0 };
+	WideCharToMultiByte(CP_ACP, 0, wstr, wcslen(wstr), str, 256, 0, 0);
+
+	EmulatorDialog emulatorDialog(str);
+	emulatorDialog.DoModal();
 
 }
 
@@ -83,4 +90,15 @@ void WelcomeDialog::OnDblclkList1()
 void WelcomeDialog::OnClickedButton1()
 {
 	loadGame();
+}
+
+
+BOOL WelcomeDialog::PreTranslateMessage(MSG* pMsg)
+{
+	// allow tooltip messages to be filtered
+	if (CWnd::PreTranslateMessage(pMsg))
+		return TRUE;
+
+	// filter both messages to dialog and from children
+	return FALSE;
 }
