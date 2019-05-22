@@ -1,7 +1,6 @@
 ﻿// anNESlie.cpp : 定义应用程序的入口点。
 //
 
-#include "stdafx.h"
 #include "anNESlie.h"
 #define MAX_LOADSTRING 100
 #include "Emulator/Emulator.h"
@@ -16,7 +15,6 @@ HWND hWnd;
 
 HDC hMemDc;
 HDC hDc;
-BITMAPINFO binfo;
 HBITMAP bmp;
 BITMAPINFO bmpInfo;
 
@@ -59,7 +57,7 @@ DWORD WINAPI ProcessFrame(LPVOID param)
 	}
 }
 
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
+int APIENTRY wWinMain2(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
 	_In_ int       nCmdShow)

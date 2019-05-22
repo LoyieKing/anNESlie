@@ -17,7 +17,7 @@ Cartridge::Cartridge(const char* file_name)
 
 	/*读入完整文件*/
 	file.seekg(0, std::ios::end);
-	ULONGLONG fileLength = file.tellg();
+	long long fileLength = file.tellg();
 	file.seekg(0, std::ios::beg);
 	
 

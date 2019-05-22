@@ -15,18 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="anNESlie.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Emulator\Emulator.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -66,14 +54,23 @@
     <ClInclude Include="Emulator\Types.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="MFCInterface\MainApp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCInterface\framework.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCInterface\targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCInterface\WelcomeDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCInterface\Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="anNESlie.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Emulator\Emulator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -128,21 +125,28 @@
     <ClCompile Include="Emulator\Types.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="MFCInterface\MainApp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MFCInterface\WelcomeDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="anNESlie.rc">
+    <Image Include="MFCInterface\res\small.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\small.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MFCInterface\Resource.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="small.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-    <Image Include="anNESlie.ico">
-      <Filter>资源文件</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="mario.nes" />
+    <None Include="game\mario.nes" />
+    <None Include="game\spritecans.nes" />
   </ItemGroup>
 </Project>
