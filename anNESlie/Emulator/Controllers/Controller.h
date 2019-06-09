@@ -26,6 +26,8 @@ namespace Controller
 		virtual Byte ReadState() = 0;
 		virtual void PressKey(int keyCode) = 0;
 		virtual void ReleaseKey(int keyCode) = 0;
+
+		virtual ~Controller();
 	};
 
 	Controller* GetController(int id);

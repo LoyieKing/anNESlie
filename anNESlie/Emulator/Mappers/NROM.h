@@ -11,5 +11,7 @@ namespace Mapper
 	public:
 		NROM(Emulator* emulator);
 		void InitializeMemoryMap(CPU* cpu);
+
+		virtual ~NROM();
 	};
 }

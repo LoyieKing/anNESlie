@@ -22,5 +22,7 @@ namespace Controller
 		virtual Byte ReadState();
 		virtual void PressKey(int keyCode);
 		virtual void ReleaseKey(int keyCode);
+
+		virtual ~NES001Controller();
 	};
 }

@@ -64,6 +64,7 @@ PPU::PPU(Emulator* const _emulator) :
 	emulator->mapper->InitializeMemoryMap(this);
 }
 
+
 void PPU::countSpritesOnLine(int scanline)
 {
 	spriteCount = 0;

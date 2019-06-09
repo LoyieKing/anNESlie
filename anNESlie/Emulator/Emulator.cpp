@@ -7,6 +7,9 @@
 #include "Controllers/Controller.h"
 #include "Controllers/NES001Controller.h"
 #include "../Setting.h"
+#include <fstream>
+
+#pragma optimize("", off)
 
 Emulator::Emulator(const char* rom_path)
 {
@@ -34,7 +37,7 @@ Emulator::~Emulator()
 		delete this->ppu;
 		delete this->controller;
 		delete this->mapper;
-		delete this->setting;
+		//delete this->setting;
 		cartridge = nullptr;
 	}
 }
@@ -137,5 +140,29 @@ void Emulator::KeyUp(int key)
 	if (setting->keyBindings[key] == -1)
 		return;
 	controller->ReleaseKey(setting->keyBindings[key]);
+}
+
+void Emulator::LoadGame(const char* sav_path)
+{
+	std::ifstream stream(sav_path);
+	//OpcodeDefinition ops[256];
+	//memcpy(ops, cpu->opcodes, sizeof(ops));
+	//stream.read((char*)cpu, sizeof(CPU));
+	//stream.read((char*)ppu, sizeof(PPU));
+
+	//cpu->emulator = this;
+	//ppu->emulator = this;
+
+
+	//memcpy(cpu->opcodes, ops, sizeof(ops));
+	mapper->Load(stream);
+}
+
+void Emulator::SaveGame(const char* sav_path)
+{
+	std::ofstream stream(sav_path);
+	//stream.write((char*)cpu, sizeof(CPU));
+	//stream.write((char*)ppu, sizeof(PPU));
+	mapper->Save(stream);
 }
 

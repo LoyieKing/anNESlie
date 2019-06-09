@@ -10,6 +10,8 @@ const int CYCLES_PER_LINE = 341;
 
 class PPU
 {
+	Emulator* emulator;
+
 public:
 	friend class Emulator;
 #pragma region Core
@@ -50,7 +52,7 @@ private:
 	void processBackgroundForPixel(int cycle, int scanline);
 	void processSpritesForPixel(int x, int scanline);
 
-	Emulator* emulator;
+	
 public:
 	PPU(Emulator* const _emulator);
 

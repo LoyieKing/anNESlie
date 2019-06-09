@@ -15,6 +15,10 @@ Controller::Key const* Controller::Controller::GetKeys()
 	return keys;
 }
 
+Controller::Controller::~Controller()
+{
+}
+
 Controller::Controller* Controller::GetController(int id)
 {
 	switch (id)

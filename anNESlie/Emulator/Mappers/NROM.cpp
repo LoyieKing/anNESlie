@@ -21,3 +21,7 @@ void Mapper::NROM::InitializeMemoryMap(CPU* cpu)
 		addressSpace[address - 0x6000] = value;
 		});
 }
+
+Mapper::NROM::~NROM()
+{
+}

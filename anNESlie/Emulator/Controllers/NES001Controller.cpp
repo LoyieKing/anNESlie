@@ -53,3 +53,7 @@ void Controller::NES001Controller::ReleaseKey(int keyIndex)
 		return;
 	data &= ~(1 << keys[keyIndex].KeyCode);
 }
+
+Controller::NES001Controller::~NES001Controller()
+{
+}

@@ -154,5 +154,6 @@
   <ItemGroup>
     <None Include="game\mario.nes" />
     <None Include="game\spritecans.nes" />
+    <None Include="game\golf.nes" />
   </ItemGroup>
 </Project>

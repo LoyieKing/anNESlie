@@ -40,8 +40,10 @@ namespace Mapper
 		virtual void InitializeMemoryMap(CPU* cpu);
 		virtual void InitializeMemoryMap(PPU* ppu);
 		virtual void ProcessCycle(int scanline, int cycle);
-		virtual void Save(std::ostream stream);
-		virtual void Load(std::istream stream);
+		virtual void Save(std::ostream& stream);
+		virtual void Load(std::istream& stream);
+
+		virtual ~BaseMapper();
 	};
 
 }

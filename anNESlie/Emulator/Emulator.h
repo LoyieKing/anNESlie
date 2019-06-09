@@ -54,4 +54,7 @@ public:
 
 	void KeyDown(int key);
 	void KeyUp(int key);
+
+	void LoadGame(const char* sav_path);
+	void SaveGame(const char* sav_path);
 };

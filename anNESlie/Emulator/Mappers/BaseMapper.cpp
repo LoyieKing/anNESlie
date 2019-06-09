@@ -3,6 +3,7 @@
 #include "../ROM/Cartridge.h"
 #include "../CPU/CPU.h"
 #include "../PPU/PPU.h"
+#include <fstream>
 
 Mapper::BaseMapper::BaseMapper(Emulator* _emulator)
 {
@@ -37,12 +38,16 @@ void Mapper::BaseMapper::ProcessCycle(int scanline, int cycle)
 {
 }
 
-void Mapper::BaseMapper::Save(std::ostream stream)
+void Mapper::BaseMapper::Save(std::ostream& stream)
 {
 	stream.write((char*)prgRAM, prgRAMLength);
 }
 
-void Mapper::BaseMapper::Load(std::istream stream)
+void Mapper::BaseMapper::Load(std::istream& stream)
 {
 	stream.read((char*)prgRAM, prgRAMLength);
+}
+
+Mapper::BaseMapper::~BaseMapper()
+{
 }

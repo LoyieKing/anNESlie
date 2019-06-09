@@ -43,22 +43,25 @@ void WelcomeDialog::initList()
 	} while (FindNextFile(hFind, &fileData));
 }
 
+WCHAR wstr[256];
+char str[256] = { 0 };
+EmulatorDialog* emulatorDialog = nullptr;
 void WelcomeDialog::loadGame()
 {
 	int index = listBox.GetCurSel();
 	if (index < 0 || index >= listBox.GetCount())
 		return;
-	WCHAR wstr[256];
+	
 	StrCpyW(wstr, L"game\\");
 	listBox.GetText(index, wstr + 5);
 
-
-	char str[256] = { 0 };
+	memset(str, 0, sizeof(str));
 	WideCharToMultiByte(CP_ACP, 0, wstr, wcslen(wstr), str, 256, 0, 0);
 
-	EmulatorDialog emulatorDialog(str);
-	emulatorDialog.DoModal();
-
+	emulatorDialog = new EmulatorDialog(str);
+	//emulatorDialog->ShowWindow(SW_SHOW);
+	emulatorDialog->DoModal();
+	delete emulatorDialog;
 }
 
 BOOL WelcomeDialog::OnInitDialog()
